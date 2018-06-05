@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_bookshelf"
+        android:icon="@drawable/ic_bookshelf_selector"
+        android:title="@string/title_bookshelf" />
+
+    <item
+        android:id="@+id/navigation_bookcity"
+        android:icon="@drawable/ic_bookcity_selector"
+        android:title="@string/title_bookcity" />
+
+    <item
+        android:id="@+id/navigation_rank"
+        android:icon="@drawable/ic_chart_selector"
+        android:title="@string/title_rank" />
+
+</menu>

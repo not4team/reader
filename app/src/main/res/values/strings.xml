@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">novel</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_bookshelf">书架</string>
+    <string name="title_bookcity">书城</string>
+    <string name="title_rank">排行榜</string>
+</resources>
