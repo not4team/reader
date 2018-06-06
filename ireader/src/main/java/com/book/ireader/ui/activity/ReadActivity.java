@@ -195,7 +195,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
     @Override
     protected ReadContract.Presenter bindPresenter() {
-        return new ReadPresenter(this);
+        return new ReadPresenter();
     }
 
     @Override

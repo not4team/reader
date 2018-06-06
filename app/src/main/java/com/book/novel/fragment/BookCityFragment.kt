@@ -1,7 +1,11 @@
 package com.book.novel.fragment
 
+import android.os.Bundle
+import com.book.ireader.model.bean.packages.BookCityPackage
 import com.book.ireader.ui.base.BaseMVPFragment
+import com.book.novel.R
 import com.book.novel.presenter.BookCityPresenter
+import com.book.novel.presenter.contract.BookCityContract
 
 /**
  * Created with author.
@@ -9,13 +13,22 @@ import com.book.novel.presenter.BookCityPresenter
  * Date: 2018-06-05
  * Time: 下午4:58
  */
-class BookCityFragment : BaseMVPFragment<BookCityPresenter>() {
+class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.View {
+    override fun initData(savedInstanceState: Bundle?) {
+        super.initData(savedInstanceState)
+        mPresenter.load("male")
+    }
+
+    override fun show(bookCityPackage: BookCityPackage) {
+
+    }
+
     override fun getContentId(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return R.layout.fragment_bookcity
     }
 
     override fun bindPresenter(): BookCityPresenter {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return BookCityPresenter()
     }
 
     override fun showError() {

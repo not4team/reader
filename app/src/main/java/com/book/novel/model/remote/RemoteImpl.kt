@@ -1,28 +1,9 @@
 package com.book.novel.model.remote
 
-import com.book.ireader.model.bean.BillBookBean
-import com.book.ireader.model.bean.BookChapterBean
-import com.book.ireader.model.bean.BookCommentBean
-import com.book.ireader.model.bean.BookDetailBean
-import com.book.ireader.model.bean.BookHelpsBean
-import com.book.ireader.model.bean.BookListBean
-import com.book.ireader.model.bean.BookListDetailBean
-import com.book.ireader.model.bean.BookReviewBean
-import com.book.ireader.model.bean.BookTagBean
-import com.book.ireader.model.bean.ChapterInfoBean
-import com.book.ireader.model.bean.CollBookBean
-import com.book.ireader.model.bean.CommentBean
-import com.book.ireader.model.bean.CommentDetailBean
-import com.book.ireader.model.bean.HelpsDetailBean
-import com.book.ireader.model.bean.HotCommentBean
-import com.book.ireader.model.bean.ReviewDetailBean
-import com.book.ireader.model.bean.SortBookBean
-import com.book.ireader.model.bean.packages.BillboardPackage
-import com.book.ireader.model.bean.packages.BookSortPackage
-import com.book.ireader.model.bean.packages.BookSubSortPackage
-import com.book.ireader.model.bean.packages.SearchBookPackage
+import android.util.Log
+import com.book.ireader.model.bean.*
+import com.book.ireader.model.bean.packages.*
 import com.book.ireader.model.remote.IRemote
-
 import io.reactivex.Single
 import retrofit2.Retrofit
 
@@ -30,23 +11,30 @@ import retrofit2.Retrofit
  * Created by newbiechen on 17-4-20.
  */
 
-class RemoteRepository private constructor() : IRemote {
+class RemoteImpl : IRemote {
+    private val TAG = "RemoteImpl"
     private val mRetrofit: Retrofit
     private val mBookApi: BookApi
 
     init {
-        mRetrofit = RemoteHelper.instance
-                .retrofit
-
+        mRetrofit = RemoteHelper.instance.retrofit
         mBookApi = mRetrofit.create(BookApi::class.java)
     }
 
-    override fun getRecommendBooks(gender: String): Single<List<CollBookBean>> {
-        return mBookApi.getRecommendBookPackage(gender)
-                .map { bean ->
-                    //                    bean.getBooks()
-                    null
-                }
+    override fun bookCity(gender: String): Single<BookCityPackage> {
+        return mBookApi.bookCity(gender).map { bean ->
+            val mBookCityPackage = BookCityPackage()
+            Log.e(TAG, bean.string())
+            mBookCityPackage
+        }
+    }
+
+    override fun rank(gender: String): Single<BillBookPackage> {
+        return mBookApi.rank(gender).map { bean -> null }
+    }
+
+    override fun getBillboardPackage(): Single<BillboardPackage> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getBookChapters(bookId: String): Single<List<BookChapterBean>> {
@@ -65,9 +53,9 @@ class RemoteRepository private constructor() : IRemote {
                 .map { bean -> null }
     }
 
-    /** */
-
-
+    /**
+     * 评论
+     */
     override fun getBookComment(block: String, sort: String, start: Int, limit: Int, distillate: String): Single<List<BookCommentBean>> {
 
         return mBookApi.getBookCommentList(block, "all", sort, "all", start.toString() + "", limit.toString() + "", distillate)
@@ -163,17 +151,6 @@ class RemoteRepository private constructor() : IRemote {
     override fun getSortBooks(gender: String, type: String, major: String, minor: String, start: Int, limit: Int): Single<List<SortBookBean>> {
         return mBookApi.getSortBookPackage(gender, type, major, minor, start, limit)
                 .map { bean -> null }
-    }
-
-    /** */
-
-    /**
-     * 排行榜的类型
-     *
-     * @return
-     */
-    override fun getBillboardPackage(): Single<BillboardPackage> {
-        return mBookApi.billboardPackage.map { bean -> null }
     }
 
     /**
@@ -274,23 +251,5 @@ class RemoteRepository private constructor() : IRemote {
     override fun getSearchBooks(query: String): Single<List<SearchBookPackage.BooksBean>> {
         return mBookApi.getSearchBookPackage(query)
                 .map { bean -> null }
-    }
-
-    companion object {
-        private val TAG = "RemoteRepository"
-
-        private var sInstance: RemoteRepository? = null
-
-        val instance: RemoteRepository
-            get() {
-                if (sInstance == null) {
-                    synchronized(RemoteHelper::class.java) {
-                        if (sInstance == null) {
-                            sInstance = RemoteRepository()
-                        }
-                    }
-                }
-                return sInstance!!
-            }
     }
 }

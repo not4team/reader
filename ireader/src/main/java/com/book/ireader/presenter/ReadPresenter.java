@@ -1,8 +1,7 @@
 package com.book.ireader.presenter;
 
 
-import android.content.Context;
-
+import com.book.ireader.App;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.ChapterInfoBean;
 import com.book.ireader.model.local.BookRepository;
@@ -14,7 +13,6 @@ import com.book.ireader.utils.MD5Utils;
 import com.book.ireader.utils.RxUtils;
 import com.book.ireader.widget.page.TxtChapter;
 
-import org.greenrobot.greendao.annotation.NotNull;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -35,16 +33,11 @@ import io.reactivex.schedulers.Schedulers;
 public class ReadPresenter extends RxPresenter<ReadContract.View>
         implements ReadContract.Presenter {
     private static final String TAG = "ReadPresenter";
-    private Context mContext;
     private Subscription mChapterSub;
-
-    public ReadPresenter(@NotNull Context mContext) {
-        this.mContext = mContext.getApplicationContext();
-    }
 
     @Override
     public void loadCategory(String bookId) throws Exception {
-        Disposable disposable = RemoteRepository.getInstance(mContext)
+        Disposable disposable = RemoteRepository.getInstance(App.getContext())
                 .getBookChapters(bookId)
                 .doOnSuccess(new Consumer<List<BookChapterBean>>() {
                     @Override
@@ -86,7 +79,7 @@ public class ReadPresenter extends RxPresenter<ReadContract.View>
         for (int i = 0; i < size; ++i) {
             TxtChapter bookChapter = bookChapters.get(i);
             // 网络中获取数据
-            Single<ChapterInfoBean> chapterInfoSingle = RemoteRepository.getInstance(mContext)
+            Single<ChapterInfoBean> chapterInfoSingle = RemoteRepository.getInstance(App.getContext())
                     .getChapterInfo(bookChapter.getLink());
             chapterInfos.add(chapterInfoSingle);
             titles.add(bookChapter.getTitle());

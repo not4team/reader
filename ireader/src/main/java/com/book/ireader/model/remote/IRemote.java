@@ -17,7 +17,9 @@ import com.book.ireader.model.bean.HelpsDetailBean;
 import com.book.ireader.model.bean.HotCommentBean;
 import com.book.ireader.model.bean.ReviewDetailBean;
 import com.book.ireader.model.bean.SortBookBean;
+import com.book.ireader.model.bean.packages.BillBookPackage;
 import com.book.ireader.model.bean.packages.BillboardPackage;
+import com.book.ireader.model.bean.packages.BookCityPackage;
 import com.book.ireader.model.bean.packages.BookSortPackage;
 import com.book.ireader.model.bean.packages.BookSubSortPackage;
 import com.book.ireader.model.bean.packages.SearchBookPackage;
@@ -33,7 +35,10 @@ import io.reactivex.Single;
  * Time: 下午2:37
  */
 public interface IRemote {
-    public Single<List<CollBookBean>> getRecommendBooks(String gender);
+
+    public Single<BookCityPackage> bookCity(String gender);
+
+    public Single<BillBookPackage> rank(String gender);
 
     public Single<List<BookChapterBean>> getBookChapters(String bookId);
 
@@ -44,9 +49,6 @@ public interface IRemote {
      * @return
      */
     public Single<ChapterInfoBean> getChapterInfo(String url);
-
-    /***********************************************************************************/
-
 
     public Single<List<BookCommentBean>> getBookComment(String block, String sort, int start, int limit, String distillate);
 

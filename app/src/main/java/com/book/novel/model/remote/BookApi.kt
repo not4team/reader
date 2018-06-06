@@ -12,19 +12,18 @@ import retrofit2.http.Query
 
 interface BookApi {
 
-
-    /************************************find */
+    @GET("https://m.qidian.com/{gender}")
+    fun bookCity(@Path("gender") gender: String): Single<ResponseBody>
 
     /**
      * 获取所有排行榜
      *
      * @return
      */
-    @get:GET("/ranking/gender")
-    val billboardPackage: Single<ResponseBody>
+    @GET("https://m.qidian.com/rank/{gender}")
+    fun rank(@Path("gender") gender: String): Single<ResponseBody>
 
 
-    /*******************************分类 */
     /**
      * 获取分类
      *

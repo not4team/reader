@@ -4,10 +4,12 @@ import com.book.ireader.model.bean.packages.BookCityPackage
 import com.book.ireader.ui.base.BaseContract
 
 /**
- * Created by newbiechen on 17-5-16.
+ * Created with author.
+ * Description:
+ * Date: 2018-06-06
+ * Time: 下午4:39
  */
-
-interface BookCityContract : BaseContract {
+interface RankContract : BaseContract {
     interface View : BaseContract.BaseView {
         fun show(bookCityPackage: BookCityPackage)
     }

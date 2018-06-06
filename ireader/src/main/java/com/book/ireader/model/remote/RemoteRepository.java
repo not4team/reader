@@ -19,7 +19,9 @@ import com.book.ireader.model.bean.HelpsDetailBean;
 import com.book.ireader.model.bean.HotCommentBean;
 import com.book.ireader.model.bean.ReviewDetailBean;
 import com.book.ireader.model.bean.SortBookBean;
+import com.book.ireader.model.bean.packages.BillBookPackage;
 import com.book.ireader.model.bean.packages.BillboardPackage;
+import com.book.ireader.model.bean.packages.BookCityPackage;
 import com.book.ireader.model.bean.packages.BookSortPackage;
 import com.book.ireader.model.bean.packages.BookSubSortPackage;
 import com.book.ireader.model.bean.packages.SearchBookPackage;
@@ -34,18 +36,18 @@ import io.reactivex.Single;
  * Created by newbiechen on 17-4-20.
  */
 
-public class RemoteRepository {
+public class RemoteRepository implements IRemote{
     private static final String TAG = "RemoteRepository";
 
     private static volatile RemoteRepository sInstance;
-    private IRemote mBookApi;
+    private IRemote mRemote;
 
     private RemoteRepository(Context mContext) throws Exception {
         List<IRemote> iRemotes = new ManifestParser(mContext).parse();
         if (iRemotes.size() == 0) {
             throw new Exception("AndroidManifext.xml not find meta-data which value is IRemoteModule");
         } else {
-            mBookApi = (IRemote) Proxy.newProxyInstance(RemoteRepository.class.getClassLoader(), new Class[]{IRemote.class}, new IRemoteProxy(iRemotes.get(0)));
+            mRemote = (IRemote) Proxy.newProxyInstance(RemoteRepository.class.getClassLoader(), new Class[]{IRemote.class}, new IRemoteProxy(iRemotes.get(0)));
         }
     }
 
@@ -60,12 +62,18 @@ public class RemoteRepository {
         return sInstance;
     }
 
-    public Single<List<CollBookBean>> getRecommendBooks(String gender) {
-        return mBookApi.getRecommendBooks(gender);
+    @Override
+    public Single<BookCityPackage> bookCity(String gender) {
+        return mRemote.bookCity(gender);
+    }
+
+    @Override
+    public Single<BillBookPackage> rank(String gender) {
+        return mRemote.rank(gender);
     }
 
     public Single<List<BookChapterBean>> getBookChapters(String bookId) {
-        return mBookApi.getBookChapters(bookId);
+        return mRemote.getBookChapters(bookId);
     }
 
     /**
@@ -75,7 +83,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<ChapterInfoBean> getChapterInfo(String url) {
-        return mBookApi.getChapterInfo(url);
+        return mRemote.getChapterInfo(url);
     }
 
     /***********************************************************************************/
@@ -83,31 +91,31 @@ public class RemoteRepository {
 
     public Single<List<BookCommentBean>> getBookComment(String block, String sort, int start, int limit, String distillate) {
 
-        return mBookApi.getBookComment(block, sort, start, limit, distillate);
+        return mRemote.getBookComment(block, sort, start, limit, distillate);
     }
 
     public Single<List<BookHelpsBean>> getBookHelps(String sort, int start, int limit, String distillate) {
-        return mBookApi.getBookHelps(sort, start, limit, distillate);
+        return mRemote.getBookHelps(sort, start, limit, distillate);
     }
 
     public Single<List<BookReviewBean>> getBookReviews(String sort, String bookType, int start, int limited, String distillate) {
-        return mBookApi.getBookReviews(sort, bookType, start, limited, distillate);
+        return mRemote.getBookReviews(sort, bookType, start, limited, distillate);
     }
 
     public Single<CommentDetailBean> getCommentDetail(String detailId) {
-        return mBookApi.getCommentDetail(detailId);
+        return mRemote.getCommentDetail(detailId);
     }
 
     public Single<ReviewDetailBean> getReviewDetail(String detailId) {
-        return mBookApi.getReviewDetail(detailId);
+        return mRemote.getReviewDetail(detailId);
     }
 
     public Single<HelpsDetailBean> getHelpsDetail(String detailId) {
-        return mBookApi.getHelpsDetail(detailId);
+        return mRemote.getHelpsDetail(detailId);
     }
 
     public Single<List<CommentBean>> getBestComments(String detailId) {
-        return mBookApi.getBestComments(detailId);
+        return mRemote.getBestComments(detailId);
     }
 
     /**
@@ -119,7 +127,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<CommentBean>> getDetailComments(String detailId, int start, int limit) {
-        return mBookApi.getDetailComments(detailId, start, limit);
+        return mRemote.getDetailComments(detailId, start, limit);
     }
 
     /**
@@ -131,7 +139,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<CommentBean>> getDetailBookComments(String detailId, int start, int limit) {
-        return mBookApi.getDetailBookComments(detailId, start, limit);
+        return mRemote.getDetailBookComments(detailId, start, limit);
     }
 
     /*****************************************************************************/
@@ -141,7 +149,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<BookSortPackage> getBookSortPackage() {
-        return mBookApi.getBookSortPackage();
+        return mRemote.getBookSortPackage();
     }
 
     /**
@@ -150,7 +158,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<BookSubSortPackage> getBookSubSortPackage() {
-        return mBookApi.getBookSubSortPackage();
+        return mRemote.getBookSubSortPackage();
     }
 
     /**
@@ -165,7 +173,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<SortBookBean>> getSortBooks(String gender, String type, String major, String minor, int start, int limit) {
-        return mBookApi.getSortBooks(gender, type, major, minor, start, limit);
+        return mRemote.getSortBooks(gender, type, major, minor, start, limit);
     }
 
     /*******************************************************************************/
@@ -176,7 +184,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<BillboardPackage> getBillboardPackage() {
-        return mBookApi.getBillboardPackage();
+        return mRemote.getBillboardPackage();
     }
 
     /**
@@ -186,7 +194,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<BillBookBean>> getBillBooks(String billId) {
-        return mBookApi.getBillBooks(billId);
+        return mRemote.getBillBooks(billId);
     }
 
     /***********************************书单*************************************/
@@ -205,7 +213,7 @@ public class RemoteRepository {
     public Single<List<BookListBean>> getBookLists(String duration, String sort,
                                                    int start, int limit,
                                                    String tag, String gender) {
-        return mBookApi.getBookLists(duration, sort, start, limit, tag, gender);
+        return mRemote.getBookLists(duration, sort, start, limit, tag, gender);
     }
 
     /**
@@ -214,7 +222,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<BookTagBean>> getBookTags() {
-        return mBookApi.getBookTags();
+        return mRemote.getBookTags();
     }
 
     /**
@@ -224,20 +232,20 @@ public class RemoteRepository {
      * @return
      */
     public Single<BookListDetailBean> getBookListDetail(String detailId) {
-        return mBookApi.getBookListDetail(detailId);
+        return mRemote.getBookListDetail(detailId);
     }
 
     /***************************************书籍详情**********************************************/
     public Single<BookDetailBean> getBookDetail(String bookId) {
-        return mBookApi.getBookDetail(bookId);
+        return mRemote.getBookDetail(bookId);
     }
 
     public Single<List<HotCommentBean>> getHotComments(String bookId) {
-        return mBookApi.getHotComments(bookId);
+        return mRemote.getHotComments(bookId);
     }
 
     public Single<List<BookListBean>> getRecommendBookList(String bookId, int limit) {
-        return mBookApi.getRecommendBookList(bookId, limit);
+        return mRemote.getRecommendBookList(bookId, limit);
     }
     /********************************书籍搜索*********************************************/
     /**
@@ -246,7 +254,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<String>> getHotWords() {
-        return mBookApi.getHotWords();
+        return mRemote.getHotWords();
     }
 
     /**
@@ -256,7 +264,7 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<String>> getKeyWords(String query) {
-        return mBookApi.getKeyWords(query);
+        return mRemote.getKeyWords(query);
     }
 
     /**
@@ -266,6 +274,6 @@ public class RemoteRepository {
      * @return
      */
     public Single<List<SearchBookPackage.BooksBean>> getSearchBooks(String query) {
-        return mBookApi.getSearchBooks(query);
+        return mRemote.getSearchBooks(query);
     }
 }

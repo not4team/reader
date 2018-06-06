@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.book.ireader.widget.ScrollRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bookcity_swipe_refresh"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/bookcity_banner"
+            layout="@layout/include_banner" />
+
+        <TextView
+            android:id="@+id/bookcity_tv_hot_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="热门小说"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookcity_banner" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bookcity_rv_hot_books"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookcity_tv_hot_books" />
+
+        <TextView
+            android:id="@+id/bookcity_tv_new_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="新书抢鲜"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookcity_rv_hot_books" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bookcity_rv_new_books"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookcity_tv_new_books" />
+
+        <TextView
+            android:id="@+id/bookcity_tv_finished_books"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="畅销完本"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookcity_rv_new_books" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/bookcity_rv_finished_books"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookcity_tv_finished_books" />
+    </android.support.constraint.ConstraintLayout>
+</com.book.ireader.widget.ScrollRefreshLayout>
