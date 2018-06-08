@@ -28,7 +28,11 @@ class RemoteHelper private constructor() {
                     }
 
                     override fun loadForRequest(url: HttpUrl): List<Cookie>? {
-                        return cookieStore.get(HttpUrl.parse(mQidianUrl))
+                        var cookies = cookieStore.get(HttpUrl.parse(mQidianUrl))
+                        if (cookies == null) {
+                            cookies = listOf()
+                        }
+                        return cookies
                     }
                 })
                 .addNetworkInterceptor { chain ->

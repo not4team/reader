@@ -1,9 +1,9 @@
 package com.book.novel.model.remote
 
-import android.util.Log
 import com.book.ireader.model.bean.*
 import com.book.ireader.model.bean.packages.*
 import com.book.ireader.model.remote.IRemote
+import com.book.novel.utils.QidianParser
 import io.reactivex.Single
 import retrofit2.Retrofit
 
@@ -23,9 +23,7 @@ class RemoteImpl : IRemote {
 
     override fun bookCity(gender: String): Single<BookCityPackage> {
         return mBookApi.bookCity(gender).map { bean ->
-            val mBookCityPackage = BookCityPackage()
-            Log.e(TAG, bean.string())
-            mBookCityPackage
+            QidianParser.parseHome(bean.string())
         }
     }
 
