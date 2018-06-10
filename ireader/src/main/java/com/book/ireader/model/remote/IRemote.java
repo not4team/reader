@@ -7,10 +7,10 @@ import com.book.ireader.model.bean.BookDetailBean;
 import com.book.ireader.model.bean.BookHelpsBean;
 import com.book.ireader.model.bean.BookListBean;
 import com.book.ireader.model.bean.BookListDetailBean;
+import com.book.ireader.model.bean.BookRecommendBean;
 import com.book.ireader.model.bean.BookReviewBean;
 import com.book.ireader.model.bean.BookTagBean;
 import com.book.ireader.model.bean.ChapterInfoBean;
-import com.book.ireader.model.bean.CollBookBean;
 import com.book.ireader.model.bean.CommentBean;
 import com.book.ireader.model.bean.CommentDetailBean;
 import com.book.ireader.model.bean.HelpsDetailBean;
@@ -165,6 +165,8 @@ public interface IRemote {
     public Single<BookDetailBean> getBookDetail(String bookId);
 
     public Single<List<HotCommentBean>> getHotComments(String bookId);
+
+    public Single<List<BookRecommendBean>> getRecommendBooks(String bookId);
 
     public Single<List<BookListBean>> getRecommendBookList(String bookId, int limit);
     /********************************书籍搜索*********************************************/

@@ -284,6 +284,15 @@ interface BookApi {
     fun getBookDetail(@Path("bookId") bookId: String): Single<ResponseBody>
 
     /**
+     * 书籍详情-你可能感兴趣的书籍
+     * 
+     * @param bookId
+     * @return
+     */
+    @GET("/book/{bookId}/recommend")
+    fun getBookDetailRecommend(@Path("bookId") bookId: String): Single<ResponseBody>
+
+    /**
      * 根据书籍的 Tag 进行检索
      *
      * @param tags

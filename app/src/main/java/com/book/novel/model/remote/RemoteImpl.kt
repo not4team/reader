@@ -213,6 +213,10 @@ class RemoteImpl : IRemote {
                 .map { bean -> null }
     }
 
+    override fun getRecommendBooks(bookId: String): Single<MutableList<BookRecommendBean>> {
+        return mBookApi.getBookDetailRecommend(bookId).map { bean -> null }
+    }
+
     override fun getRecommendBookList(bookId: String, limit: Int): Single<List<BookListBean>> {
         return mBookApi.getRecommendBookListPackage(bookId, limit.toString() + "")
                 .map { bean -> null }
