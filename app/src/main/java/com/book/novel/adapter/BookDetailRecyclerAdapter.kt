@@ -2,6 +2,7 @@ package com.book.novel.adapter
 
 import android.content.Context
 import com.book.ireader.model.bean.packages.InterestedBookListPackage.BookRecommendBean
+import com.book.ireader.utils.Constant
 import com.book.novel.GlideApp
 import com.book.novel.R
 import com.book.novel.adapter.recyclerview.CommonAdapter
@@ -17,7 +18,7 @@ class BookDetailRecyclerAdapter(context: Context, layoutId: Int) : CommonAdapter
     override fun convert(holder: ViewHolder, item: BookRecommendBean, position: Int) {
         holder.setText(R.id.bookdetail_rv_item_title, item.title)
         holder.setText(R.id.bookdetail_rv_item_author, item.author)
-        GlideApp.with(mContext).load(item.cover).placeholder(R.mipmap.ic_default_portrait).error(R.mipmap.ic_default_portrait).into(holder.getView(R.id.bookdetail_rv_item_cover))
+        GlideApp.with(mContext).load(Constant.IMG_BASE_URL + item.cover).placeholder(R.mipmap.ic_default_portrait).error(R.mipmap.ic_default_portrait).into(holder.getView(R.id.bookdetail_rv_item_cover))
     }
 
 }

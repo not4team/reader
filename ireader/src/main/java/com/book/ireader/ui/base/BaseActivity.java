@@ -23,7 +23,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected CompositeDisposable mDisposable;
     //ButterKnife
-    private Toolbar mToolbar;
+    protected Toolbar mToolbar;
 
     /****************************abstract area*************************************/
 
@@ -82,7 +82,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     }
 
-    private void initToolbar() {
+    protected void initToolbar() {
         //更严谨是通过反射判断是否存在Toolbar
         mToolbar = findViewById(R.id.toolbar);
         if (mToolbar != null) {

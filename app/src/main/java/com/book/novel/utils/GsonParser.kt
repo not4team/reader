@@ -1,6 +1,5 @@
 package com.book.novel.utils
 
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -14,6 +13,11 @@ class GsonParser {
     companion object {
         fun <T> jsonConvert(json: String, type: Class<T>): T {
             val adapter = Gson().getAdapter(TypeToken.get(type));
+            return adapter.fromJson(json)
+        }
+
+        fun <T> jsonConvert(json: String, typeToken: TypeToken<T>): T {
+            val adapter = Gson().getAdapter(typeToken);
             return adapter.fromJson(json)
         }
     }

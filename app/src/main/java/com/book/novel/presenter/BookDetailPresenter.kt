@@ -111,8 +111,8 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                         }
 
                         override fun onError(e: Throwable) {
-                            mView.showError()
                             e.printStackTrace()
+                            mView.showError()
                         }
                     })
         } catch (e: Exception) {

@@ -51,6 +51,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:text="desc"
+        app:layout_constraintBottom_toTopOf="@id/bookcity_rv_item_author"
         app:layout_constraintLeft_toRightOf="@id/bookcity_rv_item_cover"
         app:layout_constraintTop_toBottomOf="@id/bookcity_rv_item_title" />
 
