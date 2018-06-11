@@ -1,9 +1,11 @@
 package com.book.novel.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -12,7 +14,9 @@ import com.book.ireader.model.bean.packages.BookCityPackage
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.novel.GlideApp
 import com.book.novel.R
+import com.book.novel.activity.BookDetailActivity
 import com.book.novel.adapter.BookCityRecyclerAdapter
+import com.book.novel.adapter.recyclerview.MultiItemTypeAdapter
 import com.book.novel.adapter.recyclerview.wrapper.HeaderAndFooterWrapper
 import com.book.novel.presenter.BookCityPresenter
 import com.book.novel.presenter.contract.BookCityContract
@@ -48,6 +52,22 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
         mScrollRefreshLayout.setOnRefreshListener {
             mPresenter.load("male")
         }
+        mRecyclerAdapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+            override fun onItemLongClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int): Boolean {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
+                //有1个header
+                val item = mRecyclerAdapter.datas[position - 1]
+                val mIntent = Intent(activity, BookDetailActivity::class.java)
+                mIntent.putExtra(BookDetailActivity.BOOK_ID_INTENT_KEY, item._id)
+                mIntent.putExtra(BookDetailActivity.BOOK_TILTE_INTENT_KEY, item.title)
+                mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, item.author.replace("作者：", ""))
+                startActivity(mIntent)
+            }
+
+        })
     }
 
     override fun processLogic() {

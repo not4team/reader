@@ -3,6 +3,7 @@ package com.book.novel.model.remote
 import com.book.ireader.model.bean.*
 import com.book.ireader.model.bean.packages.*
 import com.book.ireader.model.remote.IRemote
+import com.book.novel.utils.GsonParser
 import com.book.novel.utils.QidianParser
 import io.reactivex.Single
 import retrofit2.Retrofit
@@ -205,7 +206,9 @@ class RemoteImpl : IRemote {
 
     /***************************************书籍详情 */
     override fun getBookDetail(bookId: String): Single<BookDetailBean> {
-        return mBookApi.getBookDetail(bookId).map { bean -> null }
+        return mBookApi.getBookDetail(bookId).map { bean ->
+            GsonParser.jsonConvert(bean.toString(), BookDetailBean::class.java)
+        }
     }
 
     override fun getHotComments(bookId: String): Single<List<HotCommentBean>> {
@@ -213,8 +216,10 @@ class RemoteImpl : IRemote {
                 .map { bean -> null }
     }
 
-    override fun getRecommendBooks(bookId: String): Single<MutableList<BookRecommendBean>> {
-        return mBookApi.getBookDetailRecommend(bookId).map { bean -> null }
+    override fun getRecommendBooks(bookId: String): Single<MutableList<InterestedBookListPackage.BookRecommendBean>> {
+        return mBookApi.getBookDetailRecommend(bookId).map { bean ->
+            GsonParser.jsonConvert(bean.string(), InterestedBookListPackage::class.java).books
+        }
     }
 
     override fun getRecommendBookList(bookId: String, limit: Int): Single<List<BookListBean>> {
@@ -252,6 +257,8 @@ class RemoteImpl : IRemote {
      */
     override fun getSearchBooks(query: String): Single<List<SearchBookPackage.BooksBean>> {
         return mBookApi.getSearchBookPackage(query)
-                .map { bean -> null }
+                .map { bean ->
+                    GsonParser.jsonConvert(bean.string(), SearchBookPackage::class.java).books
+                }
     }
 }

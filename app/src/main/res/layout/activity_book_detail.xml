@@ -1,6 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/bookdetail_iv_cover"
+        android:layout_width="@dimen/book_cover_width"
+        android:layout_height="@dimen/book_cover_height"
+        android:src="@mipmap/ic_default_portrait" />
+
+    <TextView
+        android:id="@+id/bookdetail_tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:text="title"
+        app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover" />
+
+    <LinearLayout
+        android:id="@+id/bookdetail_ll_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
+        app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_title">
+
+        <TextView
+            android:id="@+id/bookdetail_tv_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="author" />
+
+        <View
+            android:layout_width="@dimen/common_divider_vertical_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/bookdetail_tv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="category" />
+
+        <View
+            android:layout_width="@dimen/common_divider_vertical_width"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/bookdetail_tv_wordcount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="wordcount" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/bookdetail_tv_lasttime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="lasttime"
+        app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
+        app:layout_constraintTop_toBottomOf="@id/bookdetail_ll_author" />
+
+    <LinearLayout
+        android:id="@+id/bookdetail_ll_add_bookshelf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/bookdetail_iv_cover">
+
+        <Button
+            android:id="@+id/bookdetail_bt_add_bookshelf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/add_bookshelf" />
+
+        <Button
+            android:id="@+id/bookdetail_bt_start_read"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_weight="1"
+            android:text="@string/start_read" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/bookdetail_tv_longintro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:text="longIntro"
+        app:layout_constraintTop_toBottomOf="@id/bookdetail_ll_add_bookshelf" />
+
+    <LinearLayout
+        android:id="@+id/bookdetail_ll_catalog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_longintro">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/catalog" />
+
+        <TextView
+            android:id="@+id/bookdetail_tv_lastcapture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:text="最新章节" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bookdetail_ll_maybe_interest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/bookdetail_ll_catalog">
+
+        <View
+            android:layout_width="@dimen/common_divider_vertical_width"
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@id/bookcity_rv_item_head_text"
+            android:layout_alignTop="@id/bookcity_rv_item_head_text"
+            android:background="@color/colorPrimary" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:text="@string/books_maybe_interest" />
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/bookdetail_rv_interested_books"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/bookdetail_ll_maybe_interest" />
 </android.support.constraint.ConstraintLayout>

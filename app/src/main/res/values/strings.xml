@@ -6,4 +6,8 @@
     <string name="title_bookshelf">书架</string>
     <string name="title_bookcity">书城</string>
     <string name="title_rank">排行榜</string>
+    <string name="add_bookshelf">加入书架</string>
+    <string name="start_read">开始阅读</string>
+    <string name="catalog">目录</string>
+    <string name="books_maybe_interest">你可能感兴趣</string>
 </resources>

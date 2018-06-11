@@ -1,9 +1,8 @@
 package com.book.novel.presenter.contract
 
 import com.book.ireader.model.bean.BookDetailBean
-import com.book.ireader.model.bean.BookListBean
 import com.book.ireader.model.bean.CollBookBean
-import com.book.ireader.model.bean.HotCommentBean
+import com.book.ireader.model.bean.packages.InterestedBookListPackage
 import com.book.ireader.ui.base.BaseContract
 
 /**
@@ -14,9 +13,7 @@ interface BookDetailContract {
     interface View : BaseContract.BaseView {
         fun finishRefresh(bean: BookDetailBean)
 
-        fun finishHotComment(beans: List<HotCommentBean>)
-
-        fun finishRecommendBookList(beans: List<BookListBean>)
+        fun finishRecommendBooks(beans: List<InterestedBookListPackage.BookRecommendBean>)
 
         fun waitToBookShelf()
 
@@ -27,6 +24,8 @@ interface BookDetailContract {
 
     interface Presenter : BaseContract.BasePresenter<View> {
         fun refreshBookDetail(bookId: String)
+
+        fun refreshBookDetail(title: String, author: String)
 
         //添加到书架上
         fun addToBookShelf(collBook: CollBookBean)

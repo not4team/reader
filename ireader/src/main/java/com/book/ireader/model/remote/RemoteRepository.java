@@ -9,7 +9,6 @@ import com.book.ireader.model.bean.BookDetailBean;
 import com.book.ireader.model.bean.BookHelpsBean;
 import com.book.ireader.model.bean.BookListBean;
 import com.book.ireader.model.bean.BookListDetailBean;
-import com.book.ireader.model.bean.BookRecommendBean;
 import com.book.ireader.model.bean.BookReviewBean;
 import com.book.ireader.model.bean.BookTagBean;
 import com.book.ireader.model.bean.ChapterInfoBean;
@@ -24,6 +23,7 @@ import com.book.ireader.model.bean.packages.BillboardPackage;
 import com.book.ireader.model.bean.packages.BookCityPackage;
 import com.book.ireader.model.bean.packages.BookSortPackage;
 import com.book.ireader.model.bean.packages.BookSubSortPackage;
+import com.book.ireader.model.bean.packages.InterestedBookListPackage;
 import com.book.ireader.model.bean.packages.SearchBookPackage;
 import com.book.ireader.utils.ManifestParser;
 
@@ -36,7 +36,7 @@ import io.reactivex.Single;
  * Created by newbiechen on 17-4-20.
  */
 
-public class RemoteRepository implements IRemote{
+public class RemoteRepository implements IRemote {
     private static final String TAG = "RemoteRepository";
 
     private static volatile RemoteRepository sInstance;
@@ -245,7 +245,7 @@ public class RemoteRepository implements IRemote{
     }
 
     @Override
-    public Single<List<BookRecommendBean>> getRecommendBooks(String bookId) {
+    public Single<List<InterestedBookListPackage.BookRecommendBean>> getRecommendBooks(String bookId) {
         return mRemote.getRecommendBooks(bookId);
     }
 

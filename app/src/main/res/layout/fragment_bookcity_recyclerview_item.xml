@@ -13,7 +13,7 @@
 
         <View
             android:id="@+id/bookcity_recyclerview_item_tag"
-            android:layout_width="3dp"
+            android:layout_width="@dimen/common_divider_vertical_width"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/bookcity_rv_item_head_text"
             android:layout_alignTop="@id/bookcity_rv_item_head_text"

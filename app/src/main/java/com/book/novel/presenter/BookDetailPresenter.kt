@@ -1,5 +1,6 @@
 package com.book.novel.presenter
 
+import android.util.Log
 import com.book.ireader.App
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.CollBookBean
@@ -8,6 +9,7 @@ import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
 import com.book.ireader.utils.LogUtils
 import com.book.ireader.utils.MD5Utils
+import com.book.ireader.utils.RxUtils
 import com.book.novel.presenter.contract.BookDetailContract
 import io.reactivex.SingleObserver
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -19,14 +21,17 @@ import io.reactivex.schedulers.Schedulers
  */
 
 class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailContract.Presenter {
+    val TAG = "BookDetailPresenter"
     private var bookId: String? = null
 
     override fun refreshBookDetail(bookId: String) {
         this.bookId = bookId
         refreshBook()
-        refreshComment()
         refreshRecommend()
+    }
 
+    override fun refreshBookDetail(title: String, author: String) {
+        getBookId(title, author)
     }
 
     override fun addToBookShelf(collBookBean: CollBookBean) {
@@ -65,13 +70,36 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
         addDisposable(disposable)
     }
 
+    /**
+     * [title]the book name
+     * 根据书名查找，名字和作者一样视为同一本书
+     */
+    private fun getBookId(title: String, author: String) {
+        RemoteRepository.getInstance(App.getContext())
+                .getSearchBooks(title).compose(RxUtils::toSimpleSingle)
+                .subscribe({ beans ->
+                    run breakTag@{
+                        beans.forEach continueTag@{
+                            Log.e(TAG, "title:" + title + ",author:" + author + " it.title:" + it.title + "it.author" + it.author)
+                            if (title.equals(it.title) && author.equals(it.author)) {
+                                this@BookDetailPresenter.bookId = it._id
+                                refreshBook()
+                                refreshRecommend()
+                                return@breakTag
+                            }
+                        }
+                    }
+                }) { e ->
+                    e.printStackTrace()
+                }
+    }
+
     private fun refreshBook() {
         try {
             RemoteRepository
                     .getInstance(App.getContext())
                     .getBookDetail(bookId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .compose(RxUtils::toSimpleSingle)
                     .subscribe(object : SingleObserver<BookDetailBean> {
                         override fun onSubscribe(d: Disposable) {
                             addDisposable(d)
@@ -84,23 +112,9 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
 
                         override fun onError(e: Throwable) {
                             mView.showError()
+                            e.printStackTrace()
                         }
                     })
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-    }
-
-    private fun refreshComment() {
-        try {
-            val disposable = RemoteRepository
-                    .getInstance(App.getContext())
-                    .getHotComments(bookId)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { value -> mView.finishHotComment(value) }
-            addDisposable(disposable)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -111,10 +125,10 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
         try {
             val disposable = RemoteRepository
                     .getInstance(App.getContext())
-                    .getRecommendBookList(bookId, 3)
+                    .getRecommendBooks(bookId)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { value -> mView.finishRecommendBookList(value) }
+                    .subscribe { value -> mView.finishRecommendBooks(value) }
             addDisposable(disposable)
         } catch (e: Exception) {
             e.printStackTrace()
