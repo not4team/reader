@@ -338,7 +338,7 @@ public class BookDetailBean {
         bean.setCover(getCover());
         bean.setHasCp(isHasCp());
         bean.setLatelyFollower(getLatelyFollower());
-        if(getRetentionRatio() != null) {
+        if (getRetentionRatio() != null) {
             bean.setRetentionRatio(Double.parseDouble(getRetentionRatio()));
         }
         bean.setUpdated(getUpdated());

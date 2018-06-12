@@ -71,7 +71,7 @@ interface BookApi {
      * @param view   默认参数为:chapters
      * @return
      */
-    @GET("/mix-atoc/{bookId}")
+    @GET("http://www.biqugexsw.com/{bookId}")
     fun getBookChapterPackage(@Path("bookId") bookId: String, @Query("view") view: String): Single<ResponseBody>
 
     /**
@@ -81,7 +81,7 @@ interface BookApi {
      * @param url
      * @return
      */
-    @GET("http://chapter2.zhuishushenqi.com/chapter/{url}")
+    @GET("http://www.biqugexsw.com/{url}")
     fun getChapterInfoPackage(@Path("url") url: String): Single<ResponseBody>
 
     /*******************************Community  */

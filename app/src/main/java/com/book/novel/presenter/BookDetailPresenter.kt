@@ -105,7 +105,6 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                         }
 
                         override fun onSuccess(value: BookDetailBean) {
-                            value._id = bookId
                             mView.finishRefresh(value)
                             mView.complete()
                         }

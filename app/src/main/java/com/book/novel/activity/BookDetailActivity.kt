@@ -118,12 +118,13 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mTvUpdated.text = bean.updated
         mTvLastCapture.text = bean.lastChapter
         mTvLongInstro.text = bean.longIntro
-        mCollBookBean = BookRepository.getInstance().getCollBook(bean._id)
+
+        BookRepository.getInstance().saveBookChaptersWithAsync(bean.bookChapterBeans)
 
         //判断是否收藏
+        mCollBookBean = BookRepository.getInstance().getCollBook(bean._id)
         if (mCollBookBean != null) {
             isCollected = true
-
             mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
             //修改背景
 //            val drawable = resources.getDrawable(R.drawable.shape_common_gray_corner)

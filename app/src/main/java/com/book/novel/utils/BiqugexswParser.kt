@@ -2,6 +2,7 @@ package com.book.novel.utils
 
 import com.book.ireader.model.bean.BookChapterBean
 import com.book.ireader.model.bean.BookDetailBean
+import com.book.ireader.model.bean.ChapterInfoBean
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import org.jsoup.Jsoup
 
@@ -39,9 +40,11 @@ class BiqugexswParser {
             val status = bookInfo.select("div.small span")[2].text()
             val wordCount = bookInfo.select("div.small span")[3].text()
             val updated = bookInfo.select("div.small span")[4].text()
+            var _id = bookInfo.select("div.small span")[5].select("a").attr("href")
             val lastChapter = bookInfo.select("div.small span")[5].text()
             val intro = bookInfo.select("div.intro").first().text()
             val mBookDetailBean = BookDetailBean()
+            mBookDetailBean._id = _id.substring(1, _id.lastIndexOf("/"))
             mBookDetailBean.cover = cover
             mBookDetailBean.title = title
             mBookDetailBean.author = author.replace("作者：", "")
@@ -53,21 +56,36 @@ class BiqugexswParser {
             mBookDetailBean.longIntro = intro
             val chapterList = mutableListOf<BookChapterBean>()
             val chapterElement = doc.select("div.listmain dl").first().children()
-            for (index in chapterElement.size - 1 downTo 0) {
-                if (chapterElement[index].text().contains("正文卷")) {
-                    break
-                } else {
-                    val _title = chapterElement[index].text()
-                    val _link = chapterElement[index].select("a").attr("href")
-                    val bookChapterBean = BookChapterBean()
-                    bookChapterBean.title = _title
-                    bookChapterBean.link = _link
-                    chapterList.add(bookChapterBean)
+            var dtCount = 0
+            for (index in 0 until chapterElement.size) {
+                val tagName = chapterElement[index].tagName()
+                if ("dt".equals(tagName)) {
+                    dtCount++
                 }
+                if (dtCount < 2 || "dt" == tagName) {
+                    continue
+                }
+                val _title = chapterElement[index].text()
+                val _link = chapterElement[index].select("a").attr("href")
+                val bookChapterBean = BookChapterBean()
+                bookChapterBean.title = _title
+                bookChapterBean.link = _link.replaceFirst("/", "")
+                bookChapterBean.bookId = mBookDetailBean._id
+                chapterList.add(bookChapterBean)
             }
-            chapterList.reverse()
             mBookDetailBean.bookChapterBeans = chapterList
             return mBookDetailBean
+        }
+
+        fun parseChapterInfo(html: String): ChapterInfoBean {
+            val doc = Jsoup.parse(html)
+            val content = doc.select("div.content").first()
+            val title = content.select("h1").text()
+            val body = content.select("div.showtxt").text()
+            val chapterInfoBean = ChapterInfoBean()
+            chapterInfoBean.title = title
+            chapterInfoBean.body = body
+            return chapterInfoBean
         }
     }
 }

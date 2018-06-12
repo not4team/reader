@@ -40,10 +40,7 @@ class RemoteImpl : IRemote {
     override fun getBookChapters(bookId: String): Single<List<BookChapterBean>> {
         return mBookApi.getBookChapterPackage(bookId, "chapter")
                 .map { bean ->
-                    val mixToc = GsonParser.jsonConvert(bean.string(), BookChapterPackage::class.java).mixToc
-                    if (mixToc == null)
-                        mutableListOf<BookChapterBean>()
-                    mixToc.chapters
+                    BiqugexswParser.parseBookDetail(bean.string()).bookChapterBeans
                 }
     }
 
@@ -56,7 +53,7 @@ class RemoteImpl : IRemote {
     override fun getChapterInfo(url: String): Single<ChapterInfoBean> {
         return mBookApi.getChapterInfoPackage(url)
                 .map { bean ->
-                    GsonParser.jsonConvert(bean.string(), ChapterInfoPackage::class.java).chapter
+                    BiqugexswParser.parseChapterInfo(bean.string())
                 }
     }
 
