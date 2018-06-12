@@ -122,7 +122,7 @@ public class MultiItemTypeAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
         this.mOnItemClickListener = onItemClickListener;
     }
 
-    public void refreshItems(List datas) {
+    public void refreshItems(List<T> datas) {
         mDatas.clear();
         mDatas.addAll(datas);
         notifyDataSetChanged();

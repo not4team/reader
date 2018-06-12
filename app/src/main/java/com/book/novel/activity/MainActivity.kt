@@ -1,5 +1,6 @@
 package com.book.novel.activity
 
+import android.content.Intent
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.widget.Toolbar
@@ -13,9 +14,9 @@ import com.book.novel.fragment.RankFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
-    lateinit var mBookShelfFragment: Fragment
-    lateinit var mBookCityFragment: Fragment
-    lateinit var mRankFragment: Fragment
+    private lateinit var mBookShelfFragment: Fragment
+    private lateinit var mBookCityFragment: Fragment
+    private lateinit var mRankFragment: Fragment
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_bookshelf -> {
@@ -52,7 +53,7 @@ class MainActivity : BaseActivity() {
     }
 
     override fun initToolbar() {
-        mToolbar = findViewById<Toolbar>(R.id.main_toolbar)
+        mToolbar = findViewById(R.id.main_toolbar)
         if (mToolbar != null) {
             supportActionBar(mToolbar)
             setUpToolbar(mToolbar)
@@ -66,9 +67,9 @@ class MainActivity : BaseActivity() {
 
     override fun initWidget() {
         super.initWidget()
-        mBookShelfFragment = BookShelfFragment() as Fragment
-        mBookCityFragment = BookCityFragment() as Fragment
-        mRankFragment = RankFragment() as Fragment
+        mBookShelfFragment = BookShelfFragment()
+        mBookCityFragment = BookCityFragment()
+        mRankFragment = RankFragment()
         supportFragmentManager.beginTransaction().add(R.id.main_fl_content, mBookShelfFragment).commit()
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
@@ -82,7 +83,8 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_search -> {
-
+                val mSearchIntent = Intent(this, SearchActivity::class.java)
+                startActivity(mSearchIntent)
             }
         }
         return super.onOptionsItemSelected(item)

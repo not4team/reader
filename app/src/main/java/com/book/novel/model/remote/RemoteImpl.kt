@@ -3,6 +3,7 @@ package com.book.novel.model.remote
 import com.book.ireader.model.bean.*
 import com.book.ireader.model.bean.packages.*
 import com.book.ireader.model.remote.IRemote
+import com.book.novel.utils.BiqugexswParser
 import com.book.novel.utils.GsonParser
 import com.book.novel.utils.QidianParser
 import io.reactivex.Single
@@ -214,7 +215,7 @@ class RemoteImpl : IRemote {
     /***************************************书籍详情 */
     override fun getBookDetail(bookId: String): Single<BookDetailBean> {
         return mBookApi.getBookDetail(bookId).map { bean ->
-            GsonParser.jsonConvert(bean.string(), BookDetailBean::class.java)
+            BiqugexswParser.parseBookDetail(bean.string())
         }
     }
 
@@ -265,7 +266,7 @@ class RemoteImpl : IRemote {
     override fun getSearchBooks(query: String): Single<List<SearchBookPackage.BooksBean>> {
         return mBookApi.getSearchBookPackage(query)
                 .map { bean ->
-                    GsonParser.jsonConvert(bean.string(), SearchBookPackage::class.java).books
+                    BiqugexswParser.parseSearchResult(bean.string())
                 }
     }
 }

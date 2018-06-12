@@ -57,6 +57,7 @@ public class BookDetailBean {
     private String cat;
     private String majorCate;
     private String minorCate;
+    private String status;
     private boolean _le;
     private boolean allowMonthly;
     private boolean allowVoucher;
@@ -76,6 +77,7 @@ public class BookDetailBean {
     private String copyright;
     private List<String> gender;
     private List<String> tags;
+    private List<BookChapterBean> bookChapterBeans;
 
 
     private CollBookBean collBookBean;
@@ -304,6 +306,22 @@ public class BookDetailBean {
         this.tags = tags;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public List<BookChapterBean> getBookChapterBeans() {
+        return bookChapterBeans;
+    }
+
+    public void setBookChapterBeans(List<BookChapterBean> bookChapterBeans) {
+        this.bookChapterBeans = bookChapterBeans;
+    }
+
     public CollBookBean getCollBookBean() {
         if (collBookBean == null) {
             collBookBean = createCollBookBean();
@@ -320,7 +338,9 @@ public class BookDetailBean {
         bean.setCover(getCover());
         bean.setHasCp(isHasCp());
         bean.setLatelyFollower(getLatelyFollower());
-        bean.setRetentionRatio(Double.parseDouble(getRetentionRatio()));
+        if(getRetentionRatio() != null) {
+            bean.setRetentionRatio(Double.parseDouble(getRetentionRatio()));
+        }
         bean.setUpdated(getUpdated());
         bean.setChaptersCount(getChaptersCount());
         bean.setLastChapter(getLastChapter());

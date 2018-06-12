@@ -40,7 +40,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     private lateinit var mBtnAddBookshelf: Button
     private lateinit var mBtnStartRead: Button
     private lateinit var mTvLastCapture: TextView
-    private lateinit var mRvInterestedBooks: RecyclerView
+    private lateinit var mRvChapters: RecyclerView
     private lateinit var mAdapter: BookDetailRecyclerAdapter
 
     companion object {
@@ -62,10 +62,10 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mBtnAddBookshelf = findViewById(R.id.bookdetail_bt_add_bookshelf)
         mBtnStartRead = findViewById(R.id.bookdetail_bt_start_read)
         mTvLastCapture = findViewById(R.id.bookdetail_tv_lastcapture)
-        mRvInterestedBooks = findViewById(R.id.bookdetail_rv_interested_books)
-        mRvInterestedBooks.layoutManager = LinearLayoutManager(this)
-        mAdapter = BookDetailRecyclerAdapter(this, R.layout.activity_bookdetail_recommend_books_item)
-        mRvInterestedBooks.adapter = mAdapter
+        mRvChapters = findViewById(R.id.bookdetail_rv_interested_books)
+        mRvChapters.layoutManager = LinearLayoutManager(this)
+        mAdapter = BookDetailRecyclerAdapter(this, R.layout.activity_bookdetail_chapters_item)
+        mRvChapters.adapter = mAdapter
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -76,7 +76,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     }
 
     override fun initToolbar() {
-        mToolbar = findViewById<Toolbar>(R.id.bookdetail_toolbar)
+        mToolbar = findViewById(R.id.bookdetail_toolbar)
         if (mToolbar != null) {
             supportActionBar(mToolbar)
             setUpToolbar(mToolbar)
@@ -106,7 +106,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
      * 你可能感兴趣的书籍
      */
     override fun finishRecommendBooks(beans: List<InterestedBookListPackage.BookRecommendBean>) {
-        mAdapter.refreshItems(beans)
+
     }
 
     override fun finishRefresh(bean: BookDetailBean) {
@@ -134,6 +134,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         } else {
             mCollBookBean = bean.collBookBean
         }
+        mAdapter.refreshItems(bean.bookChapterBeans)
     }
 
     override fun bindPresenter(): BookDetailContract.Presenter {

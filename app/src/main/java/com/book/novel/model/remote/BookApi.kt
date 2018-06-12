@@ -280,7 +280,7 @@ interface BookApi {
      * @param bookId
      * @return
      */
-    @GET("/book/{bookId}")
+    @GET("http://www.biqugexsw.com/{bookId}")
     fun getBookDetail(@Path("bookId") bookId: String): Single<ResponseBody>
 
     /**
@@ -318,6 +318,6 @@ interface BookApi {
      * @param query:作者名或者书名
      * @return
      */
-    @GET("/book/fuzzy-search")
-    fun getSearchBookPackage(@Query("query") query: String): Single<ResponseBody>
+    @GET("http://www.biqugexsw.com/s.php")
+    fun getSearchBookPackage(@Query("q") query: String): Single<ResponseBody>
 }

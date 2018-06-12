@@ -84,7 +84,6 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                             if (title.equals(it.title) && author.equals(it.author)) {
                                 this@BookDetailPresenter.bookId = it._id
                                 refreshBook()
-                                refreshRecommend()
                                 return@breakTag
                             }
                         }
@@ -106,6 +105,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                         }
 
                         override fun onSuccess(value: BookDetailBean) {
+                            value._id = bookId
                             mView.finishRefresh(value)
                             mView.complete()
                         }
