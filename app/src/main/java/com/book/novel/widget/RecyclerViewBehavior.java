@@ -159,7 +159,7 @@ public class RecyclerViewBehavior<V extends RecyclerView> extends CoordinatorLay
     @Override
     public boolean onStartNestedScroll(@NonNull CoordinatorLayout coordinatorLayout, @NonNull V child, @NonNull View directTargetChild, @NonNull View target, int axes, int type) {
         Log.e(TAG, "onStartNestedScroll");
-        return false;
+        return (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
     @Override
