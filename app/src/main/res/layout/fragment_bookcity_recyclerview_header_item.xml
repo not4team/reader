@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/book_cover_width"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginLeft="@dimen/bookcity_header_item_margin"
+    android:layout_marginRight="@dimen/bookcity_header_item_margin"
+    android:background="@drawable/book_item_selector"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -12,18 +14,24 @@
 
     <TextView
         android:id="@+id/bookcity_rv_header_item_title"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/book_cover_width"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
         android:text="title" />
 
     <TextView
         android:id="@+id/bookcity_rv_header_item_author"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/book_cover_width"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:singleLine="true"
         android:text="author" />
 </LinearLayout>

@@ -1,6 +1,5 @@
 package com.book.novel.presenter
 
-import android.util.Log
 import com.book.ireader.App
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.CollBookBean
@@ -74,7 +73,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
      * 根据书名查找，名字和作者一样视为同一本书
      */
     private fun getBookId(title: String, author: String) {
-        RemoteRepository.getInstance(App.getContext())
+        val disposable = RemoteRepository.getInstance(App.getContext())
                 .getSearchBooks(title).compose(RxUtils::toSimpleSingle)
                 .subscribe({ beans ->
                     run breakTag@{
@@ -89,6 +88,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                 }) { e ->
                     e.printStackTrace()
                 }
+        addDisposable(disposable)
     }
 
     private fun refreshBook() {
@@ -103,13 +103,17 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                         }
 
                         override fun onSuccess(value: BookDetailBean) {
-                            mView.finishRefresh(value)
-                            mView.complete()
+                            if (mView != null) {
+                                mView.finishRefresh(value)
+                                mView.complete()
+                            }
                         }
 
                         override fun onError(e: Throwable) {
                             e.printStackTrace()
-                            mView.showError()
+                            if (mView != null) {
+                                mView.showError()
+                            }
                         }
                     })
         } catch (e: Exception) {

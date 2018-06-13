@@ -59,11 +59,7 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
             override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
                 //有1个header
                 val item = mRecyclerAdapter.datas[position - 1]
-                val mIntent = Intent(activity, BookDetailActivity::class.java)
-                mIntent.putExtra(BookDetailActivity.BOOK_ID_INTENT_KEY, item._id)
-                mIntent.putExtra(BookDetailActivity.BOOK_TILTE_INTENT_KEY, item.title)
-                mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, item.author)
-                startActivity(mIntent)
+                toDetailActivity(item)
             }
 
         })
@@ -73,6 +69,14 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
         super.processLogic()
         mSwipeRefreshLayout.isRefreshing = true
         mPresenter.load("male")
+    }
+
+    private fun toDetailActivity(bean: BillBookBean) {
+        val mIntent = Intent(activity, BookDetailActivity::class.java)
+        mIntent.putExtra(BookDetailActivity.BOOK_ID_INTENT_KEY, bean._id)
+        mIntent.putExtra(BookDetailActivity.BOOK_TILTE_INTENT_KEY, bean.title)
+        mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, bean.author)
+        startActivity(mIntent)
     }
 
     override fun show(bookCityPackage: BookCityPackage) {
@@ -88,6 +92,9 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
             author.text = item.author
             val cover = itemView.findViewById<ImageView>(R.id.bookcity_rv_header_item_cover)
             GlideApp.with(activity!!).load(item.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(cover)
+            itemView.setOnClickListener {
+                toDetailActivity(item)
+            }
             linearLayout.addView(itemView)
         }
         mHeaderAndFooterWrapper.removeLastHeaderView()

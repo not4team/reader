@@ -13,7 +13,6 @@ import android.view.View
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.ui.base.BaseMVPActivity
 import com.book.ireader.ui.base.adapter.BaseListAdapter
-import com.book.ireader.utils.ToastUtils
 import com.book.ireader.widget.RefreshLayout
 import com.book.novel.R
 import com.book.novel.adapter.KeyWordAdapter
@@ -114,6 +113,7 @@ class SearchActivity : BaseMVPActivity<SearchContract.Presenter>(), SearchContra
     }
 
     fun doMySearch(query: String) {
+        mRefreshLayout.showLoading()
         mPresenter.searchBook(query)
     }
 

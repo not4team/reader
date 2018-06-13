@@ -76,7 +76,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mRvChapters.layoutManager = object : LinearLayoutManager(this) {
             override fun canScrollVertically(): Boolean {
                 //禁止滚动，防止与scrollview冲突
-                return false
+                return true
             }
         }
         mAdapter = BookDetailRecyclerAdapter(this, R.layout.activity_bookdetail_chapters_item)
@@ -191,6 +191,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     }
 
     override fun showError() {
+        mSwipeRefreshLayout.isRefreshing = false
         mEmptyView.visibility = View.VISIBLE
     }
 
