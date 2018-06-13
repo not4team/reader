@@ -31,7 +31,7 @@ class BookCityRecyclerAdapter(context: Context, layoutId: Int) : CommonAdapter<B
         holder.setText(R.id.bookcity_rv_item_title, item.title)
         holder.setText(R.id.bookcity_rv_item_desc, item.shortIntro)
         holder.setText(R.id.bookcity_rv_item_author, item.author)
-        GlideApp.with(mContext).load(item.cover).placeholder(R.mipmap.ic_default_portrait).error(R.mipmap.ic_default_portrait).into(holder.getView(R.id.bookcity_rv_item_cover))
+        GlideApp.with(mContext).load(item.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(holder.getView(R.id.bookcity_rv_item_cover))
     }
 
 }

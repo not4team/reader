@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/bookcity_swipe_refresh"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:text_error_tip="加载错误,请稍后再试">
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -19,12 +18,13 @@
             android:id="@+id/bookcity_recyclerview"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bookcity_banner" />
 
+        <include
+            layout="@layout/view_empty"
+            android:visibility="gone" />
     </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

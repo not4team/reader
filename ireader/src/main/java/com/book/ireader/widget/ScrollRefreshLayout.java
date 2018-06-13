@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.book.ireader.R;
 
 /**
+ * SwipeRefreshLayout只能有一个直接子View,所有此封装有问题
  * Created by newbiechen on 17-5-5.
  */
 

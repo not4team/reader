@@ -31,4 +31,7 @@ public class BookCityPackage {
         return finishedBooks;
     }
 
+    public boolean isEmpty() {
+        return hotBooks.isEmpty() && newBooks.isEmpty() && finishedBooks.isEmpty();
+    }
 }

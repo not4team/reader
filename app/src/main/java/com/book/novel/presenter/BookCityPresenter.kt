@@ -1,10 +1,8 @@
 package com.book.novel.presenter
 
-import android.util.Log
 import com.book.ireader.App
 import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
-import com.book.ireader.utils.LogUtils
 import com.book.ireader.utils.RxUtils
 import com.book.novel.presenter.contract.BookCityContract
 
@@ -20,11 +18,16 @@ class BookCityPresenter() : RxPresenter<BookCityContract.View>(), BookCityContra
                 .bookCity(gender)
                 .compose(RxUtils::toSimpleSingle)
                 .subscribe(
-                        { beans ->
-                            mView.show(beans)
+                        { bean ->
+                            if (bean.isEmpty) {
+                                mView.showError()
+                            } else {
+                                mView.show(bean)
+                            }
                         }
                 ) { e ->
-                   e.printStackTrace()
+                    e.printStackTrace()
+                    mView.showError()
                 }
     }
 

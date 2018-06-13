@@ -2,9 +2,11 @@ package com.book.novel.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -24,7 +26,7 @@ import com.book.novel.presenter.contract.BookDetailContract
 /**
  * Created by author on 2018/6/9.
  */
-class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), BookDetailContract.View {
+class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), BookDetailContract.View, View.OnClickListener {
     private var mBookId: String? = null
     private lateinit var mTitle: String
     private lateinit var mAuthor: String
@@ -40,8 +42,12 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     private lateinit var mBtnAddBookshelf: Button
     private lateinit var mBtnStartRead: Button
     private lateinit var mTvLastCapture: TextView
+    private lateinit var mTvReverseOrder: TextView
     private lateinit var mRvChapters: RecyclerView
     private lateinit var mAdapter: BookDetailRecyclerAdapter
+    private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var mEmptyView: View
+    private lateinit var mContent: View
 
     companion object {
         const val BOOK_TILTE_INTENT_KEY = "BOOK_TILTE_INTENT_KEY"
@@ -52,6 +58,9 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
 
     override fun initWidget() {
         super.initWidget()
+        mSwipeRefreshLayout = findViewById(R.id.bookdetail_swipe_refresh)
+        mEmptyView = findViewById(R.id.rl_empty_view)
+        mContent = findViewById(R.id.bookdetail_cl_content)
         mIvCover = findViewById(R.id.bookdetail_iv_cover)
         mTvTitle = findViewById(R.id.bookdetail_tv_title)
         mTvAuthor = findViewById(R.id.bookdetail_tv_author)
@@ -62,8 +71,14 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mBtnAddBookshelf = findViewById(R.id.bookdetail_bt_add_bookshelf)
         mBtnStartRead = findViewById(R.id.bookdetail_bt_start_read)
         mTvLastCapture = findViewById(R.id.bookdetail_tv_lastcapture)
+        mTvReverseOrder = findViewById(R.id.bookdetail_tv_reverse_order)
         mRvChapters = findViewById(R.id.bookdetail_rv_interested_books)
-        mRvChapters.layoutManager = LinearLayoutManager(this)
+        mRvChapters.layoutManager = object : LinearLayoutManager(this) {
+            override fun canScrollVertically(): Boolean {
+                //禁止滚动，防止与scrollview冲突
+                return false
+            }
+        }
         mAdapter = BookDetailRecyclerAdapter(this, R.layout.activity_bookdetail_chapters_item)
         mRvChapters.adapter = mAdapter
     }
@@ -90,19 +105,45 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
 
     override fun initClick() {
         super.initClick()
-        mBtnStartRead.setOnClickListener {
-            startActivityForResult(Intent(this, ReadActivity::class.java)
-                    .putExtra(ReadActivity.EXTRA_IS_COLLECTED, isCollected)
-                    .putExtra(ReadActivity.EXTRA_COLL_BOOK, mCollBookBean), REQUEST_READ)
+        mSwipeRefreshLayout.setOnRefreshListener {
+            mSwipeRefreshLayout.isRefreshing = true
+            if (mBookId != null) {
+                mPresenter.refreshBookDetail(mBookId!!)
+            } else {
+                mPresenter.refreshBookDetail(mTitle, mAuthor)
+            }
         }
+        mBtnStartRead.setOnClickListener(this)
+        mTvReverseOrder.setOnClickListener(this)
     }
 
     override fun processLogic() {
         super.processLogic()
+        mSwipeRefreshLayout.isRefreshing = true
+        mContent.visibility = View.INVISIBLE
         if (mBookId != null) {
             mPresenter.refreshBookDetail(mBookId!!)
         } else {
             mPresenter.refreshBookDetail(mTitle, mAuthor)
+        }
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.bookdetail_bt_start_read -> {
+                startActivityForResult(Intent(this, ReadActivity::class.java)
+                        .putExtra(ReadActivity.EXTRA_IS_COLLECTED, isCollected)
+                        .putExtra(ReadActivity.EXTRA_COLL_BOOK, mCollBookBean), REQUEST_READ)
+            }
+            R.id.bookdetail_tv_reverse_order -> {
+                mAdapter.datas.reverse()
+                mAdapter.notifyDataSetChanged()
+                if (mTvReverseOrder.text.equals(getString(R.string.reverse_order))) {
+                    mTvReverseOrder.text = getString(R.string.positive_order)
+                } else {
+                    mTvReverseOrder.text = getString(R.string.reverse_order)
+                }
+            }
         }
     }
 
@@ -114,7 +155,10 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     }
 
     override fun finishRefresh(bean: BookDetailBean) {
-        GlideApp.with(this).load(Constant.IMG_BASE_URL + bean.cover).placeholder(R.mipmap.ic_default_portrait).error(R.mipmap.ic_default_portrait).into(mIvCover)
+        mSwipeRefreshLayout.isRefreshing = false
+        mEmptyView.visibility = View.GONE
+        mContent.visibility = View.VISIBLE
+        GlideApp.with(this).load(Constant.IMG_BASE_URL + bean.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(mIvCover)
         mTvTitle.text = bean.title
         mTvAuthor.text = bean.author
         mTvCategory.text = bean.cat
@@ -147,7 +191,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     }
 
     override fun showError() {
-
+        mEmptyView.visibility = View.VISIBLE
     }
 
     override fun complete() {

@@ -114,7 +114,6 @@ class SearchActivity : BaseMVPActivity<SearchContract.Presenter>(), SearchContra
     }
 
     fun doMySearch(query: String) {
-        ToastUtils.show(query)
         mPresenter.searchBook(query)
     }
 

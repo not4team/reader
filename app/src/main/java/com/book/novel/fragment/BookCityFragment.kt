@@ -29,32 +29,31 @@ import com.book.novel.presenter.contract.BookCityContract
  */
 class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.View {
     val TAG = "BookCityFragment"
-    lateinit var mScrollRefreshLayout: SwipeRefreshLayout
-    lateinit var mRecyclerView: RecyclerView
-    lateinit var mRecyclerAdapter: BookCityRecyclerAdapter
-    lateinit var mHeaderAndFooterWrapper: HeaderAndFooterWrapper
-    override fun initData(savedInstanceState: Bundle?) {
-        super.initData(savedInstanceState)
-    }
+    private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mRecyclerAdapter: BookCityRecyclerAdapter
+    private lateinit var mHeaderAndFooterWrapper: HeaderAndFooterWrapper
+    private lateinit var mEmptyView: View
 
     override fun initWidget(savedInstanceState: Bundle?) {
         super.initWidget(savedInstanceState)
-        mScrollRefreshLayout = getViewById(R.id.bookcity_swipe_refresh)
+        mSwipeRefreshLayout = getViewById(R.id.bookcity_swipe_refresh)
         mRecyclerView = getViewById(R.id.bookcity_recyclerview)
         mRecyclerView.layoutManager = LinearLayoutManager(context)
         mRecyclerAdapter = BookCityRecyclerAdapter(activity!!, R.layout.fragment_bookcity_recyclerview_item)
         mHeaderAndFooterWrapper = HeaderAndFooterWrapper(mRecyclerAdapter)
         mRecyclerView.adapter = mHeaderAndFooterWrapper
+        mEmptyView = getViewById(R.id.rl_empty_view)
     }
 
     override fun initClick() {
         super.initClick()
-        mScrollRefreshLayout.setOnRefreshListener {
+        mSwipeRefreshLayout.setOnRefreshListener {
             mPresenter.load("male")
         }
         mRecyclerAdapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
             override fun onItemLongClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int): Boolean {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                return false
             }
 
             override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
@@ -72,12 +71,13 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
 
     override fun processLogic() {
         super.processLogic()
-        mScrollRefreshLayout.setRefreshing(true)
+        mSwipeRefreshLayout.isRefreshing = true
         mPresenter.load("male")
     }
 
     override fun show(bookCityPackage: BookCityPackage) {
-        mScrollRefreshLayout.setRefreshing(false)
+        mSwipeRefreshLayout.isRefreshing = false
+        mEmptyView.visibility = View.GONE
         val headerView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header, null)
         val linearLayout = headerView.findViewById<LinearLayout>(R.id.bookcity_rv_header_parent)
         bookCityPackage.hotBooks.forEach { item ->
@@ -87,7 +87,7 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
             val author = itemView.findViewById<TextView>(R.id.bookcity_rv_header_item_author)
             author.text = item.author
             val cover = itemView.findViewById<ImageView>(R.id.bookcity_rv_header_item_cover)
-            GlideApp.with(activity!!).load(item.cover).placeholder(R.mipmap.ic_default_portrait).error(R.mipmap.ic_default_portrait).into(cover)
+            GlideApp.with(activity!!).load(item.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(cover)
             linearLayout.addView(itemView)
         }
         mHeaderAndFooterWrapper.removeLastHeaderView()
@@ -110,10 +110,10 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
     }
 
     override fun showError() {
-        mScrollRefreshLayout.setRefreshing(false)
+        mEmptyView.visibility = View.VISIBLE
     }
 
     override fun complete() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 }

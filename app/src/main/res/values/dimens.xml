@@ -5,5 +5,5 @@
     <dimen name="book_cover_width">105dp</dimen>
     <dimen name="book_cover_height">140dp</dimen>
     <dimen name="bookcity_recycler_item_head_height">50dp</dimen>
-    <dimen name="common_divider_vertical_width">3dp</dimen>
+    <dimen name="common_divider_vertical_width">2dp</dimen>
 </resources>

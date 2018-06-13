@@ -8,12 +8,9 @@
 
     <ImageView
         android:id="@+id/search_book_iv_cover"
-        android:layout_width="@dimen/book_cover_width"
-        android:layout_height="@dimen/book_cover_height"
+        style="@style/ImageViewBookCover"
         android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_book_loading" />
+        android:layout_centerVertical="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"

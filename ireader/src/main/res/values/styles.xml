@@ -136,6 +136,10 @@
         <item name="android:scaleType">centerCrop</item>
     </style>
 
+    <style name="Loading.ProgressBar" parent="Base.Widget.AppCompat.ProgressBar">
+        <item name="android:indeterminateTint">@color/colorPrimary</item>
+        <item name="android:indeterminateTintMode">src_atop</item>
+    </style>
     <!-- TextAppearance:修改 -->
     <style name="NB.Theme.TextAppearance" />
 </resources>
