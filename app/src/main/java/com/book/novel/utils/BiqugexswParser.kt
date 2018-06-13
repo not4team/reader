@@ -21,10 +21,16 @@ class BiqugexswParser {
                 val tilte = it.select("div.bookinfo h4.bookname").first().text()
                 var author = it.select("div.author").first().text()
                 val _id = it.select("div.bookinfo h4.bookname a").first().attr("href")
+                val cover = it.select("div.bookimg img").attr("src")
+                val lastChapter = it.select("div.bookinfo div.update a").first().text()
+                val category = it.select("div.bookinfo div.cat").text()
                 val book = SearchBookPackage.BooksBean()
                 book.title = tilte
                 book.author = author.replace("作者：", "")
+                book.cat = category.replace("分类：", "")
                 book._id = _id.replace("/", "")
+                book.cover = cover
+                book.lastChapter = lastChapter
                 list.add(book)
             }
             return list

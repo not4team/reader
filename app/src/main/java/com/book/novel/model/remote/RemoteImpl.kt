@@ -1,5 +1,6 @@
 package com.book.novel.model.remote
 
+import android.util.Log
 import com.book.ireader.model.bean.*
 import com.book.ireader.model.bean.packages.*
 import com.book.ireader.model.remote.IRemote
@@ -38,6 +39,7 @@ class RemoteImpl : IRemote {
     }
 
     override fun getBookChapters(bookId: String): Single<List<BookChapterBean>> {
+        Log.e("RemoteImpl", "getBookChapters bookId:" + bookId)
         return mBookApi.getBookChapterPackage(bookId, "chapter")
                 .map { bean ->
                     BiqugexswParser.parseBookDetail(bean.string()).bookChapterBeans
@@ -51,6 +53,7 @@ class RemoteImpl : IRemote {
      * @return
      */
     override fun getChapterInfo(url: String): Single<ChapterInfoBean> {
+        Log.e("RemoteImpl", "getChapterInfo url:" + url)
         return mBookApi.getChapterInfoPackage(url)
                 .map { bean ->
                     BiqugexswParser.parseChapterInfo(bean.string())
@@ -211,6 +214,7 @@ class RemoteImpl : IRemote {
 
     /***************************************书籍详情 */
     override fun getBookDetail(bookId: String): Single<BookDetailBean> {
+        Log.e("RemoteImpl", "getBookDetail bookId:" + bookId)
         return mBookApi.getBookDetail(bookId).map { bean ->
             BiqugexswParser.parseBookDetail(bean.string())
         }

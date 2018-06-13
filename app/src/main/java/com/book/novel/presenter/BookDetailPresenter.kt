@@ -27,7 +27,6 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
     override fun refreshBookDetail(bookId: String) {
         this.bookId = bookId
         refreshBook()
-        refreshRecommend()
     }
 
     override fun refreshBookDetail(title: String, author: String) {
@@ -80,7 +79,6 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                 .subscribe({ beans ->
                     run breakTag@{
                         beans.forEach continueTag@{
-                            Log.e(TAG, "title:" + title + ",author:" + author + " it.title:" + it.title + "it.author" + it.author)
                             if (title.equals(it.title) && author.equals(it.author)) {
                                 this@BookDetailPresenter.bookId = it._id
                                 refreshBook()

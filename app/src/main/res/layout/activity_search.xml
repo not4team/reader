@@ -1,40 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/search_toolbar"
         layout="@layout/toolbar" />
 
-    <LinearLayout
-        android:id="@+id/search_ll_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/search_toolbar">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="历史记录" />
-
-        <me.gujun.android.taggroup.TagGroup
-            android:id="@+id/search_tg_history"
-            style="@style/TagGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:atg_borderColor="@color/gray"
-            app:atg_horizontalSpacing="8dp"
-            app:atg_isAppendMode="false"
-            app:atg_textColor="@color/black"
-            app:atg_verticalPadding="8dp"
-            app:atg_verticalSpacing="15dp" />
-    </LinearLayout>
-
-    <include
-        layout="@layout/fragment_refresh_list"
-        app:layout_constraintTop_toBottomOf="@id/search_toolbar" />
-</android.support.constraint.ConstraintLayout>
+    <include layout="@layout/fragment_refresh_list" />
+</LinearLayout>

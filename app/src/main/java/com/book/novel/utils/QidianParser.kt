@@ -35,7 +35,7 @@ class QidianParser {
                 val billBookBean = BillBookBean()
                 billBookBean.title = title
                 billBookBean.cover = "https:" + cover
-                billBookBean.author = author
+                billBookBean.author = author.replace("作者：", "")
                 billBookBean.shortIntro = desc
                 bookCityPackage.newBooks.add(billBookBean)
             }
@@ -48,7 +48,7 @@ class QidianParser {
                 val billBookBean = BillBookBean()
                 billBookBean.title = title
                 billBookBean.cover = "https:" + cover
-                billBookBean.author = author
+                billBookBean.author = author.replace("作者：", "")
                 billBookBean.shortIntro = desc
                 bookCityPackage.finishedBooks.add(billBookBean)
             }

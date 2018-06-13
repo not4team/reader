@@ -63,7 +63,7 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
                 val mIntent = Intent(activity, BookDetailActivity::class.java)
                 mIntent.putExtra(BookDetailActivity.BOOK_ID_INTENT_KEY, item._id)
                 mIntent.putExtra(BookDetailActivity.BOOK_TILTE_INTENT_KEY, item.title)
-                mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, item.author.replace("作者：", ""))
+                mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, item.author)
                 startActivity(mIntent)
             }
 

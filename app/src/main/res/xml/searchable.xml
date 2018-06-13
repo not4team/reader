@@ -4,4 +4,5 @@
     android:imeOptions="actionSearch"
     android:includeInGlobalSearch="true"
     android:label="@string/search_label"
-    android:searchSettingsDescription="description" />
+    android:searchSettingsDescription="description"
+    android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" />

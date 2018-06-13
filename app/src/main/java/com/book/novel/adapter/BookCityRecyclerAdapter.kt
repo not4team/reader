@@ -1,7 +1,6 @@
 package com.book.novel.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.View
 import com.book.ireader.model.bean.BillBookBean
 import com.book.novel.GlideApp
@@ -20,9 +19,6 @@ class BookCityRecyclerAdapter(context: Context, layoutId: Int) : CommonAdapter<B
     lateinit var newBooks: MutableList<BillBookBean>
     lateinit var finishedBooks: MutableList<BillBookBean>
     override fun convert(holder: ViewHolder, item: BillBookBean, position: Int) {
-        if (newBooks != null) {
-            Log.e(TAG, "newbooks size:" + newBooks.size)
-        }
         if (position == 1) {
             holder.getView<View>(R.id.bookcity_rv_item_head).visibility = View.VISIBLE
             holder.setText(R.id.bookcity_rv_item_head_text, "新书抢先")

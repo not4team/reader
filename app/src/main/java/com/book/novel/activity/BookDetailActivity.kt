@@ -25,7 +25,7 @@ import com.book.novel.presenter.contract.BookDetailContract
  * Created by author on 2018/6/9.
  */
 class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), BookDetailContract.View {
-    private var mId: String? = null
+    private var mBookId: String? = null
     private lateinit var mTitle: String
     private lateinit var mAuthor: String
     private var mCollBookBean: CollBookBean? = null
@@ -70,7 +70,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
 
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
-        mId = intent.getStringExtra(BOOK_ID_INTENT_KEY)
+        mBookId = intent.getStringExtra(BOOK_ID_INTENT_KEY)
         mTitle = intent.getStringExtra(BOOK_TILTE_INTENT_KEY)
         mAuthor = intent.getStringExtra(BOOK_AUTHOR_INTENT_KEY)
     }
@@ -99,7 +99,11 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
 
     override fun processLogic() {
         super.processLogic()
-        mPresenter.refreshBookDetail(mTitle, mAuthor)
+        if (mBookId != null) {
+            mPresenter.refreshBookDetail(mBookId!!)
+        } else {
+            mPresenter.refreshBookDetail(mTitle, mAuthor)
+        }
     }
 
     /**
@@ -119,7 +123,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mTvLastCapture.text = bean.lastChapter
         mTvLongInstro.text = bean.longIntro
 
-        BookRepository.getInstance().saveBookChaptersWithAsync(bean.bookChapterBeans)
+//        BookRepository.getInstance().saveBookChaptersWithAsync(bean.bookChapterBeans)
 
         //判断是否收藏
         mCollBookBean = BookRepository.getInstance().getCollBook(bean._id)
