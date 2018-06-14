@@ -31,22 +31,38 @@
             tools:text="武侠世界自由行" />
 
         <TextView
-            android:id="@+id/search_book_tv_brief"
+            android:id="@+id/search_book_tv_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/search_book_tv_name"
             android:layout_marginBottom="@dimen/activity_vertical_margin"
             android:ellipsize="end"
             android:singleLine="true"
-            android:text="@string/nb.search.book.brief"
+            android:text="@string/nb.search.book.author"
             android:textColor="@color/nb.text.common_h2"
-            android:textSize="13sp" />
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/search_book_tv_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/search_book_tv_author"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/nb.search.book.category"
+            android:textColor="@color/nb.text.common_h2"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/search_book_tv_lastchapter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/search_book_tv_brief"
-            android:text="@string/nb.search.book.last_chapter" />
+            android:layout_below="@id/search_book_tv_category"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/nb.search.book.last_chapter"
+            android:textColor="@color/nb.text.common_h2"
+            android:textSize="14sp" />
     </RelativeLayout>
 </RelativeLayout>

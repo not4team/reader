@@ -20,6 +20,7 @@ import com.book.ireader.utils.Constant
 import com.book.novel.GlideApp
 import com.book.novel.R
 import com.book.novel.adapter.BookDetailRecyclerAdapter
+import com.book.novel.adapter.recyclerview.MultiItemTypeAdapter
 import com.book.novel.presenter.BookDetailPresenter
 import com.book.novel.presenter.contract.BookDetailContract
 
@@ -115,6 +116,19 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         }
         mBtnStartRead.setOnClickListener(this)
         mTvReverseOrder.setOnClickListener(this)
+        mAdapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
+            override fun onItemLongClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int): Boolean {
+                return true;
+            }
+
+            override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
+                startActivityForResult(Intent(this@BookDetailActivity, ReadActivity::class.java)
+                        .putExtra(ReadActivity.EXTRA_IS_COLLECTED, isCollected)
+                        .putExtra(ReadActivity.EXTRA_COLL_BOOK, mCollBookBean)
+                        .putExtra(ReadActivity.EXTRA_SKIP_POSITION, position), REQUEST_READ)
+            }
+
+        })
     }
 
     override fun processLogic() {
@@ -162,7 +176,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mTvTitle.text = bean.title
         mTvAuthor.text = bean.author
         mTvCategory.text = bean.cat
-        mTvWordCount.text = bean.wordCount.toString()
+        mTvWordCount.text = resources.getString(R.string.bookdetail_wordcount, bean.wordCount)
         mTvUpdated.text = bean.updated
         mTvLastCapture.text = bean.lastChapter
         mTvLongInstro.text = bean.longIntro

@@ -71,6 +71,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     public static final int REQUEST_MORE_SETTING = 1;
     public static final String EXTRA_COLL_BOOK = "extra_coll_book";
     public static final String EXTRA_IS_COLLECTED = "extra_is_collected";
+    public static final String EXTRA_SKIP_POSITION = "extra_skip_position";
 
     // 注册 Brightness 的 uri
     private final Uri BRIGHTNESS_MODE_URI =
@@ -112,6 +113,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     private Animation mBottomOutAnim;
     private CategoryAdapter mCategoryAdapter;
     private CollBookBean mCollBook;
+    private int mCurrPosition;
     //控制屏幕常亮
     private PowerManager.WakeLock mWakeLock;
     private Handler mHandler = new Handler() {
@@ -205,7 +207,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         isCollected = getIntent().getBooleanExtra(EXTRA_IS_COLLECTED, false);
         isNightMode = ReadSettingManager.getInstance().isNightMode();
         isFullScreen = ReadSettingManager.getInstance().isFullScreen();
-
+        mCurrPosition = getIntent().getIntExtra(EXTRA_SKIP_POSITION, 0);
         mBookId = mCollBook.get_id();
     }
 
@@ -611,6 +613,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     @Override
     protected void processLogic() {
         super.processLogic();
+        mPageLoader.setCurChapterPos(mCurrPosition);
         // 如果是已经收藏的，那么就从数据库中获取目录
         if (isCollected) {
             Disposable disposable = BookRepository.getInstance()

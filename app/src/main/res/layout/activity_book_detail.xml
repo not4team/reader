@@ -40,42 +40,47 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="title"
-                    app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover" />
+                    android:textSize="@dimen/bookdetail_info_text_size"
+                    app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
+                    app:layout_constraintTop_toTopOf="@id/bookdetail_iv_cover" />
+
+                <TextView
+                    android:id="@+id/bookdetail_tv_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                    android:layout_marginTop="@dimen/bookdetail_info_text_margin_top"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="author"
+                    android:textSize="@dimen/bookdetail_info_text_size"
+                    app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
+                    app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_title" />
 
                 <LinearLayout
                     android:id="@+id/bookdetail_ll_author"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/bookdetail_info_text_margin_top"
                     android:orientation="horizontal"
                     app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
-                    app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_title">
-
-                    <TextView
-                        android:id="@+id/bookdetail_tv_author"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="author" />
-
-                    <View
-                        android:layout_width="@dimen/common_divider_vertical_width"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:background="@color/colorPrimary" />
+                    app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_author">
 
                     <TextView
                         android:id="@+id/bookdetail_tv_category"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="category" />
+                        android:text="category"
+                        android:textSize="@dimen/bookdetail_info_text_size" />
 
                     <View
                         android:layout_width="@dimen/common_divider_vertical_width"
-                        android:layout_height="match_parent"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:background="@color/colorPrimary" />
 
@@ -84,7 +89,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:text="wordcount" />
+                        android:text="@string/bookdetail_wordcount"
+                        android:textSize="@dimen/bookdetail_info_text_size" />
                 </LinearLayout>
 
                 <TextView
@@ -92,8 +98,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/bookdetail_info_text_margin_top"
                     android:text="lasttime"
+                    android:textSize="@dimen/bookdetail_info_text_size"
                     app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
                     app:layout_constraintTop_toBottomOf="@id/bookdetail_ll_author" />
 
@@ -102,8 +109,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:layout_marginTop="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="@dimen/bookdetail_info_text_margin_top"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="lastchapter"
+                    android:textSize="@dimen/bookdetail_info_text_size"
                     app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
                     app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_lasttime" />
 
@@ -119,7 +129,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/add_bookshelf" />
+                        android:background="@drawable/book_detail_btn_selector"
+                        android:text="@string/add_bookshelf"
+                        android:textColor="@color/white" />
 
                     <Button
                         android:id="@+id/bookdetail_bt_start_read"
@@ -127,7 +139,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:text="@string/start_read" />
+                        android:background="@drawable/book_detail_btn_selector"
+                        android:text="@string/start_read"
+                        android:textColor="@color/white" />
                 </LinearLayout>
 
                 <TextView

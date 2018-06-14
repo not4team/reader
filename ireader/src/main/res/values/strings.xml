@@ -181,7 +181,8 @@
     <string name="nb.file.add_succeed">成功添加%1$d本书</string>
 
     <!--search-->
-    <string name="nb.search.book.brief">作者：%1$s | 分类：%2$s</string>
+    <string name="nb.search.book.author">作者：%1$s</string>
+    <string name="nb.search.book.category">分类：%1$s</string>
     <string name="nb.search.book.last_chapter">最新一章：%1$s</string>
     <!--BookShelf-->
     <string name="nb.bookshelf.book_not_exist">文件不存在或者内容为空,是否删除?</string>

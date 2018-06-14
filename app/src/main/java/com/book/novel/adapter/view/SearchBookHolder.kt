@@ -17,13 +17,15 @@ class SearchBookHolder : ViewHolderImpl<SearchBookPackage.BooksBean>() {
 
     private lateinit var mIvCover: ImageView
     private lateinit var mTvName: TextView
-    private lateinit var mTvBrief: TextView
+    private lateinit var mTvAuthor: TextView
+    private lateinit var mTvCategory: TextView
     private lateinit var mLastChapter: TextView
 
     override fun initView() {
         mIvCover = findById(R.id.search_book_iv_cover)
         mTvName = findById(R.id.search_book_tv_name)
-        mTvBrief = findById(R.id.search_book_tv_brief)
+        mTvAuthor = findById(R.id.search_book_tv_author)
+        mTvCategory = findById(R.id.search_book_tv_category)
         mLastChapter = findById(R.id.search_book_tv_lastchapter)
     }
 
@@ -37,7 +39,8 @@ class SearchBookHolder : ViewHolderImpl<SearchBookPackage.BooksBean>() {
 
         mTvName!!.text = data.title
 
-        mTvBrief!!.text = context.getString(R.string.nb_search_book_brief, data.author, data.cat)
+        mTvAuthor!!.text = context.getString(R.string.nb_search_book_author, data.author)
+        mTvCategory!!.text = context.getString(R.string.nb_search_book_category, data.cat)
         mLastChapter.text = context.getString(R.string.nb_search_book_last_chapter, data.lastChapter)
     }
 

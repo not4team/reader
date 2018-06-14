@@ -29,45 +29,53 @@
             android:text="热门小说" />
     </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/bookcity_rv_item_cover"
-        style="@style/ImageViewBookCover"
-
-        app:layout_constraintLeft_toLeftOf="@id/bookcity_rv_item_head"
-        app:layout_constraintTop_toBottomOf="@id/bookcity_rv_item_head" />
-
-    <TextView
-        android:id="@+id/bookcity_rv_item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:text="title"
-        app:layout_constraintLeft_toRightOf="@id/bookcity_rv_item_cover"
-        app:layout_constraintTop_toBottomOf="@id/bookcity_rv_item_head"
-        app:layout_constraintTop_toTopOf="@id/bookcity_rv_item_cover" />
-
-    <TextView
-        android:id="@+id/bookcity_rv_item_desc"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="10dp"
-        android:maxLines="5"
-        android:ellipsize="end"
-        android:text="蒸汽与机械的浪潮中，谁能触及非凡？历史和黑暗的迷雾里，又是谁在耳语？我从诡秘中醒来，睁眼看见这个世界：枪械，大炮，巨舰，飞空艇，差分机；魔药，占卜，诅咒，倒吊人，封印物……光明依旧照耀，神秘从未远离，这是一段“愚者”的传说。"
-        app:layout_constraintLeft_toRightOf="@id/bookcity_rv_item_cover"
+        android:background="@drawable/book_item_selector"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bookcity_rv_item_title" />
+        app:layout_constraintTop_toBottomOf="@id/bookcity_rv_item_head">
 
-    <TextView
-        android:id="@+id/bookcity_rv_item_author"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:text="author"
-        app:layout_constraintBottom_toBottomOf="@id/bookcity_rv_item_cover"
-        app:layout_constraintLeft_toRightOf="@id/bookcity_rv_item_cover"
-        app:layout_constraintTop_toBottomOf="@id/bookcity_rv_item_desc" />
+        <ImageView
+            android:id="@+id/bookcity_rv_item_cover"
+            style="@style/ImageViewBookCover"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bookcity_rv_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="title"
+            app:layout_constraintLeft_toRightOf="@id/bookcity_rv_item_cover"
+            app:layout_constraintTop_toTopOf="@id/bookcity_rv_item_cover" />
+
+        <TextView
+            android:id="@+id/bookcity_rv_item_desc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:text="蒸汽与机械的浪潮中，谁能触及非凡？历史和黑暗的迷雾里，又是谁在耳语？我从诡秘中醒来，睁眼看见这个世界：枪械，大炮，巨舰，飞空艇，差分机；魔药，占卜，诅咒，倒吊人，封印物……光明依旧照耀，神秘从未远离，这是一段“愚者”的传说。"
+            app:layout_constraintLeft_toRightOf="@id/bookcity_rv_item_cover"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bookcity_rv_item_title" />
+
+        <TextView
+            android:id="@+id/bookcity_rv_item_author"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="author"
+            app:layout_constraintBottom_toBottomOf="@id/bookcity_rv_item_cover"
+            app:layout_constraintLeft_toRightOf="@id/bookcity_rv_item_cover"
+            app:layout_constraintTop_toBottomOf="@id/bookcity_rv_item_desc" />
+    </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

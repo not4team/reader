@@ -250,6 +250,10 @@ public abstract class PageLoader {
         return true;
     }
 
+    public void setCurChapterPos(int position) {
+        this.mCurChapterPos = position;
+    }
+
     /**
      * 跳转到下一章
      *
