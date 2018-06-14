@@ -9,7 +9,7 @@
         android:id="@+id/bookdetail_toolbar"
         layout="@layout/toolbar" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.book.novel.widget.MySwipeRefreshLayout
         android:id="@+id/bookdetail_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -25,7 +25,9 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+                android:paddingTop="@dimen/activity_vertical_margin"
+                app:layout_behavior="com.book.novel.widget.ConstraintLayoutBehavior"
+                app:layout_scrollFlags="scroll|enterAlways">
 
                 <ImageView
                     android:id="@+id/bookdetail_iv_cover"
@@ -177,5 +179,5 @@
                 layout="@layout/view_empty"
                 android:visibility="gone" />
         </android.support.design.widget.CoordinatorLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.book.novel.widget.MySwipeRefreshLayout>
 </LinearLayout>

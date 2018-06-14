@@ -117,6 +117,7 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
     }
 
     override fun showError() {
+        mSwipeRefreshLayout.isRefreshing = false
         mEmptyView.visibility = View.VISIBLE
     }
 
