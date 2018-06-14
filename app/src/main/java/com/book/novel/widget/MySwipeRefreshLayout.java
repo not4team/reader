@@ -40,4 +40,9 @@ public class MySwipeRefreshLayout extends SwipeRefreshLayout {
         boolean intercept = super.onInterceptTouchEvent(ev);
         return intercept && mConstraintLayout.getTop() >= 0;
     }
+
+    @Override
+    public boolean canChildScrollUp() {
+        return mConstraintLayout.getTop() < 0;
+    }
 }

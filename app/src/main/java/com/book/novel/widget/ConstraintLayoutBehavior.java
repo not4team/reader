@@ -25,6 +25,7 @@ public class ConstraintLayoutBehavior extends HeaderBehavior<ConstraintLayout> {
     int mOffsetDelta;
     private ValueAnimator mOffsetAnimator;
     private WeakReference<View> mLastNestedScrollingChildRef;
+    private RecyclerView mRecyclerView;
     private int mTotalScrollRange = INVALID_SCROLL_RANGE;
     private static final int INVALID_SCROLL_RANGE = -1;
     private static final int MAX_OFFSET_ANIMATION_DURATION = 600; // ms
@@ -34,6 +35,19 @@ public class ConstraintLayoutBehavior extends HeaderBehavior<ConstraintLayout> {
 
     public ConstraintLayoutBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    public boolean layoutDependsOn(CoordinatorLayout parent, ConstraintLayout child, View dependency) {
+        if (dependency instanceof RecyclerView) {
+            mRecyclerView = (RecyclerView) dependency;
+        }
+        return super.layoutDependsOn(parent, child, dependency);
+    }
+
+    @Override
+    public boolean recyclerfling(int velocityX, int velocityY) {
+        return mRecyclerView.fling(velocityX, velocityY);
     }
 
     @Override
@@ -146,6 +160,7 @@ public class ConstraintLayoutBehavior extends HeaderBehavior<ConstraintLayout> {
         }
         return -1;
     }
+
 
     @Override
     void onFlingFinished(CoordinatorLayout parent, ConstraintLayout layout) {

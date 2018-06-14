@@ -29,7 +29,8 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
     private int mTouchSlop = -1;
     private VelocityTracker mVelocityTracker;
 
-    public HeaderBehavior() {}
+    public HeaderBehavior() {
+    }
 
     public HeaderBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -208,31 +209,36 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
                 getTopBottomOffsetForScrollingSibling() - dy, minOffset, maxOffset);
     }
 
+    boolean recyclerfling(int velocityX, int velocityY) {
+        return true;
+    }
+
     final boolean fling(CoordinatorLayout coordinatorLayout, V layout, int minOffset,
                         int maxOffset, float velocityY) {
-        if (mFlingRunnable != null) {
-            layout.removeCallbacks(mFlingRunnable);
-            mFlingRunnable = null;
-        }
-
-        if (mScroller == null) {
-            mScroller = new OverScroller(layout.getContext());
-        }
-
-        mScroller.fling(
-                0, getTopAndBottomOffset(), // curr
-                0, Math.round(velocityY), // velocity.
-                0, 0, // x
-                minOffset, maxOffset); // y
-
-        if (mScroller.computeScrollOffset()) {
-            mFlingRunnable = new HeaderBehavior.FlingRunnable(coordinatorLayout, layout);
-            ViewCompat.postOnAnimation(layout, mFlingRunnable);
-            return true;
-        } else {
-            onFlingFinished(coordinatorLayout, layout);
-            return false;
-        }
+        return recyclerfling(0, -Math.round(velocityY));
+//        if (mFlingRunnable != null) {
+//            layout.removeCallbacks(mFlingRunnable);
+//            mFlingRunnable = null;
+//        }
+//
+//        if (mScroller == null) {
+//            mScroller = new OverScroller(layout.getContext());
+//        }
+//
+//        mScroller.fling(
+//                0, getTopAndBottomOffset(), // curr
+//                0, Math.round(velocityY), // velocity.
+//                0, 0, // x
+//                minOffset, maxOffset); // y
+//
+//        if (mScroller.computeScrollOffset()) {
+//            mFlingRunnable = new HeaderBehavior.FlingRunnable(coordinatorLayout, layout);
+//            ViewCompat.postOnAnimation(layout, mFlingRunnable);
+//            return true;
+//        } else {
+//            onFlingFinished(coordinatorLayout, layout);
+//            return false;
+//        }
     }
 
     /**
