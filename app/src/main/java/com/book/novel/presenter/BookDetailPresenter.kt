@@ -6,7 +6,6 @@ import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.local.BookRepository
 import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
-import com.book.ireader.utils.LogUtils
 import com.book.ireader.utils.MD5Utils
 import com.book.ireader.utils.RxUtils
 import com.book.novel.presenter.contract.BookDetailContract
@@ -33,39 +32,16 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
     }
 
     override fun addToBookShelf(collBookBean: CollBookBean) {
-        var disposable: Disposable? = null
-        try {
-            disposable = RemoteRepository.getInstance(App.getContext())
-                    .getBookChapters(collBookBean._id)
-                    .subscribeOn(Schedulers.io())
-                    .doOnSubscribe { d -> mView.waitToBookShelf() }
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            { beans ->
-
-                                //设置 id
-                                for (bean in beans) {
-                                    bean.id = MD5Utils.strToMd5By16(bean.link)
-                                }
-
-                                //设置目录
-                                collBookBean.bookChapters = beans
-                                //存储收藏
-                                BookRepository.getInstance()
-                                        .saveCollBookWithAsync(collBookBean)
-
-                                mView.succeedToBookShelf()
-                            }
-                    ) { e ->
-                        mView.errorToBookShelf()
-                        LogUtils.e(e)
-                    }
-        } catch (e: Exception) {
-            e.printStackTrace()
+        //设置 id
+        for (bean in collBookBean.bookChapters) {
+            bean.id = MD5Utils.strToMd5By16(bean.link)
         }
 
-        addDisposable(disposable)
+        //存储收藏
+        BookRepository.getInstance()
+                .saveCollBookWithAsync(collBookBean)
+
+        mView.succeedToBookShelf()
     }
 
     /**

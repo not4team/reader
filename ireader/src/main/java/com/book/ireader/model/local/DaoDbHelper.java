@@ -11,7 +11,7 @@ import com.book.ireader.model.gen.DaoSession;
  */
 
 public class DaoDbHelper {
-    private static final String DB_NAME = "IReader_DB";
+    public static final String DB_NAME = "IReader_DB";
 
     private static volatile DaoDbHelper sInstance;
     private SQLiteDatabase mDb;

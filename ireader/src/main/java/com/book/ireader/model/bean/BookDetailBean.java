@@ -336,6 +336,7 @@ public class BookDetailBean {
         bean.setAuthor(getAuthor());
         bean.setShortIntro(getLongIntro());
         bean.setCover(getCover());
+        bean.setCategory(getCat());
         bean.setHasCp(isHasCp());
         bean.setLatelyFollower(getLatelyFollower());
         if (getRetentionRatio() != null) {

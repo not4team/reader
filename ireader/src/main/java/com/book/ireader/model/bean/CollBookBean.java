@@ -47,6 +47,7 @@ public class CollBookBean implements Parcelable {
     private String author;
     private String shortIntro;
     private String cover; // 在本地书籍中，该字段作为本地文件的路径
+    private String category;//分类
     private boolean hasCp;
     private int latelyFollower;
     private double retentionRatio;
@@ -74,8 +75,8 @@ public class CollBookBean implements Parcelable {
     @Generated(hash = 1552163441)
     private transient CollBookBeanDao myDao;
 
-    @Generated(hash = 757968961)
-    public CollBookBean(String _id, String title, String author, String shortIntro, String cover,
+    @Generated(hash = 2095979789)
+    public CollBookBean(String _id, String title, String author, String shortIntro, String cover, String category,
                         boolean hasCp, int latelyFollower, double retentionRatio, String updated, String lastRead,
                         int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal) {
         this._id = _id;
@@ -83,6 +84,7 @@ public class CollBookBean implements Parcelable {
         this.author = author;
         this.shortIntro = shortIntro;
         this.cover = cover;
+        this.category = category;
         this.hasCp = hasCp;
         this.latelyFollower = latelyFollower;
         this.retentionRatio = retentionRatio;
@@ -135,6 +137,14 @@ public class CollBookBean implements Parcelable {
 
     public void setCover(String cover) {
         this.cover = cover;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public boolean isHasCp() {
@@ -328,6 +338,7 @@ public class CollBookBean implements Parcelable {
         dest.writeString(this.author);
         dest.writeString(this.shortIntro);
         dest.writeString(this.cover);
+        dest.writeString(this.category);
         dest.writeByte(this.hasCp ? (byte) 1 : (byte) 0);
         dest.writeInt(this.latelyFollower);
         dest.writeDouble(this.retentionRatio);
@@ -354,6 +365,7 @@ public class CollBookBean implements Parcelable {
         this.author = in.readString();
         this.shortIntro = in.readString();
         this.cover = in.readString();
+        this.category = in.readString();
         this.hasCp = in.readByte() != 0;
         this.latelyFollower = in.readInt();
         this.retentionRatio = in.readDouble();

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.book.ireader.model.gen.DaoMaster;
 import com.book.ireader.model.local.update.Update2Helper;
+import com.book.ireader.model.local.update.Update3Helper;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -26,6 +27,9 @@ public class MyOpenHelper extends DaoMaster.DevOpenHelper {
             case 2:
                 // 更新数据到 3.0
                 Update2Helper.getInstance().update(db);
+            case 3:
+                //更新到4.0，CollBookBean添加字段category
+                Update3Helper.getInstance().update(db);
             default:
                 break;
         }

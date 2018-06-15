@@ -55,6 +55,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         const val BOOK_AUTHOR_INTENT_KEY = "BOOK_AUTHOR_INTENT_KEY"
         const val BOOK_ID_INTENT_KEY = "BOOK_ID_INTENT_KEY"
         const val REQUEST_READ = 0x1
+        const val RESULT_IS_COLLECTED = "result_is_collected"
     }
 
     override fun initWidget() {
@@ -74,12 +75,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mTvLastCapture = findViewById(R.id.bookdetail_tv_lastcapture)
         mTvReverseOrder = findViewById(R.id.bookdetail_tv_reverse_order)
         mRvChapters = findViewById(R.id.bookdetail_rv_interested_books)
-        mRvChapters.layoutManager = object : LinearLayoutManager(this) {
-            override fun canScrollVertically(): Boolean {
-                //禁止滚动，防止与scrollview冲突
-                return true
-            }
-        }
+        mRvChapters.layoutManager = LinearLayoutManager(this)
         mAdapter = BookDetailRecyclerAdapter(this, R.layout.activity_bookdetail_chapters_item)
         mRvChapters.adapter = mAdapter
     }
@@ -114,6 +110,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                 mPresenter.refreshBookDetail(mTitle, mAuthor)
             }
         }
+        mBtnAddBookshelf.setOnClickListener(this)
         mBtnStartRead.setOnClickListener(this)
         mTvReverseOrder.setOnClickListener(this)
         mAdapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
@@ -122,10 +119,14 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
             }
 
             override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
+                var chapterPosition = position
+                if (mTvReverseOrder.text.equals(getString(R.string.positive_order))) {
+                    chapterPosition = mAdapter.itemCount - position
+                }
                 startActivityForResult(Intent(this@BookDetailActivity, ReadActivity::class.java)
                         .putExtra(ReadActivity.EXTRA_IS_COLLECTED, isCollected)
                         .putExtra(ReadActivity.EXTRA_COLL_BOOK, mCollBookBean)
-                        .putExtra(ReadActivity.EXTRA_SKIP_POSITION, position), REQUEST_READ)
+                        .putExtra(ReadActivity.EXTRA_SKIP_POSITION, chapterPosition), REQUEST_READ)
             }
 
         })
@@ -158,6 +159,20 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                     mTvReverseOrder.text = getString(R.string.reverse_order)
                 }
             }
+            R.id.bookdetail_bt_add_bookshelf -> {
+                //点击存储
+                if (isCollected) {
+                    //放弃点击
+                    BookRepository.getInstance()
+                            .deleteCollBookInRx(mCollBookBean)
+                    mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_chase_update)
+                    isCollected = false
+                } else {
+                    mPresenter.addToBookShelf(mCollBookBean!!)
+                    mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
+                    isCollected = true
+                }
+            }
         }
     }
 
@@ -181,21 +196,15 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mTvLastCapture.text = bean.lastChapter
         mTvLongInstro.text = bean.longIntro
 
-//        BookRepository.getInstance().saveBookChaptersWithAsync(bean.bookChapterBeans)
-
         //判断是否收藏
         mCollBookBean = BookRepository.getInstance().getCollBook(bean._id)
         if (mCollBookBean != null) {
             isCollected = true
             mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
-            //修改背景
-//            val drawable = resources.getDrawable(R.drawable.shape_common_gray_corner)
-//            mTvChase.setBackground(drawable)
-            //设置图片
-//            mTvChase.setCompoundDrawables(ContextCompat.getDrawable(this, R.drawable.ic_book_list_delete), null, null, null)
             mBtnStartRead.text = "继续阅读"
         } else {
             mCollBookBean = bean.collBookBean
+            mCollBookBean!!.bookChapters = bean.bookChapterBeans
         }
         mAdapter.refreshItems(bean.bookChapterBeans)
     }
@@ -231,5 +240,18 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        //如果进入阅读页面收藏了，页面结束的时候，就需要返回改变收藏按钮
+        if (requestCode == REQUEST_READ) {
+            if (data == null) {
+                return
+            }
+
+            isCollected = data.getBooleanExtra(RESULT_IS_COLLECTED, false)
+
+            if (isCollected) {
+                mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
+                mBtnStartRead.text = "继续阅读"
+            }
+        }
     }
 }

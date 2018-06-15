@@ -29,15 +29,16 @@ public class CollBookBeanDao extends AbstractDao<CollBookBean, String> {
         public final static Property Author = new Property(2, String.class, "author", false, "AUTHOR");
         public final static Property ShortIntro = new Property(3, String.class, "shortIntro", false, "SHORT_INTRO");
         public final static Property Cover = new Property(4, String.class, "cover", false, "COVER");
-        public final static Property HasCp = new Property(5, boolean.class, "hasCp", false, "HAS_CP");
-        public final static Property LatelyFollower = new Property(6, int.class, "latelyFollower", false, "LATELY_FOLLOWER");
-        public final static Property RetentionRatio = new Property(7, double.class, "retentionRatio", false, "RETENTION_RATIO");
-        public final static Property Updated = new Property(8, String.class, "updated", false, "UPDATED");
-        public final static Property LastRead = new Property(9, String.class, "lastRead", false, "LAST_READ");
-        public final static Property ChaptersCount = new Property(10, int.class, "chaptersCount", false, "CHAPTERS_COUNT");
-        public final static Property LastChapter = new Property(11, String.class, "lastChapter", false, "LAST_CHAPTER");
-        public final static Property IsUpdate = new Property(12, boolean.class, "isUpdate", false, "IS_UPDATE");
-        public final static Property IsLocal = new Property(13, boolean.class, "isLocal", false, "IS_LOCAL");
+        public final static Property Category = new Property(5, String.class, "category", false, "CATEGORY");
+        public final static Property HasCp = new Property(6, boolean.class, "hasCp", false, "HAS_CP");
+        public final static Property LatelyFollower = new Property(7, int.class, "latelyFollower", false, "LATELY_FOLLOWER");
+        public final static Property RetentionRatio = new Property(8, double.class, "retentionRatio", false, "RETENTION_RATIO");
+        public final static Property Updated = new Property(9, String.class, "updated", false, "UPDATED");
+        public final static Property LastRead = new Property(10, String.class, "lastRead", false, "LAST_READ");
+        public final static Property ChaptersCount = new Property(11, int.class, "chaptersCount", false, "CHAPTERS_COUNT");
+        public final static Property LastChapter = new Property(12, String.class, "lastChapter", false, "LAST_CHAPTER");
+        public final static Property IsUpdate = new Property(13, boolean.class, "isUpdate", false, "IS_UPDATE");
+        public final static Property IsLocal = new Property(14, boolean.class, "isLocal", false, "IS_LOCAL");
     }
 
     private DaoSession daoSession;
@@ -61,15 +62,16 @@ public class CollBookBeanDao extends AbstractDao<CollBookBean, String> {
                 "\"AUTHOR\" TEXT," + // 2: author
                 "\"SHORT_INTRO\" TEXT," + // 3: shortIntro
                 "\"COVER\" TEXT," + // 4: cover
-                "\"HAS_CP\" INTEGER NOT NULL ," + // 5: hasCp
-                "\"LATELY_FOLLOWER\" INTEGER NOT NULL ," + // 6: latelyFollower
-                "\"RETENTION_RATIO\" REAL NOT NULL ," + // 7: retentionRatio
-                "\"UPDATED\" TEXT," + // 8: updated
-                "\"LAST_READ\" TEXT," + // 9: lastRead
-                "\"CHAPTERS_COUNT\" INTEGER NOT NULL ," + // 10: chaptersCount
-                "\"LAST_CHAPTER\" TEXT," + // 11: lastChapter
-                "\"IS_UPDATE\" INTEGER NOT NULL ," + // 12: isUpdate
-                "\"IS_LOCAL\" INTEGER NOT NULL );"); // 13: isLocal
+                "\"CATEGORY\" TEXT," + // 5: category
+                "\"HAS_CP\" INTEGER NOT NULL ," + // 6: hasCp
+                "\"LATELY_FOLLOWER\" INTEGER NOT NULL ," + // 7: latelyFollower
+                "\"RETENTION_RATIO\" REAL NOT NULL ," + // 8: retentionRatio
+                "\"UPDATED\" TEXT," + // 9: updated
+                "\"LAST_READ\" TEXT," + // 10: lastRead
+                "\"CHAPTERS_COUNT\" INTEGER NOT NULL ," + // 11: chaptersCount
+                "\"LAST_CHAPTER\" TEXT," + // 12: lastChapter
+                "\"IS_UPDATE\" INTEGER NOT NULL ," + // 13: isUpdate
+                "\"IS_LOCAL\" INTEGER NOT NULL );"); // 14: isLocal
     }
 
     /** Drops the underlying database table. */
@@ -106,27 +108,32 @@ public class CollBookBeanDao extends AbstractDao<CollBookBean, String> {
         if (cover != null) {
             stmt.bindString(5, cover);
         }
-        stmt.bindLong(6, entity.getHasCp() ? 1L: 0L);
-        stmt.bindLong(7, entity.getLatelyFollower());
-        stmt.bindDouble(8, entity.getRetentionRatio());
+ 
+        String category = entity.getCategory();
+        if (category != null) {
+            stmt.bindString(6, category);
+        }
+        stmt.bindLong(7, entity.getHasCp() ? 1L: 0L);
+        stmt.bindLong(8, entity.getLatelyFollower());
+        stmt.bindDouble(9, entity.getRetentionRatio());
  
         String updated = entity.getUpdated();
         if (updated != null) {
-            stmt.bindString(9, updated);
+            stmt.bindString(10, updated);
         }
  
         String lastRead = entity.getLastRead();
         if (lastRead != null) {
-            stmt.bindString(10, lastRead);
+            stmt.bindString(11, lastRead);
         }
-        stmt.bindLong(11, entity.getChaptersCount());
+        stmt.bindLong(12, entity.getChaptersCount());
  
         String lastChapter = entity.getLastChapter();
         if (lastChapter != null) {
-            stmt.bindString(12, lastChapter);
+            stmt.bindString(13, lastChapter);
         }
-        stmt.bindLong(13, entity.getIsUpdate() ? 1L: 0L);
-        stmt.bindLong(14, entity.getIsLocal() ? 1L: 0L);
+        stmt.bindLong(14, entity.getIsUpdate() ? 1L: 0L);
+        stmt.bindLong(15, entity.getIsLocal() ? 1L: 0L);
     }
 
     @Override
@@ -157,27 +164,32 @@ public class CollBookBeanDao extends AbstractDao<CollBookBean, String> {
         if (cover != null) {
             stmt.bindString(5, cover);
         }
-        stmt.bindLong(6, entity.getHasCp() ? 1L: 0L);
-        stmt.bindLong(7, entity.getLatelyFollower());
-        stmt.bindDouble(8, entity.getRetentionRatio());
+ 
+        String category = entity.getCategory();
+        if (category != null) {
+            stmt.bindString(6, category);
+        }
+        stmt.bindLong(7, entity.getHasCp() ? 1L: 0L);
+        stmt.bindLong(8, entity.getLatelyFollower());
+        stmt.bindDouble(9, entity.getRetentionRatio());
  
         String updated = entity.getUpdated();
         if (updated != null) {
-            stmt.bindString(9, updated);
+            stmt.bindString(10, updated);
         }
  
         String lastRead = entity.getLastRead();
         if (lastRead != null) {
-            stmt.bindString(10, lastRead);
+            stmt.bindString(11, lastRead);
         }
-        stmt.bindLong(11, entity.getChaptersCount());
+        stmt.bindLong(12, entity.getChaptersCount());
  
         String lastChapter = entity.getLastChapter();
         if (lastChapter != null) {
-            stmt.bindString(12, lastChapter);
+            stmt.bindString(13, lastChapter);
         }
-        stmt.bindLong(13, entity.getIsUpdate() ? 1L: 0L);
-        stmt.bindLong(14, entity.getIsLocal() ? 1L: 0L);
+        stmt.bindLong(14, entity.getIsUpdate() ? 1L: 0L);
+        stmt.bindLong(15, entity.getIsLocal() ? 1L: 0L);
     }
 
     @Override
@@ -199,15 +211,16 @@ public class CollBookBeanDao extends AbstractDao<CollBookBean, String> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // author
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // shortIntro
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // cover
-            cursor.getShort(offset + 5) != 0, // hasCp
-            cursor.getInt(offset + 6), // latelyFollower
-            cursor.getDouble(offset + 7), // retentionRatio
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // updated
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // lastRead
-            cursor.getInt(offset + 10), // chaptersCount
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // lastChapter
-            cursor.getShort(offset + 12) != 0, // isUpdate
-            cursor.getShort(offset + 13) != 0 // isLocal
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // category
+            cursor.getShort(offset + 6) != 0, // hasCp
+            cursor.getInt(offset + 7), // latelyFollower
+            cursor.getDouble(offset + 8), // retentionRatio
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // updated
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // lastRead
+            cursor.getInt(offset + 11), // chaptersCount
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // lastChapter
+            cursor.getShort(offset + 13) != 0, // isUpdate
+            cursor.getShort(offset + 14) != 0 // isLocal
         );
         return entity;
     }
@@ -219,15 +232,16 @@ public class CollBookBeanDao extends AbstractDao<CollBookBean, String> {
         entity.setAuthor(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setShortIntro(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setCover(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setHasCp(cursor.getShort(offset + 5) != 0);
-        entity.setLatelyFollower(cursor.getInt(offset + 6));
-        entity.setRetentionRatio(cursor.getDouble(offset + 7));
-        entity.setUpdated(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setLastRead(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setChaptersCount(cursor.getInt(offset + 10));
-        entity.setLastChapter(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setIsUpdate(cursor.getShort(offset + 12) != 0);
-        entity.setIsLocal(cursor.getShort(offset + 13) != 0);
+        entity.setCategory(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setHasCp(cursor.getShort(offset + 6) != 0);
+        entity.setLatelyFollower(cursor.getInt(offset + 7));
+        entity.setRetentionRatio(cursor.getDouble(offset + 8));
+        entity.setUpdated(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setLastRead(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setChaptersCount(cursor.getInt(offset + 11));
+        entity.setLastChapter(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setIsUpdate(cursor.getShort(offset + 13) != 0);
+        entity.setIsLocal(cursor.getShort(offset + 14) != 0);
      }
     
     @Override

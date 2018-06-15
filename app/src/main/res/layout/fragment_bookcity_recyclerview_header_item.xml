@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/bookcity_header_item_margin"
     android:layout_marginRight="@dimen/bookcity_header_item_margin"
-    android:background="@drawable/book_item_selector"
+    android:background="?attr/selectableItemBackground"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 

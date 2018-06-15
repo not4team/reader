@@ -1,6 +1,6 @@
 package com.book.novel.presenter.contract
 
-import com.book.ireader.model.bean.packages.BookCityPackage
+import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.base.BaseContract
 
 /**
@@ -11,10 +11,11 @@ import com.book.ireader.ui.base.BaseContract
  */
 interface BookShelfContract : BaseContract {
     interface View : BaseContract.BaseView {
-        fun show(bookCityPackage: BookCityPackage)
+        fun show(collBookBeans: List<CollBookBean>)
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {
-        fun load(gender: String)
+        fun refreshCollBooks(gender: String)
+        fun deleteCollBook(collBookBean: CollBookBean)
     }
 }
