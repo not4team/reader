@@ -36,11 +36,8 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
         for (bean in collBookBean.bookChapters) {
             bean.id = MD5Utils.strToMd5By16(bean.link)
         }
-
         //存储收藏
-        BookRepository.getInstance()
-                .saveCollBookWithAsync(collBookBean)
-
+        BookRepository.getInstance().saveCollBookWithAsync(collBookBean)
         mView.succeedToBookShelf()
     }
 

@@ -121,7 +121,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
             override fun onItemClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int) {
                 var chapterPosition = position
                 if (mTvReverseOrder.text.equals(getString(R.string.positive_order))) {
-                    chapterPosition = mAdapter.itemCount - position
+                    chapterPosition = mAdapter.itemCount - position - 1
                 }
                 startActivityForResult(Intent(this@BookDetailActivity, ReadActivity::class.java)
                         .putExtra(ReadActivity.EXTRA_IS_COLLECTED, isCollected)
@@ -164,7 +164,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                 if (isCollected) {
                     //放弃点击
                     BookRepository.getInstance()
-                            .deleteCollBookInRx(mCollBookBean)
+                            .deleteCollBookInRx(mCollBookBean).subscribe()
                     mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_chase_update)
                     isCollected = false
                 } else {

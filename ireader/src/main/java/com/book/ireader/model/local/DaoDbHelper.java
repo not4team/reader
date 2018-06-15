@@ -1,10 +1,12 @@
 package com.book.ireader.model.local;
 
-import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 
 import com.book.ireader.App;
 import com.book.ireader.model.gen.DaoMaster;
 import com.book.ireader.model.gen.DaoSession;
+
+import org.greenrobot.greendao.database.Database;
 
 /**
  * Created by newbiechen on 17-4-26.
@@ -14,7 +16,7 @@ public class DaoDbHelper {
     public static final String DB_NAME = "IReader_DB";
 
     private static volatile DaoDbHelper sInstance;
-    private SQLiteDatabase mDb;
+    private Database mDb;
     private DaoMaster mDaoMaster;
     private DaoSession mSession;
 
@@ -22,7 +24,12 @@ public class DaoDbHelper {
         //封装数据库的创建、更新、删除
         DaoMaster.DevOpenHelper openHelper = new MyOpenHelper(App.getContext(), DB_NAME, null);
         //获取数据库
-        mDb = openHelper.getWritableDatabase();
+        try {
+            mDb = openHelper.getEncryptedWritableDb("novel");
+        } catch (SQLiteException e) {
+            //覆盖安装时因为之前存在未加密的数据库
+            e.printStackTrace();
+        }
         //封装数据库中表的创建、更新、删除
         mDaoMaster = new DaoMaster(mDb);  //合起来就是对数据库的操作
         //对表操作的对象。
@@ -45,7 +52,7 @@ public class DaoDbHelper {
         return mSession;
     }
 
-    public SQLiteDatabase getDatabase() {
+    public Database getDatabase() {
         return mDb;
     }
 

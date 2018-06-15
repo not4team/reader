@@ -61,6 +61,7 @@ public class CollBookBean implements Parcelable {
     private boolean isUpdate = true;
     //是否是本地文件
     private boolean isLocal = false;
+    private int bookOrder;
 
     @ToMany(referencedJoinProperty = "bookId")
     private List<BookChapterBean> bookChapterList;
@@ -74,27 +75,6 @@ public class CollBookBean implements Parcelable {
      */
     @Generated(hash = 1552163441)
     private transient CollBookBeanDao myDao;
-
-    @Generated(hash = 2095979789)
-    public CollBookBean(String _id, String title, String author, String shortIntro, String cover, String category,
-                        boolean hasCp, int latelyFollower, double retentionRatio, String updated, String lastRead,
-                        int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal) {
-        this._id = _id;
-        this.title = title;
-        this.author = author;
-        this.shortIntro = shortIntro;
-        this.cover = cover;
-        this.category = category;
-        this.hasCp = hasCp;
-        this.latelyFollower = latelyFollower;
-        this.retentionRatio = retentionRatio;
-        this.updated = updated;
-        this.lastRead = lastRead;
-        this.chaptersCount = chaptersCount;
-        this.lastChapter = lastChapter;
-        this.isUpdate = isUpdate;
-        this.isLocal = isLocal;
-    }
 
     public CollBookBean() {
     }
@@ -229,6 +209,14 @@ public class CollBookBean implements Parcelable {
 
     public void setLastRead(String lastRead) {
         this.lastRead = lastRead;
+    }
+
+    public int getBookOrder() {
+        return bookOrder;
+    }
+
+    public void setBookOrder(int bookOrder) {
+        this.bookOrder = bookOrder;
     }
 
     public void setBookChapters(List<BookChapterBean> beans) {
@@ -375,6 +363,29 @@ public class CollBookBean implements Parcelable {
         this.lastChapter = in.readString();
         this.isUpdate = in.readByte() != 0;
         this.isLocal = in.readByte() != 0;
+    }
+
+    @Generated(hash = 931041005)
+    public CollBookBean(String _id, String title, String author, String shortIntro, String cover,
+            String category, boolean hasCp, int latelyFollower, double retentionRatio, String updated,
+            String lastRead, int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal,
+            int bookOrder) {
+        this._id = _id;
+        this.title = title;
+        this.author = author;
+        this.shortIntro = shortIntro;
+        this.cover = cover;
+        this.category = category;
+        this.hasCp = hasCp;
+        this.latelyFollower = latelyFollower;
+        this.retentionRatio = retentionRatio;
+        this.updated = updated;
+        this.lastRead = lastRead;
+        this.chaptersCount = chaptersCount;
+        this.lastChapter = lastChapter;
+        this.isUpdate = isUpdate;
+        this.isLocal = isLocal;
+        this.bookOrder = bookOrder;
     }
 
     public static final Creator<CollBookBean> CREATOR = new Creator<CollBookBean>() {

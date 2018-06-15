@@ -1,5 +1,6 @@
 package com.book.ireader.model.local;
 
+import android.database.Cursor;
 import android.util.Log;
 
 import com.book.ireader.model.bean.BookChapterBean;
@@ -15,6 +16,8 @@ import com.book.ireader.utils.BookManager;
 import com.book.ireader.utils.Constant;
 import com.book.ireader.utils.FileUtils;
 import com.book.ireader.utils.IOUtils;
+
+import org.greenrobot.greendao.database.Database;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -71,6 +74,8 @@ public class BookRepository {
                                         .insertOrReplaceInTx(bean.getBookChapters());
                             }
                             //存储CollBook (确保先后顺序，否则出错)
+                            int maxOrder = getMaxCollBookOrder();
+                            bean.setBookOrder(++maxOrder);
                             mCollBookDao.insertOrReplace(bean);
                         }
                 );
@@ -162,10 +167,19 @@ public class BookRepository {
     public List<CollBookBean> getCollBooks() {
         return mCollBookDao
                 .queryBuilder()
-                .orderDesc(CollBookBeanDao.Properties.LastRead)
+                .orderDesc(CollBookBeanDao.Properties.BookOrder)
                 .list();
     }
 
+    public int getMaxCollBookOrder() {
+        Database db = DaoDbHelper.getInstance().getDatabase();
+        String sql = "SELECT MAX(" + CollBookBeanDao.Properties.BookOrder.columnName + ") FROM " + CollBookBeanDao.TABLENAME;
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            return cursor.getInt(0);
+        }
+        return 0;
+    }
 
     //获取书籍列表
     public Single<List<BookChapterBean>> getBookChaptersInRx(String bookId) {

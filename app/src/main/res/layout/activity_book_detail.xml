@@ -129,9 +129,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@drawable/book_detail_btn_selector"
                         android:text="@string/add_bookshelf"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:theme="@style/CommonButton" />
 
                     <Button
                         android:id="@+id/bookdetail_bt_start_read"
@@ -139,9 +139,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:background="@drawable/book_detail_btn_selector"
                         android:text="@string/start_read"
-                        android:textColor="@color/white" />
+                        android:textColor="@color/white"
+                        android:theme="@style/CommonButton" />
                 </LinearLayout>
 
                 <TextView

@@ -16,4 +16,9 @@
         <item name="android:scaleType">fitXY</item>
     </style>
 
+    <style name="CommonButton" parent="AppTheme">
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Small</item>
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+    </style>
+
 </resources>

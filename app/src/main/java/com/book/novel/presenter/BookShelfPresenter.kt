@@ -13,12 +13,11 @@ import com.book.novel.presenter.contract.BookShelfContract
  */
 class BookShelfPresenter() : RxPresenter<BookShelfContract.View>(), BookShelfContract.Presenter {
     override fun deleteCollBook(collBookBean: CollBookBean) {
-        BookRepository.getInstance().deleteCollBookInRx(collBookBean)
+        BookRepository.getInstance().deleteCollBookInRx(collBookBean).subscribe()
     }
 
     override fun refreshCollBooks(gender: String) {
-        val collBooks = BookRepository
-                .getInstance().getCollBooks()
+        val collBooks = BookRepository.getInstance().collBooks
         mView.show(collBooks)
     }
 }

@@ -3,11 +3,13 @@ package com.book.novel.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.helper.ItemTouchHelper
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
 import com.book.novel.R
 import com.book.novel.adapter.BookshelfAdapter
+import com.book.novel.adapter.SimpleItemTouchHelperCallback
 import com.book.novel.presenter.BookShelfPresenter
 import com.book.novel.presenter.contract.BookShelfContract
 
@@ -32,6 +34,9 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
         mAdapter = BookshelfAdapter()
         mRvBookShelf.layoutManager = LinearLayoutManager(activity)
         mRvBookShelf.adapter = mAdapter
+        val mItemTouchHelperCallback = SimpleItemTouchHelperCallback(mAdapter)
+        val mItemTouchHelper = ItemTouchHelper(mItemTouchHelperCallback)
+        mItemTouchHelper.attachToRecyclerView(mRvBookShelf)
     }
 
     override fun processLogic() {
