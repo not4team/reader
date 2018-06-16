@@ -57,6 +57,8 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
+import static android.content.DialogInterface.BUTTON_NEGATIVE;
+import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.support.v4.view.ViewCompat.LAYER_TYPE_SOFTWARE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -718,6 +720,8 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                     .setNegativeButton("取消", (dialog, which) -> {
                         exit();
                     }).create();
+            alertDialog.getButton(BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
+            alertDialog.getButton(BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
             alertDialog.show();
         } else {
             exit();

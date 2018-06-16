@@ -1,11 +1,13 @@
 package com.book.ireader.model.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by newbiechen on 17-5-3.
  * 排行榜的书籍 (不被公用的直接作为内部类)
  */
 
-public class BillBookBean {
+public class BillBookBean implements Serializable {
     /**
      * _id : 57206c3539a913ad65d35c7b
      * title : 一念永恒
@@ -29,6 +31,7 @@ public class BillBookBean {
     private int banned;
     private int latelyFollower;
     private String retentionRatio;
+    private String wordCount;
 
     public String get_id() {
         return _id;
@@ -108,5 +111,13 @@ public class BillBookBean {
 
     public void setRetentionRatio(String retentionRatio) {
         this.retentionRatio = retentionRatio;
+    }
+
+    public String getWordCount() {
+        return wordCount;
+    }
+
+    public void setWordCount(String wordCount) {
+        this.wordCount = wordCount;
     }
 }

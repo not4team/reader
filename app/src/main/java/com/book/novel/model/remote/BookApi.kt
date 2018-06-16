@@ -20,8 +20,11 @@ interface BookApi {
      *
      * @return
      */
-    @GET("https://m.qidian.com/rank/{gender}")
-    fun rank(@Path("gender") gender: String): Single<ResponseBody>
+    @GET("https://m.qidian.com/rank/{rankName}/{gender}")
+    fun rank(@Path("rankName") rankName: String, @Path("gender") gender: String): Single<ResponseBody>
+
+    @GET("https://m.qidian.com/rank/{rankName}/{gender}")
+    fun rankCategory(@Path("rankName") rankName: String, @Path("gender") gender: String, @Query("gender") gender1: String, @Query("catId") catId: String): Single<ResponseBody>
 
 
     /**
@@ -285,7 +288,7 @@ interface BookApi {
 
     /**
      * 书籍详情-你可能感兴趣的书籍
-     * 
+     *
      * @param bookId
      * @return
      */

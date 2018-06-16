@@ -30,8 +30,16 @@ class RemoteImpl : IRemote {
         }
     }
 
-    override fun rank(gender: String): Single<BillBookPackage> {
-        return mBookApi.rank(gender).map { bean -> null }
+    override fun rank(rankName: String, gender: String): Single<List<RankTabBean>> {
+        return mBookApi.rank(rankName, gender).map { bean ->
+            QidianParser.parseRankDefault(bean.string(), rankName, gender)
+        }
+    }
+
+    override fun rankCategory(rankName: String, gender: String, catId: String): Single<List<BillBookBean>> {
+        return mBookApi.rankCategory(rankName, gender, gender, catId).map { bean ->
+            QidianParser.parseRankCategory(bean.string())
+        }
     }
 
     override fun getBillboardPackage(): Single<BillboardPackage> {

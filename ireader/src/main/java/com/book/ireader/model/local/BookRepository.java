@@ -174,9 +174,16 @@ public class BookRepository {
     public int getMaxCollBookOrder() {
         Database db = DaoDbHelper.getInstance().getDatabase();
         String sql = "SELECT MAX(" + CollBookBeanDao.Properties.BookOrder.columnName + ") FROM " + CollBookBeanDao.TABLENAME;
-        Cursor cursor = db.rawQuery(sql, null);
-        if (cursor.moveToFirst()) {
-            return cursor.getInt(0);
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(sql, null);
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(0);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
         return 0;
     }

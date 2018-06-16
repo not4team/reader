@@ -1,13 +1,16 @@
 package com.book.novel.adapter
 
 import android.content.Intent
+import android.util.Log
 import android.view.View
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.local.BookRepository
 import com.book.ireader.ui.base.adapter.BaseListAdapter
 import com.book.ireader.ui.base.adapter.IViewHolder
+import com.book.ireader.utils.RxUtils
 import com.book.novel.activity.BookDetailActivity
 import com.book.novel.adapter.view.BookshelfHolder
+import io.reactivex.Single
 import java.util.*
 
 /**
@@ -28,15 +31,21 @@ class BookshelfAdapter : BaseListAdapter<CollBookBean>(), ItemTouchHelperAdapter
         val order = collBook1.bookOrder
         collBook1.bookOrder = collBook2.bookOrder
         collBook2.bookOrder = order
-        collBook1.update()
-        collBook2.update()
+
+        Single.create<Unit> {
+            collBook1.update()
+            collBook2.update()
+            it.onSuccess(Unit)
+        }.compose(RxUtils::toSimpleSingle).subscribe { success ->
+            Log.e("BookshelfAdapter", "swapOrder success")
+        }
     }
 
     override fun onItemDissmiss(position: Int) {
+        BookRepository.getInstance().deleteCollBookInRx(mList[position]).subscribe()
         //移除数据
         mList.removeAt(position)
         notifyItemRemoved(position)
-        BookRepository.getInstance().deleteCollBookInRx(mList[position]).subscribe()
     }
 
     override fun createViewHolder(viewType: Int): IViewHolder<CollBookBean> {

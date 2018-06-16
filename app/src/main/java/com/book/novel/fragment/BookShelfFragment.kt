@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.view.View
+import android.widget.TextView
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
@@ -23,6 +25,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
     private lateinit var mRefreshLayout: RefreshLayout
     private lateinit var mRvBookShelf: RecyclerView
     private lateinit var mAdapter: BookshelfAdapter
+    private lateinit var mTvEmpty: TextView
     override fun getContentId(): Int {
         return R.layout.fragment_bookshelf
     }
@@ -31,6 +34,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
         super.initWidget(savedInstanceState)
         mRefreshLayout = getViewById(R.id.refresh_layout)
         mRvBookShelf = getViewById(R.id.refresh_rv_content)
+        mTvEmpty = getViewById(R.id.bookshelf_tv_empty)
         mAdapter = BookshelfAdapter()
         mRvBookShelf.layoutManager = LinearLayoutManager(activity)
         mRvBookShelf.adapter = mAdapter
@@ -53,7 +57,12 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
 
     override fun show(collBookBeans: List<CollBookBean>) {
         mRefreshLayout.showFinish()
-        mAdapter.refreshItems(collBookBeans)
+        if (collBookBeans.isNotEmpty()) {
+            mTvEmpty.visibility = View.GONE
+            mAdapter.refreshItems(collBookBeans)
+        } else {
+            mTvEmpty.visibility = View.VISIBLE
+        }
     }
 
     override fun complete() {

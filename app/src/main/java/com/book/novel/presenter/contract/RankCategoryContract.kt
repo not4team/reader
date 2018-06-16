@@ -1,20 +1,20 @@
 package com.book.novel.presenter.contract
 
-import com.book.ireader.model.bean.RankTabBean
+import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.ui.base.BaseContract
 
 /**
  * Created with author.
  * Description:
- * Date: 2018-06-06
- * Time: 下午4:39
+ * Date: 2018/6/16
+ * Time: 22:35
  */
-interface RankContract : BaseContract {
+interface RankCategoryContract {
     interface View : BaseContract.BaseView {
-        fun show(rankTabBeans: List<RankTabBean>)
+        fun show(books: List<BillBookBean>)
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {
-        fun load(rankName: String, gender: String)
+        fun load(rankName: String, gender: String, catId: String)
     }
 }

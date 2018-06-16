@@ -97,25 +97,52 @@ class MainActivity : BaseActivity() {
         if (savedInstanceState != null) {
             val currFragmentTAG = savedInstanceState.getString(BUNDLE_FRAGMENT_TAG)
             if (currFragmentTAG != null) {
-                val bookshelfFragment = supportFragmentManager.findFragmentByTag(BOOKSHELF_TAG)
-                val bookCityFragment = supportFragmentManager.findFragmentByTag(BOOKCITY_TAG)
-                val rankFragment = supportFragmentManager.findFragmentByTag(RANK_TAG)
+                mBookShelfFragment = supportFragmentManager.findFragmentByTag(BOOKSHELF_TAG)
+                mBookCityFragment = supportFragmentManager.findFragmentByTag(BOOKCITY_TAG)
+                mRankFragment = supportFragmentManager.findFragmentByTag(RANK_TAG)
                 val mFragmentTransaction = supportFragmentManager.beginTransaction()
                 when (currFragmentTAG) {
                     BOOKSHELF_TAG -> {
-                        mFragmentTransaction.hide(bookCityFragment)
-                        mFragmentTransaction.hide(rankFragment)
-                        mFragmentTransaction.show(bookshelfFragment)
+                        if (mBookCityFragment != null) {
+                            mFragmentTransaction.hide(mBookCityFragment)
+                        }
+                        if (mRankFragment != null) {
+                            mFragmentTransaction.hide(mRankFragment)
+                        }
+                        if (mBookShelfFragment == null) {
+                            mBookShelfFragment = BookShelfFragment()
+                            mFragmentTransaction.add(R.id.main_fl_content, mBookShelfFragment, BOOKSHELF_TAG)
+                        } else {
+                            mFragmentTransaction.show(mBookShelfFragment)
+                        }
                     }
                     BOOKCITY_TAG -> {
-                        mFragmentTransaction.hide(rankFragment)
-                        mFragmentTransaction.hide(bookshelfFragment)
-                        mFragmentTransaction.show(bookCityFragment)
+                        if (mRankFragment != null) {
+                            mFragmentTransaction.hide(mRankFragment)
+                        }
+                        if (mBookShelfFragment != null) {
+                            mFragmentTransaction.hide(mBookShelfFragment)
+                        }
+                        if (mBookCityFragment == null) {
+                            mBookCityFragment = BookCityFragment()
+                            mFragmentTransaction.add(R.id.main_fl_content, mBookCityFragment, BOOKCITY_TAG)
+                        } else {
+                            mFragmentTransaction.show(mBookCityFragment)
+                        }
                     }
                     RANK_TAG -> {
-                        mFragmentTransaction.hide(bookshelfFragment)
-                        mFragmentTransaction.hide(bookCityFragment)
-                        mFragmentTransaction.show(rankFragment)
+                        if (mBookShelfFragment != null) {
+                            mFragmentTransaction.hide(mBookShelfFragment)
+                        }
+                        if (mBookCityFragment != null) {
+                            mFragmentTransaction.hide(mBookCityFragment)
+                        }
+                        if (mRankFragment != null) {
+                            mRankFragment = RankFragment()
+                            mFragmentTransaction.add(R.id.main_fl_content, mRankFragment, RANK_TAG)
+                        } else {
+                            mFragmentTransaction.show(mRankFragment)
+                        }
                     }
                 }
                 mFragmentTransaction.commit()

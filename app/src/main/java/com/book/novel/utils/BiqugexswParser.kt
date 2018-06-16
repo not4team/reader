@@ -38,7 +38,8 @@ class BiqugexswParser {
 
         fun parseBookDetail(html: String): BookDetailBean {
             val doc = Jsoup.parse(html)
-            val bookInfo = doc.select("div.info").first()
+            val body = doc.body()
+            val bookInfo = body.select("div.info").first()
             val cover = bookInfo.select("div.cover img").first().attr("src")
             val title = bookInfo.select("h2").first().text()
             val author = bookInfo.select("div.small span")[0].text()
@@ -61,7 +62,7 @@ class BiqugexswParser {
             mBookDetailBean.lastChapter = lastChapter.replace("最新章节：", "")
             mBookDetailBean.longIntro = intro
             val chapterList = mutableListOf<BookChapterBean>()
-            val chapterElement = doc.select("div.listmain dl").first().children()
+            val chapterElement = body.select("div.listmain dl").first().children()
             var dtCount = 0
             for (index in 0 until chapterElement.size) {
                 val tagName = chapterElement[index].tagName()

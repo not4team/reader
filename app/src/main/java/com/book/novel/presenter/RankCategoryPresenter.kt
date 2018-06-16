@@ -4,18 +4,18 @@ import com.book.ireader.App
 import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
 import com.book.ireader.utils.RxUtils
-import com.book.novel.presenter.contract.RankContract
+import com.book.novel.presenter.contract.RankCategoryContract
 
 /**
  * Created with author.
  * Description:
- * Date: 2018-06-06
- * Time: 下午4:40
+ * Date: 2018/6/16
+ * Time: 22:34
  */
-class RankPresenter() : RxPresenter<RankContract.View>(), RankContract.Presenter {
-    override fun load(rankName: String, gender: String) {
+class RankCategoryPresenter : RxPresenter<RankCategoryContract.View>(), RankCategoryContract.Presenter {
+    override fun load(rankName: String, gender: String, catId: String) {
         RemoteRepository.getInstance(App.getContext())
-                .rank(rankName, gender)
+                .rankCategory(rankName, gender, catId)
                 .compose(RxUtils::toSimpleSingle)
                 .subscribe(
                         { bean ->
@@ -26,4 +26,5 @@ class RankPresenter() : RxPresenter<RankContract.View>(), RankContract.Presenter
                     mView.showError()
                 }
     }
+
 }

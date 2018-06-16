@@ -14,9 +14,9 @@ import com.book.ireader.model.bean.CommentBean;
 import com.book.ireader.model.bean.CommentDetailBean;
 import com.book.ireader.model.bean.HelpsDetailBean;
 import com.book.ireader.model.bean.HotCommentBean;
+import com.book.ireader.model.bean.RankTabBean;
 import com.book.ireader.model.bean.ReviewDetailBean;
 import com.book.ireader.model.bean.SortBookBean;
-import com.book.ireader.model.bean.packages.BillBookPackage;
 import com.book.ireader.model.bean.packages.BillboardPackage;
 import com.book.ireader.model.bean.packages.BookCityPackage;
 import com.book.ireader.model.bean.packages.BookSortPackage;
@@ -38,7 +38,9 @@ public interface IRemote {
 
     public Single<BookCityPackage> bookCity(String gender);
 
-    public Single<BillBookPackage> rank(String gender);
+    public Single<List<RankTabBean>> rank(String rankName, String gender);
+
+    public Single<List<BillBookBean>> rankCategory(String rankName, String gender, String catId);
 
     public Single<List<BookChapterBean>> getBookChapters(String bookId);
 

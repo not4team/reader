@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">免费小说</string>
+    <string name="app_name">乐阅</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
@@ -15,4 +15,6 @@
     <string name="search_label">搜索</string>
     <string name="search_hint">请输入书名|作者名</string>
     <string name="bookdetail_wordcount">%1$d字</string>
+    <string name="bookshelf_empty">书架暂无书籍</string>
+    <string name="rank_category_item_cat_wordcount">%1$s·%2$s</string>
 </resources>
