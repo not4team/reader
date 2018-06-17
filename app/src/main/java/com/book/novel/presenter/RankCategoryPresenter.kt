@@ -19,11 +19,15 @@ class RankCategoryPresenter : RxPresenter<RankCategoryContract.View>(), RankCate
                 .compose(RxUtils::toSimpleSingle)
                 .subscribe(
                         { bean ->
-                            mView.show(bean)
+                            if (mView != null) { //viewpager 滑动后fragment可能已经被销毁
+                                mView.show(bean)
+                            }
                         }
                 ) { e ->
                     e.printStackTrace()
-                    mView.showError()
+                    if (mView != null) {
+                        mView.showError()
+                    }
                 }
     }
 

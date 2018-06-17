@@ -11,7 +11,7 @@ import com.book.ireader.ui.base.BaseContract
  */
 interface RankCategoryContract {
     interface View : BaseContract.BaseView {
-        fun show(books: List<BillBookBean>)
+        fun show(books: MutableList<BillBookBean>)
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {

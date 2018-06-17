@@ -19,6 +19,7 @@ import java.io.Serializable
  * Time: 22:32
  */
 class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCategoryContract.View {
+    val TAG = "RankCategoryFragment"
     private lateinit var mRefreshLayout: RefreshLayout
     private lateinit var mRvBooks: RecyclerView
     private lateinit var mAdapter: RankCategoryRecyclerAdapter
@@ -26,12 +27,14 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
     private lateinit var mRankName: String
     private lateinit var mGender: String
     private lateinit var mCatId: String
+    private var isViewCreated = false
+    var mRefreshListener: RefreshListener? = null
 
     companion object {
-        val BUNDLE_RANK_DEFAULT_BOOKS = "rank_default_books"
-        val BUNDLE_RANK_NAME = "rank_name"
-        val BUNDLE_RANK_GENDER = "rank_gender"
-        val BUNDLE_RANK_CATID = "rank_catId"
+        const val BUNDLE_RANK_DEFAULT_BOOKS = "rank_default_books"
+        const val BUNDLE_RANK_NAME = "rank_name"
+        const val BUNDLE_RANK_GENDER = "rank_gender"
+        const val BUNDLE_RANK_CATID = "rank_catId"
 
         /**
          * Create a new instance of CountingFragment, providing "num"
@@ -50,6 +53,10 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
             f.setArguments(args)
             return f
         }
+    }
+
+    interface RefreshListener {
+        fun onFinish()
     }
 
     override fun bindPresenter(): RankCategoryPresenter {
@@ -78,17 +85,38 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
 
     override fun processLogic() {
         super.processLogic()
-        if (mBillBookBeans == null) {
-            mPresenter.load(mRankName, mGender, mCatId)
-        } else {
-            mRefreshLayout.showFinish()
-            mAdapter.refreshItems(mBillBookBeans)
+        isViewCreated = true
+        refreshBooks()
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        refreshBooks()
+    }
+
+    fun refreshBooks() {
+        if (userVisibleHint && isViewCreated) {
+            if (mBillBookBeans == null) {
+                mRefreshLayout.showLoading()
+                mPresenter.load(mRankName, mGender, mCatId)
+            } else {
+                mRefreshLayout.showFinish()
+                mAdapter.refreshItems(mBillBookBeans)
+            }
         }
     }
 
-    override fun show(books: List<BillBookBean>) {
+    fun refreshBooksFromNet() {
+        mPresenter.load(mRankName, mGender, mCatId)
+    }
+
+    override fun show(books: MutableList<BillBookBean>) {
+        mBillBookBeans = books
         mRefreshLayout.showFinish()
         mAdapter.refreshItems(books)
+        if (mRefreshListener != null) {
+            mRefreshListener!!.onFinish()
+        }
     }
 
     override fun complete() {

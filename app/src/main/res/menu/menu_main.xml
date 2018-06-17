@@ -10,4 +10,8 @@
         android:title="@string/nb.menu.action.search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/about"
+        android:title="关于"
+        app:showAsAction="never" />
 </menu>

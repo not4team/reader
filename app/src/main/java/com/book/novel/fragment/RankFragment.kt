@@ -21,8 +21,8 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
     private lateinit var mRankSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mRankViewPager: ViewPager
     private lateinit var mRankTabLayout: TabLayout
-    private lateinit var mFragments: MutableList<RankCategoryFragment>
     private lateinit var mPagerAdapter: RankViewPagerAdapter
+    private lateinit var mRankTabBeans: List<RankTabBean>
     override fun getContentId(): Int {
         return R.layout.fragment_rank
     }
@@ -41,14 +41,24 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
         mPresenter.load("hotsales", "male")
     }
 
-    override fun show(rankTabBeans: List<RankTabBean>) {
-        mRankSwipeRefreshLayout.isRefreshing = false
-        mFragments = mutableListOf()
-        rankTabBeans.forEach {
-            val rankCategoryFragment = RankCategoryFragment.newInstance(it.rank, it.gender, it.catId, it.billBookBeans)
-            mFragments.add(rankCategoryFragment)
+    override fun initClick() {
+        super.initClick()
+        mRankSwipeRefreshLayout.setOnRefreshListener {
+            val mRankCategoryFragment = mPagerAdapter.mCurrFragment
+            mRankCategoryFragment.mRefreshListener = object : RankCategoryFragment.RefreshListener {
+                override fun onFinish() {
+                    mRankSwipeRefreshLayout.isRefreshing = false
+                }
+
+            }
+            mRankCategoryFragment.refreshBooksFromNet()
         }
-        mPagerAdapter = RankViewPagerAdapter(fragmentManager!!, mFragments)
+    }
+
+    override fun show(rankTabBeans: List<RankTabBean>) {
+        mRankTabBeans = rankTabBeans
+        mRankSwipeRefreshLayout.isRefreshing = false
+        mPagerAdapter = RankViewPagerAdapter(fragmentManager!!, rankTabBeans)
         mRankViewPager.adapter = mPagerAdapter
     }
 

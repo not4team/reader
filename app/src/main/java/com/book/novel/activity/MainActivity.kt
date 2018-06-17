@@ -2,6 +2,7 @@ package com.book.novel.activity
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
@@ -179,6 +180,11 @@ class MainActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.about -> {
+                startActivity(Intent(this, AboutActivity::class.java))
+            }
+        }
         return super.onOptionsItemSelected(item)
     }
 }

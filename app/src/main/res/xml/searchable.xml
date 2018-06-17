@@ -5,4 +5,6 @@
     android:includeInGlobalSearch="true"
     android:label="@string/search_label"
     android:searchSettingsDescription="description"
+    android:voiceLanguage="zh"
+    android:voiceLanguageModel="web_search"
     android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" />
