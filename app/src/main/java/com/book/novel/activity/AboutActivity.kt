@@ -16,7 +16,7 @@ class AboutActivity : BaseActivity() {
     }
 
     override fun initToolbar() {
-        mToolbar = findViewById(R.id.main_toolbar)
+        mToolbar = findViewById(R.id.about_toolbar)
         if (mToolbar != null) {
             supportActionBar(mToolbar)
             setUpToolbar(mToolbar)

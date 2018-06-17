@@ -55,7 +55,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         const val BOOK_AUTHOR_INTENT_KEY = "BOOK_AUTHOR_INTENT_KEY"
         const val BOOK_ID_INTENT_KEY = "BOOK_ID_INTENT_KEY"
         const val REQUEST_READ = 0x1
-        const val RESULT_IS_COLLECTED = "result_is_collected"
+        const val RESULT_IS_COLLECTED = "RESULT_IS_COLLECTED"
     }
 
     override fun initWidget() {
@@ -169,8 +169,6 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                     isCollected = false
                 } else {
                     mPresenter.addToBookShelf(mCollBookBean!!)
-                    mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
-                    isCollected = true
                 }
             }
         }
@@ -231,7 +229,8 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     }
 
     override fun succeedToBookShelf() {
-
+        mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
+        isCollected = true
     }
 
     override fun getContentId(): Int {
@@ -245,9 +244,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
             if (data == null) {
                 return
             }
-
             isCollected = data.getBooleanExtra(RESULT_IS_COLLECTED, false)
-
             if (isCollected) {
                 mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
                 mBtnStartRead.text = "继续阅读"

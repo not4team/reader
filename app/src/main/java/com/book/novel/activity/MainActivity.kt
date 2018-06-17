@@ -22,6 +22,7 @@ class MainActivity : BaseActivity() {
     private var mBookCityFragment: Fragment? = null
     private var mRankFragment: Fragment? = null
     private var mCurrFragmentTag: String? = null
+    private lateinit var mSearchView: SearchView
     val BUNDLE_FRAGMENT_TAG = "bundle_fragment_tag"
     val BOOKSHELF_TAG = "bookshelf_fragment_tag"
     val BOOKCITY_TAG = "bookcity_fragment_tag"
@@ -159,6 +160,13 @@ class MainActivity : BaseActivity() {
     override fun setUpToolbar(toolbar: Toolbar?) {
         super.setUpToolbar(toolbar)
         supportActionBar!!.title = resources.getString(R.string.app_name)
+        toolbar!!.setNavigationOnClickListener {
+            if (mSearchView.isIconified) {
+                finish()
+            } else {
+                mSearchView.isIconified = true
+            }
+        }
     }
 
     override fun initWidget() {
@@ -174,8 +182,8 @@ class MainActivity : BaseActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        val searchView = menu.findItem(R.id.action_search).actionView as SearchView
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        mSearchView = menu.findItem(R.id.action_search).actionView as SearchView
+        mSearchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         return true
     }
 

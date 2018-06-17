@@ -142,4 +142,9 @@
     </style>
     <!-- TextAppearance:修改 -->
     <style name="NB.Theme.TextAppearance" />
+
+    <style name="AppAlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- 按钮颜色 -->
+        <item name="colorAccent">@color/colorPrimary</item>
+    </style>
 </resources>

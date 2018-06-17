@@ -57,9 +57,9 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
 
     override fun show(collBookBeans: List<CollBookBean>) {
         mRefreshLayout.showFinish()
+        mAdapter.refreshItems(collBookBeans)
         if (collBookBeans.isNotEmpty()) {
             mTvEmpty.visibility = View.GONE
-            mAdapter.refreshItems(collBookBeans)
         } else {
             mTvEmpty.visibility = View.VISIBLE
         }

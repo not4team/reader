@@ -25,6 +25,7 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Void> {
      */
     public static class Properties {
         public final static Property Content = new Property(0, String.class, "content", false, "CONTENT");
+        public final static Property SearchTime = new Property(1, long.class, "searchTime", false, "SEARCH_TIME");
     }
 
 
@@ -40,7 +41,8 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Void> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"SEARCH_HISTORY_BEAN\" (" + //
-                "\"CONTENT\" TEXT UNIQUE );"); // 0: content
+                "\"CONTENT\" TEXT UNIQUE ," + // 0: content
+                "\"SEARCH_TIME\" INTEGER NOT NULL );"); // 1: searchTime
     }
 
     /** Drops the underlying database table. */
@@ -57,6 +59,7 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Void> {
         if (content != null) {
             stmt.bindString(1, content);
         }
+        stmt.bindLong(2, entity.getSearchTime());
     }
 
     @Override
@@ -67,6 +70,7 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Void> {
         if (content != null) {
             stmt.bindString(1, content);
         }
+        stmt.bindLong(2, entity.getSearchTime());
     }
 
     @Override
@@ -77,7 +81,8 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Void> {
     @Override
     public SearchHistoryBean readEntity(Cursor cursor, int offset) {
         SearchHistoryBean entity = new SearchHistoryBean( //
-            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0) // content
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // content
+            cursor.getLong(offset + 1) // searchTime
         );
         return entity;
     }
@@ -85,6 +90,7 @@ public class SearchHistoryBeanDao extends AbstractDao<SearchHistoryBean, Void> {
     @Override
     public void readEntity(Cursor cursor, SearchHistoryBean entity, int offset) {
         entity.setContent(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
+        entity.setSearchTime(cursor.getLong(offset + 1));
      }
     
     @Override

@@ -252,6 +252,7 @@ public abstract class PageLoader {
 
     public void setCurChapterPos(int position) {
         this.mCurChapterPos = position;
+        mBookRecord.setPagePos(0);
     }
 
     /**

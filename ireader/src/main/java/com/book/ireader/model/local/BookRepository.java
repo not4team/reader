@@ -7,11 +7,13 @@ import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.BookRecordBean;
 import com.book.ireader.model.bean.ChapterInfoBean;
 import com.book.ireader.model.bean.CollBookBean;
+import com.book.ireader.model.bean.SearchHistoryBean;
 import com.book.ireader.model.gen.BookChapterBeanDao;
 import com.book.ireader.model.gen.BookRecordBeanDao;
 import com.book.ireader.model.gen.CollBookBeanDao;
 import com.book.ireader.model.gen.DaoSession;
 import com.book.ireader.model.gen.DownloadTaskBeanDao;
+import com.book.ireader.model.gen.SearchHistoryBeanDao;
 import com.book.ireader.utils.BookManager;
 import com.book.ireader.utils.Constant;
 import com.book.ireader.utils.FileUtils;
@@ -155,6 +157,10 @@ public class BookRepository {
                 .insertOrReplace(bean);
     }
 
+    public void saveSearchHistory(SearchHistoryBean bean) {
+        mSession.getSearchHistoryBeanDao().insertOrReplace(bean);
+    }
+
     /*****************************get************************************************/
     public CollBookBean getCollBook(String bookId) {
         CollBookBean bean = mCollBookDao.queryBuilder()
@@ -168,6 +174,14 @@ public class BookRepository {
         return mCollBookDao
                 .queryBuilder()
                 .orderDesc(CollBookBeanDao.Properties.BookOrder)
+                .list();
+    }
+
+    public List<SearchHistoryBean> getSearchHistorys() {
+        return mSession.getSearchHistoryBeanDao()
+                .queryBuilder()
+                .orderDesc(SearchHistoryBeanDao.Properties.SearchTime)
+                .limit(10)
                 .list();
     }
 

@@ -7,4 +7,8 @@
         android:title="@string/nb.menu.action.search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/clear"
+        android:title="清空搜索记录"
+        app:showAsAction="never" />
 </menu>

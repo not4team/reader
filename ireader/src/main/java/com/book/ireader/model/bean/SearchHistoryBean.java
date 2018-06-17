@@ -1,8 +1,8 @@
 package com.book.ireader.model.bean;
 
 import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Unique;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Unique;
 
 /**
  * Created with author.
@@ -14,10 +14,12 @@ import org.greenrobot.greendao.annotation.Generated;
 public class SearchHistoryBean {
     @Unique
     private String content;
+    private long searchTime;
 
-    @Generated(hash = 1087685592)
-    public SearchHistoryBean(String content) {
+    @Generated(hash = 416821812)
+    public SearchHistoryBean(String content, long searchTime) {
         this.content = content;
+        this.searchTime = searchTime;
     }
 
     @Generated(hash = 1570282321)
@@ -37,5 +39,17 @@ public class SearchHistoryBean {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public long getSearchTime() {
+        return searchTime;
+    }
+
+    public void setSearchTime(int searchTime) {
+        this.searchTime = searchTime;
+    }
+
+    public void setSearchTime(long searchTime) {
+        this.searchTime = searchTime;
     }
 }

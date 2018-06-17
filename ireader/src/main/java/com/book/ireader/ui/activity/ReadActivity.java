@@ -1,5 +1,6 @@
 package com.book.ireader.ui.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -41,6 +42,7 @@ import com.book.ireader.presenter.ReadPresenter;
 import com.book.ireader.presenter.contract.ReadContract;
 import com.book.ireader.ui.adapter.CategoryAdapter;
 import com.book.ireader.ui.base.BaseMVPActivity;
+import com.book.ireader.ui.base.RxPermissions;
 import com.book.ireader.ui.dialog.ReadSettingDialog;
 import com.book.ireader.utils.BrightnessUtils;
 import com.book.ireader.utils.Constant;
@@ -49,6 +51,7 @@ import com.book.ireader.utils.RxUtils;
 import com.book.ireader.utils.ScreenUtils;
 import com.book.ireader.utils.StringUtils;
 import com.book.ireader.utils.SystemBarUtils;
+import com.book.ireader.utils.ToastUtils;
 import com.book.ireader.widget.page.PageLoader;
 import com.book.ireader.widget.page.PageView;
 import com.book.ireader.widget.page.TxtChapter;
@@ -57,8 +60,6 @@ import java.util.List;
 
 import io.reactivex.disposables.Disposable;
 
-import static android.content.DialogInterface.BUTTON_NEGATIVE;
-import static android.content.DialogInterface.BUTTON_POSITIVE;
 import static android.support.v4.view.ViewCompat.LAYER_TYPE_SOFTWARE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -209,7 +210,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         isCollected = getIntent().getBooleanExtra(EXTRA_IS_COLLECTED, false);
         isNightMode = ReadSettingManager.getInstance().isNightMode();
         isFullScreen = ReadSettingManager.getInstance().isFullScreen();
-        mCurrPosition = getIntent().getIntExtra(EXTRA_SKIP_POSITION, 0);
+        mCurrPosition = getIntent().getIntExtra(EXTRA_SKIP_POSITION, -1);
         mBookId = mCollBook.get_id();
     }
 
@@ -377,7 +378,14 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                     @Override
                     public void requestChapters(List<TxtChapter> requestChapters) {
                         try {
-                            mPresenter.loadChapter(mBookId, requestChapters);
+                            RxPermissions rxPermissions = new RxPermissions(ReadActivity.this);
+                            rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(granted -> {
+                                if (granted) {
+                                    mPresenter.loadChapter(mBookId, requestChapters);
+                                } else {
+                                    ToastUtils.show("缺少存储章节权限");
+                                }
+                            });
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -615,7 +623,9 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     @Override
     protected void processLogic() {
         super.processLogic();
-        mPageLoader.setCurChapterPos(mCurrPosition);
+        if (mCurrPosition > -1) {
+            mPageLoader.setCurChapterPos(mCurrPosition);
+        }
         // 如果是已经收藏的，那么就从数据库中获取目录
         if (isCollected) {
             Disposable disposable = BookRepository.getInstance()
@@ -702,7 +712,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
         if (!mCollBook.isLocal() && !isCollected
                 && mCollBook.getBookChapters() != null && !mCollBook.getBookChapters().isEmpty()) {
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
+            AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
                     .setTitle("加入书架")
                     .setMessage("喜欢本书就加入书架吧")
                     .setPositiveButton("确定", (dialog, which) -> {
@@ -720,8 +730,6 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                     .setNegativeButton("取消", (dialog, which) -> {
                         exit();
                     }).create();
-            alertDialog.getButton(BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
-            alertDialog.getButton(BUTTON_NEGATIVE).setTextColor(getResources().getColor(R.color.colorPrimary));
             alertDialog.show();
         } else {
             exit();

@@ -4,11 +4,13 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.provider.SearchRecentSuggestions
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.ui.base.BaseMVPActivity
@@ -19,6 +21,7 @@ import com.book.novel.adapter.KeyWordAdapter
 import com.book.novel.adapter.SearchBookAdapter
 import com.book.novel.presenter.SearchPresenter
 import com.book.novel.presenter.contract.SearchContract
+import com.book.novel.provider.MySuggestionProvider
 
 
 /**
@@ -52,6 +55,13 @@ class SearchActivity : BaseMVPActivity<SearchContract.Presenter>(), SearchContra
 
     override fun setUpToolbar(toolbar: Toolbar) {
         super.setUpToolbar(toolbar)
+        toolbar!!.setNavigationOnClickListener {
+            if (mSearchView.isIconified) {
+                finish()
+            } else {
+                mSearchView.isIconified = true
+            }
+        }
     }
 
     override fun initData(savedInstanceState: Bundle?) {
@@ -95,6 +105,9 @@ class SearchActivity : BaseMVPActivity<SearchContract.Presenter>(), SearchContra
         if (Intent.ACTION_SEARCH == intent.action) {
             mQuery = intent.getStringExtra(SearchManager.QUERY)
             if (mQuery != null) {
+                val suggestions = SearchRecentSuggestions(this,
+                        MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE)
+                suggestions.saveRecentQuery(mQuery, null)
                 doMySearch(mQuery)
             }
         }
@@ -105,16 +118,31 @@ class SearchActivity : BaseMVPActivity<SearchContract.Presenter>(), SearchContra
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         mSearchView = menu.findItem(R.id.action_search).actionView as SearchView
         mSearchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        mSearchView.setIconifiedByDefault(false);
+        mSearchView.isIconified = false
         if (mQuery != null) {
             mSearchView.setQuery(mQuery, false);
         }
         return true
     }
 
-    fun doMySearch(query: String) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.clear -> {
+                clearHistory()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun doMySearch(query: String) {
         mRefreshLayout.showLoading()
         mPresenter.searchBook(query)
+    }
+
+    fun clearHistory() {
+        val suggestions = SearchRecentSuggestions(this,
+                MySuggestionProvider.AUTHORITY, MySuggestionProvider.MODE)
+        suggestions.clearHistory()
     }
 
     override fun finishHistory(history: List<String>) {
