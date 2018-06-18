@@ -24,6 +24,7 @@ import com.book.ireader.model.bean.packages.BookCityPackage;
 import com.book.ireader.model.bean.packages.BookSortPackage;
 import com.book.ireader.model.bean.packages.BookSubSortPackage;
 import com.book.ireader.model.bean.packages.InterestedBookListPackage;
+import com.book.ireader.model.bean.packages.RankCategoryPackage;
 import com.book.ireader.model.bean.packages.SearchBookPackage;
 import com.book.ireader.utils.ManifestParser;
 
@@ -75,6 +76,11 @@ public class RemoteRepository implements IRemote {
     @Override
     public Single<List<BillBookBean>> rankCategory(String rankName, String gender, String catId) {
         return mRemote.rankCategory(rankName, gender, catId);
+    }
+
+    @Override
+    public Single<RankCategoryPackage> rankCategoryPage(String rankName, String gender, String catId, int pageNum) {
+        return mRemote.rankCategoryPage(rankName, gender, catId, pageNum);
     }
 
     public Single<List<BookChapterBean>> getBookChapters(String bookId) {

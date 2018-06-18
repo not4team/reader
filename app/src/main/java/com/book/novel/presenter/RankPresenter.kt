@@ -14,7 +14,7 @@ import com.book.novel.presenter.contract.RankContract
  */
 class RankPresenter() : RxPresenter<RankContract.View>(), RankContract.Presenter {
     override fun load(rankName: String, gender: String) {
-        RemoteRepository.getInstance(App.getContext())
+        val disposable = RemoteRepository.getInstance(App.getContext())
                 .rank(rankName, gender)
                 .compose(RxUtils::toSimpleSingle)
                 .subscribe(
@@ -25,5 +25,6 @@ class RankPresenter() : RxPresenter<RankContract.View>(), RankContract.Presenter
                     e.printStackTrace()
                     mView.showError()
                 }
+        addDisposable(disposable)
     }
 }

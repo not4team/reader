@@ -3,11 +3,14 @@ package com.book.novel.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import com.book.ireader.model.bean.BillBookBean
+import com.book.ireader.model.bean.packages.RankCategoryPackage
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
 import com.book.novel.R
 import com.book.novel.adapter.RankCategoryRecyclerAdapter
+import com.book.novel.adapter.recyclerview.wrapper.LoadMoreWrapper
 import com.book.novel.presenter.RankCategoryPresenter
 import com.book.novel.presenter.contract.RankCategoryContract
 import java.io.Serializable
@@ -23,10 +26,12 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
     private lateinit var mRefreshLayout: RefreshLayout
     private lateinit var mRvBooks: RecyclerView
     private lateinit var mAdapter: RankCategoryRecyclerAdapter
+    private lateinit var mLoadMoreWrapper: LoadMoreWrapper
     private var mBillBookBeans: MutableList<BillBookBean>? = null
     private lateinit var mRankName: String
     private lateinit var mGender: String
     private lateinit var mCatId: String
+    private var mCurrPageNum: Int = 1
     private var isViewCreated = false
     var mRefreshListener: RefreshListener? = null
 
@@ -80,7 +85,32 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
         mRvBooks = getViewById(R.id.refresh_rv_content)
         mRvBooks.layoutManager = LinearLayoutManager(activity)
         mAdapter = RankCategoryRecyclerAdapter()
-        mRvBooks.adapter = mAdapter
+        mLoadMoreWrapper = LoadMoreWrapper(mAdapter)
+        mLoadMoreWrapper.setLoadMoreView(R.layout.load_more_view)
+        mLoadMoreWrapper.setNoMoreLayoutId(R.layout.no_more_view)
+        val failedView = LayoutInflater.from(activity).inflate(R.layout.load_failed, null)
+        failedView.setOnClickListener {
+            mPresenter.loadMore(mRankName, mGender, mCatId, mCurrPageNum)
+        }
+        mLoadMoreWrapper.setFailedView(failedView)
+        mRvBooks.adapter = mLoadMoreWrapper
+    }
+
+    override fun initClick() {
+        super.initClick()
+        mLoadMoreWrapper.setOnLoadMoreListener {
+            when (it) {
+                LoadMoreWrapper.ITEM_TYPE_LOAD_MORE -> {
+                    mPresenter.loadMore(mRankName, mGender, mCatId, ++mCurrPageNum)
+                }
+                LoadMoreWrapper.ITEM_TYPE_NO_MORE -> {
+                    //没有更多了
+                }
+                LoadMoreWrapper.ITEM_TYPE_FAILED -> {
+
+                }
+            }
+        }
     }
 
     override fun processLogic() {
@@ -100,8 +130,10 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
                 mRefreshLayout.showLoading()
                 mPresenter.load(mRankName, mGender, mCatId)
             } else {
+                mLoadMoreWrapper.setCurrentItemType(LoadMoreWrapper.ITEM_TYPE_LOAD_MORE)
                 mRefreshLayout.showFinish()
-                mAdapter.refreshItems(mBillBookBeans)
+                mAdapter.refreshItems(mBillBookBeans!!)
+                mLoadMoreWrapper.notifyDataSetChanged()
             }
         }
     }
@@ -114,9 +146,25 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
         mBillBookBeans = books
         mRefreshLayout.showFinish()
         mAdapter.refreshItems(books)
+        mLoadMoreWrapper.setCurrentItemType(LoadMoreWrapper.ITEM_TYPE_LOAD_MORE)
+        mLoadMoreWrapper.notifyDataSetChanged()
         if (mRefreshListener != null) {
             mRefreshListener!!.onFinish()
         }
+    }
+
+    override fun loadMoreSuccess(rankCategoryPackage: RankCategoryPackage) {
+        mBillBookBeans!!.addAll(rankCategoryPackage.recoders)
+        if (rankCategoryPackage.isLast == 1) {
+            mLoadMoreWrapper.setCurrentItemType(LoadMoreWrapper.ITEM_TYPE_NO_MORE)
+        }
+        mAdapter.refreshItems(mBillBookBeans!!)
+        mLoadMoreWrapper.notifyDataSetChanged()
+    }
+
+    override fun loadMoreFailed() {
+        mLoadMoreWrapper.setCurrentItemType(LoadMoreWrapper.ITEM_TYPE_FAILED)
+        mLoadMoreWrapper.notifyDataSetChanged()
     }
 
     override fun complete() {

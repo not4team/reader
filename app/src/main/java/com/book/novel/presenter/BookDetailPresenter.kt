@@ -34,6 +34,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
     override fun addToBookShelf(collBookBean: CollBookBean) {
         //设置 id
         for (bean in collBookBean.bookChapters) {
+            //相同的link只会插入一条数据
             bean.id = MD5Utils.strToMd5By16(bean.link)
         }
         //存储收藏

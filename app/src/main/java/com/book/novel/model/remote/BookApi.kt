@@ -26,6 +26,9 @@ interface BookApi {
     @GET("https://m.qidian.com/rank/{rankName}/{gender}")
     fun rankCategory(@Path("rankName") rankName: String, @Path("gender") gender: String, @Query("gender") gender1: String, @Query("catId") catId: String): Single<ResponseBody>
 
+    //https://m.qidian.com/majax/rank/hotsaleslist?_csrfToken=CjcfEH4J9OnJNonoMfMsA8T5cQ8RxGjmdFy7WuXq&gender=male&pageNum=4&catId=-1
+    @GET("https://m.qidian.com/majax/rank/{rankName}list")
+    fun rankCategoryPage(@Path("rankName") rankName: String, @Query("gender") gender1: String, @Query("catId") catId: String, @Query("pageNum") pageNum: Int): Single<ResponseBody>
 
     /**
      * 获取分类

@@ -3,6 +3,7 @@ package com.book.ireader.model.local;
 import android.database.sqlite.SQLiteException;
 
 import com.book.ireader.App;
+import com.book.ireader.BuildConfig;
 import com.book.ireader.model.gen.DaoMaster;
 import com.book.ireader.model.gen.DaoSession;
 
@@ -25,7 +26,11 @@ public class DaoDbHelper {
         DaoMaster.DevOpenHelper openHelper = new MyOpenHelper(App.getContext(), DB_NAME, null);
         //获取数据库
         try {
-            mDb = openHelper.getEncryptedWritableDb("novel");
+            if (BuildConfig.DEBUG) {
+                mDb = openHelper.getWritableDb();
+            } else {
+                mDb = openHelper.getEncryptedWritableDb("novel");
+            }
         } catch (SQLiteException e) {
             //覆盖安装时因为之前存在未加密的数据库
             e.printStackTrace();

@@ -1,9 +1,14 @@
 package com.book.novel.utils
 
+import android.util.Log
 import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.model.bean.RankTabBean
 import com.book.ireader.model.bean.packages.BookCityPackage
+import com.book.ireader.model.bean.packages.RankCategoryPackage
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.jsoup.Jsoup
+
 
 /**
  * Created with author.
@@ -49,7 +54,7 @@ class QidianParser {
                 val author = element.select("span.book-author").first().text()
                 val billBookBean = BillBookBean()
                 billBookBean.title = title
-                billBookBean.cover = "https:" + cover
+                billBookBean.cover = "https:$cover"
                 billBookBean.author = author.replace("作者：", "")
                 billBookBean.shortIntro = desc
                 bookCityPackage.finishedBooks.add(billBookBean)
@@ -82,7 +87,7 @@ class QidianParser {
                 val shortInstro = bookLayout.select("p.book-desc").text()
                 val author = bookLayout.select("div.book-meta span").text()
                 val billBookBean = BillBookBean()
-                billBookBean.cover = "https:" + cover
+                billBookBean.cover = "https:$cover"
                 billBookBean.title = title
                 billBookBean.cat = category
                 billBookBean.wordCount = wordCount
@@ -109,7 +114,7 @@ class QidianParser {
                 val shortInstro = bookLayout.select("p.book-desc").text()
                 val author = bookLayout.select("div.book-meta span").text()
                 val billBookBean = BillBookBean()
-                billBookBean.cover = "https:" + cover
+                billBookBean.cover = "https:$cover"
                 billBookBean.title = title
                 billBookBean.cat = category
                 billBookBean.wordCount = wordCount
@@ -119,5 +124,50 @@ class QidianParser {
             }
             return billBookBeans
         }
+
+        fun parseRankCategoryPage(json: String): RankCategoryPackage? {
+            val gson = Gson()
+            val type = object : TypeToken<Map<String, Any>>() {}.type
+            val map: Map<String, Any> = gson.fromJson(json, type)
+            val code: Double = map.get("code") as Double
+            var rankCategoryPackage: RankCategoryPackage? = null
+            if (code == 0.0) {
+                val data = map["data"]
+                Log.e("QidianParser", "data:$data")
+                val dataMap: Map<String, Any> = gson.fromJson(gson.toJson(data), type)
+                val total = dataMap["total"] as Double
+                val isLast: Double = dataMap["isLast"] as Double
+                val pageNum: Double = dataMap["pageNum"] as Double
+                val records = dataMap["records"] as List<Any>
+                rankCategoryPackage = RankCategoryPackage()
+                rankCategoryPackage.total = total.toInt()
+                rankCategoryPackage.isLast = isLast.toInt()
+                rankCategoryPackage.pageNum = pageNum.toInt()
+                val billBookBeans = mutableListOf<BillBookBean>()
+                for (index in records.indices) {
+                    val recordMap: Map<String, Any> = gson.fromJson(gson.toJson(records[index]), type)
+                    val bid = recordMap["bid"] as Double
+                    Log.e("QidianParser", "bid:${bid.toInt()}")
+                    val bName = recordMap["bName"] as String
+                    val bAuth = recordMap["bAuth"] as String
+                    val desc = recordMap["desc"] as String
+                    val cat = recordMap["cat"] as String
+                    val cnt = recordMap["cnt"] as String
+                    val billBookBean = BillBookBean()
+                    billBookBean.title = bName
+                    billBookBean.author = bAuth
+                    billBookBean.shortIntro = desc
+                    billBookBean.cat = cat
+                    billBookBean.wordCount = cnt
+                    billBookBean.cover = "https://qidian.qpic.cn/qdbimg/349573/${bid.toInt()}/150"
+                    billBookBeans.add(billBookBean)
+                }
+                rankCategoryPackage.recoders = billBookBeans
+            } else {
+                //失败
+            }
+            return rankCategoryPackage
+        }
+
     }
 }

@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.book.ireader.ui.base.BaseActivity
@@ -18,6 +19,7 @@ import com.book.novel.fragment.RankFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
+    val TAG = "MainActivity"
     private var mBookShelfFragment: Fragment? = null
     private var mBookCityFragment: Fragment? = null
     private var mRankFragment: Fragment? = null
@@ -112,9 +114,11 @@ class MainActivity : BaseActivity() {
                             mFragmentTransaction.hide(mRankFragment)
                         }
                         if (mBookShelfFragment == null) {
+                            Log.e(TAG, "onRestoreInstanceState mBookShelfFragment == null")
                             mBookShelfFragment = BookShelfFragment()
                             mFragmentTransaction.add(R.id.main_fl_content, mBookShelfFragment, BOOKSHELF_TAG)
                         } else {
+                            Log.e(TAG, "onRestoreInstanceState mBookShelfFragment show")
                             mFragmentTransaction.show(mBookShelfFragment)
                         }
                     }
@@ -169,13 +173,20 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if(savedInstanceState == null) {
+            mBookShelfFragment = BookShelfFragment()
+            val mFragmentTransaction = supportFragmentManager.beginTransaction()
+            Log.e(TAG, "initWidget mBookShelfFragment add")
+            mFragmentTransaction.add(R.id.main_fl_content, mBookShelfFragment, BOOKSHELF_TAG)
+            mFragmentTransaction.commit()
+            mCurrFragmentTag = BOOKSHELF_TAG
+        }
+    }
+
     override fun initWidget() {
         super.initWidget()
-        mBookShelfFragment = BookShelfFragment()
-        val mFragmentTransaction = supportFragmentManager.beginTransaction()
-        mFragmentTransaction.add(R.id.main_fl_content, mBookShelfFragment, BOOKSHELF_TAG)
-        mFragmentTransaction.commit()
-        mCurrFragmentTag = BOOKSHELF_TAG
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
     }
 

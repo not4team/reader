@@ -42,6 +42,12 @@ class RemoteImpl : IRemote {
         }
     }
 
+    override fun rankCategoryPage(rankName: String, gender: String, catId: String, pageNum: Int): Single<RankCategoryPackage> {
+        return mBookApi.rankCategoryPage(rankName, gender, catId, pageNum).map { bean ->
+            QidianParser.parseRankCategoryPage(bean.string())
+        }
+    }
+
     override fun getBillboardPackage(): Single<BillboardPackage> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }

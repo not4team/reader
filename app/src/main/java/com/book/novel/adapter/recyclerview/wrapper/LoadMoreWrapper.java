@@ -12,52 +12,68 @@ import com.book.novel.adapter.recyclerview.utils.WrapperUtils;
 /**
  * Created by zhy on 16/6/23.
  */
-public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-{
+public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    public static final int ITEM_TYPE_NONE = Integer.MAX_VALUE - 1;
     public static final int ITEM_TYPE_LOAD_MORE = Integer.MAX_VALUE - 2;
+    public static final int ITEM_TYPE_NO_MORE = Integer.MAX_VALUE - 3;
+    public static final int ITEM_TYPE_FAILED = Integer.MAX_VALUE - 4;
 
     private RecyclerView.Adapter mInnerAdapter;
-    private View mLoadMoreView;
     private int mLoadMoreLayoutId;
+    private View mLoadMoreView;
+    private int mNoMoreLayoutId;
+    private View mNoMoreView;
+    private int mFailedLayoutId;
+    private View mFailedView;
+    private int mCurrentItemType = ITEM_TYPE_NONE;
 
-    public LoadMoreWrapper(RecyclerView.Adapter adapter)
-    {
+    public LoadMoreWrapper(RecyclerView.Adapter adapter) {
         mInnerAdapter = adapter;
     }
 
-    private boolean hasLoadMore()
-    {
-        return mLoadMoreView != null || mLoadMoreLayoutId != 0;
+    private boolean hasFooterView() {
+        return mLoadMoreView != null || mLoadMoreLayoutId != 0
+                || mNoMoreView != null || mNoMoreLayoutId != 0
+                || mFailedView != null || mFailedLayoutId != 0;
     }
 
 
-    private boolean isShowLoadMore(int position)
-    {
-        return hasLoadMore() && (position >= mInnerAdapter.getItemCount());
+    private boolean isShowFooterView(int position) {
+        return hasFooterView() && (position >= mInnerAdapter.getItemCount());
     }
 
     @Override
-    public int getItemViewType(int position)
-    {
-        if (isShowLoadMore(position))
-        {
-            return ITEM_TYPE_LOAD_MORE;
+    public int getItemViewType(int position) {
+        if (isShowFooterView(position)) {
+            return mCurrentItemType;
         }
         return mInnerAdapter.getItemViewType(position);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
-        if (viewType == ITEM_TYPE_LOAD_MORE)
-        {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == ITEM_TYPE_LOAD_MORE) {
             ViewHolder holder;
-            if (mLoadMoreView != null)
-            {
+            if (mLoadMoreView != null) {
                 holder = ViewHolder.createViewHolder(parent.getContext(), mLoadMoreView);
-            } else
-            {
+            } else {
                 holder = ViewHolder.createViewHolder(parent.getContext(), parent, mLoadMoreLayoutId);
+            }
+            return holder;
+        } else if (viewType == ITEM_TYPE_FAILED) {
+            ViewHolder holder;
+            if (mFailedView != null) {
+                holder = ViewHolder.createViewHolder(parent.getContext(), mFailedView);
+            } else {
+                holder = ViewHolder.createViewHolder(parent.getContext(), parent, mFailedLayoutId);
+            }
+            return holder;
+        } else if (viewType == ITEM_TYPE_NO_MORE) {
+            ViewHolder holder;
+            if (mNoMoreView != null) {
+                holder = ViewHolder.createViewHolder(parent.getContext(), mNoMoreView);
+            } else {
+                holder = ViewHolder.createViewHolder(parent.getContext(), parent, mNoMoreLayoutId);
             }
             return holder;
         }
@@ -65,13 +81,10 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
-    {
-        if (isShowLoadMore(position))
-        {
-            if (mOnLoadMoreListener != null)
-            {
-                mOnLoadMoreListener.onLoadMoreRequested();
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (isShowFooterView(position)) {
+            if (mOnLoadFooterListener != null) {
+                mOnLoadFooterListener.onLoadFooterRequested(mCurrentItemType);
             }
             return;
         }
@@ -79,19 +92,14 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView)
-    {
-        WrapperUtils.onAttachedToRecyclerView(mInnerAdapter, recyclerView, new WrapperUtils.SpanSizeCallback()
-        {
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        WrapperUtils.onAttachedToRecyclerView(mInnerAdapter, recyclerView, new WrapperUtils.SpanSizeCallback() {
             @Override
-            public int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup oldLookup, int position)
-            {
-                if (isShowLoadMore(position))
-                {
+            public int getSpanSize(GridLayoutManager layoutManager, GridLayoutManager.SpanSizeLookup oldLookup, int position) {
+                if (isShowFooterView(position)) {
                     return layoutManager.getSpanCount();
                 }
-                if (oldLookup != null)
-                {
+                if (oldLookup != null) {
                     return oldLookup.getSpanSize(position);
                 }
                 return 1;
@@ -101,23 +109,19 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     @Override
-    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder)
-    {
+    public void onViewAttachedToWindow(RecyclerView.ViewHolder holder) {
         mInnerAdapter.onViewAttachedToWindow(holder);
 
-        if (isShowLoadMore(holder.getLayoutPosition()))
-        {
+        if (isShowFooterView(holder.getLayoutPosition())) {
             setFullSpan(holder);
         }
     }
 
-    private void setFullSpan(RecyclerView.ViewHolder holder)
-    {
+    private void setFullSpan(RecyclerView.ViewHolder holder) {
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
 
         if (lp != null
-                && lp instanceof StaggeredGridLayoutManager.LayoutParams)
-        {
+                && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
 
             p.setFullSpan(true);
@@ -125,37 +129,55 @@ public class LoadMoreWrapper<T> extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     @Override
-    public int getItemCount()
-    {
-        return mInnerAdapter.getItemCount() + (hasLoadMore() ? 1 : 0);
+    public int getItemCount() {
+        if (mCurrentItemType == ITEM_TYPE_NONE) {
+            return 0;
+        }
+        return mInnerAdapter.getItemCount() + (hasFooterView() ? 1 : 0);
     }
 
 
-    public interface OnLoadMoreListener
-    {
-        void onLoadMoreRequested();
+    public interface OnLoadFooterListener {
+        void onLoadFooterRequested(int itemType);
     }
 
-    private OnLoadMoreListener mOnLoadMoreListener;
+    private OnLoadFooterListener mOnLoadFooterListener;
 
-    public LoadMoreWrapper setOnLoadMoreListener(OnLoadMoreListener loadMoreListener)
-    {
-        if (loadMoreListener != null)
-        {
-            mOnLoadMoreListener = loadMoreListener;
+    public LoadMoreWrapper setOnLoadMoreListener(OnLoadFooterListener loadFooterListener) {
+        if (loadFooterListener != null) {
+            mOnLoadFooterListener = loadFooterListener;
         }
         return this;
     }
 
-    public LoadMoreWrapper setLoadMoreView(View loadMoreView)
-    {
+    public LoadMoreWrapper setLoadMoreView(View loadMoreView) {
         mLoadMoreView = loadMoreView;
         return this;
     }
 
-    public LoadMoreWrapper setLoadMoreView(int layoutId)
-    {
+    public LoadMoreWrapper setLoadMoreView(int layoutId) {
         mLoadMoreLayoutId = layoutId;
         return this;
     }
+
+    public void setNoMoreLayoutId(int mNoMoreLayoutId) {
+        this.mNoMoreLayoutId = mNoMoreLayoutId;
+    }
+
+    public void setNoMoreView(View mNoMoreView) {
+        this.mNoMoreView = mNoMoreView;
+    }
+
+    public void setFailedLayoutId(int mFailedLayoutId) {
+        this.mFailedLayoutId = mFailedLayoutId;
+    }
+
+    public void setFailedView(View mFailedView) {
+        this.mFailedView = mFailedView;
+    }
+
+    public void setCurrentItemType(int mCurrentItemType) {
+        this.mCurrentItemType = mCurrentItemType;
+    }
+
 }

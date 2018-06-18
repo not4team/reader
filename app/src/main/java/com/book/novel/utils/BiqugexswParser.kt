@@ -60,7 +60,7 @@ class BiqugexswParser {
             mBookDetailBean.wordCount = wordCount.replace("字数：", "").toInt()
             mBookDetailBean.updated = updated.replace("更新时间：", "")
             mBookDetailBean.lastChapter = lastChapter.replace("最新章节：", "")
-            mBookDetailBean.longIntro = intro
+            mBookDetailBean.longIntro = intro.substring(0, intro.indexOf("无弹窗推荐地址"))
             val chapterList = mutableListOf<BookChapterBean>()
             val chapterElement = body.select("div.listmain dl").first().children()
             var dtCount = 0
@@ -73,6 +73,9 @@ class BiqugexswParser {
                     continue
                 }
                 val _title = chapterElement[index].text()
+                if (_title.contains("biqugexsw.com")) {
+                    continue
+                }
                 val _link = chapterElement[index].select("a").attr("href")
                 val bookChapterBean = BookChapterBean()
                 bookChapterBean.title = _title

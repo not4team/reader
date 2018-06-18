@@ -37,10 +37,15 @@ class RemoteHelper private constructor() {
                 })
                 .addNetworkInterceptor { chain ->
                     val request = chain.request()
-
-                    //在这里获取到request后就可以做任何事情了
-                    val response = chain.proceed(request)
-                    Log.d(TAG, "intercept: " + request.url().toString())
+                    //添加token
+                    var url = request.url().toString()
+                    Log.d(TAG, "intercept: " + url)
+                    if (url.contains("m.qidian.com/majax/rank")) {
+                        url = url + "&_csrfToken=" + getCookie("_csrfToken")
+                    }
+                    val addCookieTokenRequest = request.newBuilder().url(url).build()
+                    Log.d(TAG, "add cookie url: " + addCookieTokenRequest.url().toString())
+                    val response = chain.proceed(addCookieTokenRequest)
                     response
                 }.build()
 
@@ -54,7 +59,11 @@ class RemoteHelper private constructor() {
     fun getCookie(name: String): String? {
         val cookies: List<Cookie>? = cookieStore.get(HttpUrl.parse(mQidianUrl)!!)
         if (cookies != null) {
-            cookies.forEach { cookie -> if (cookie.name() === name) return cookie.value() }
+            for (index in cookies.indices) {
+                if (cookies[index].name() == name) {
+                    return cookies[index].value()
+                }
+            }
         }
         return null
     }

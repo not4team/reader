@@ -19,6 +19,11 @@ class RankCategoryRecyclerAdapter : BaseListAdapter<BillBookBean>() {
         return RankCategoryHolder()
     }
 
+    override fun refreshItems(list: MutableList<BillBookBean>) {
+        mList.clear()
+        mList.addAll(list)
+    }
+
     override fun onItemClick(v: View, pos: Int) {
         super.onItemClick(v, pos)
         val mIntent = Intent(v.context, BookDetailActivity::class.java)

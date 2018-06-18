@@ -14,7 +14,7 @@ import com.book.novel.presenter.contract.BookCityContract
  */
 class BookCityPresenter() : RxPresenter<BookCityContract.View>(), BookCityContract.Presenter {
     override fun load(gender: String) {
-        RemoteRepository.getInstance(App.getContext())
+        val disposable = RemoteRepository.getInstance(App.getContext())
                 .bookCity(gender)
                 .compose(RxUtils::toSimpleSingle)
                 .subscribe(
@@ -29,6 +29,7 @@ class BookCityPresenter() : RxPresenter<BookCityContract.View>(), BookCityContra
                     e.printStackTrace()
                     mView.showError()
                 }
+        addDisposable(disposable)
     }
 
 }
