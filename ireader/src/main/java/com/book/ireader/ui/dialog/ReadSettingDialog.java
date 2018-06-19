@@ -2,6 +2,7 @@ package com.book.ireader.ui.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 
 import com.book.ireader.R;
 import com.book.ireader.model.local.ReadSettingManager;
+import com.book.ireader.ui.activity.MoreSettingActivity;
+import com.book.ireader.ui.activity.ReadActivity;
 import com.book.ireader.ui.adapter.PageStyleAdapter;
 import com.book.ireader.widget.page.PageLoader;
 import com.book.ireader.widget.page.PageMode;
@@ -51,6 +54,7 @@ public class ReadSettingDialog extends Dialog {
     RadioButton mRbScroll;
     RadioButton mRbNone;
     RecyclerView mRvBg;
+    TextView mTvMore;
     /************************************/
     private PageStyleAdapter mPageStyleAdapter;
     private ReadSettingManager mSettingManager;
@@ -120,6 +124,7 @@ public class ReadSettingDialog extends Dialog {
         mRbScroll = findViewById(R.id.read_setting_rb_scroll);
         mRbNone = findViewById(R.id.read_setting_rb_none);
         mRvBg = findViewById(R.id.read_setting_rv_bg);
+        mTvMore = findViewById(R.id.read_setting_tv_more);
         mSbBrightness.setProgress(mBrightness);
         mTvFont.setText(mTextSize + "");
         mCbBrightnessAuto.setChecked(isBrightnessAuto);
@@ -301,14 +306,14 @@ public class ReadSettingDialog extends Dialog {
         );
 
         //更多设置
-//        mTvMore.setOnClickListener(
-//                (v) -> {
-//                    Intent intent = new Intent(getContext(), MoreSettingActivity.class);
-//                    mActivity.startActivityForResult(intent, ReadActivity.REQUEST_MORE_SETTING);
-//                    //关闭当前设置
-//                    dismiss();
-//                }
-//        );
+        mTvMore.setOnClickListener(
+                (v) -> {
+                    Intent intent = new Intent(getContext(), MoreSettingActivity.class);
+                    mActivity.startActivityForResult(intent, ReadActivity.REQUEST_MORE_SETTING);
+                    //关闭当前设置
+                    dismiss();
+                }
+        );
     }
 
     public boolean isBrightFollowSystem() {

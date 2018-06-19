@@ -147,6 +147,8 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
         mRefreshLayout.showFinish()
         mAdapter.refreshItems(books)
         mLoadMoreWrapper.setCurrentItemType(LoadMoreWrapper.ITEM_TYPE_LOAD_MORE)
+        //页数清零
+        mCurrPageNum = 0
         mLoadMoreWrapper.notifyDataSetChanged()
         if (mRefreshListener != null) {
             mRefreshListener!!.onFinish()
