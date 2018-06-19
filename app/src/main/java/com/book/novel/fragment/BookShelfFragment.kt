@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.View
 import android.widget.TextView
+import com.book.ireader.RxBus
+import com.book.ireader.event.BookShelfRefreshEvent
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
@@ -46,6 +48,33 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
     override fun processLogic() {
         super.processLogic()
         mPresenter.refreshCollBooks("male")
+    }
+
+    override fun initClick() {
+        val disposable = RxBus.getInstance().toObservable(BookShelfRefreshEvent::class.java).subscribe {
+            when (it.type) {
+                BookShelfRefreshEvent.EVENT_TYPE_ADD -> {
+                    mPresenter.refreshCollBooks("male")
+                }
+                BookShelfRefreshEvent.EVENT_TYPE_DELETE -> {
+                    val id = it._id
+                    var collBookBean: CollBookBean? = null
+                    for (index in mAdapter.items.indices) {
+                        if (id == mAdapter.items[index]._id) {
+                            collBookBean = mAdapter.items[index]
+                            break;
+                        }
+                    }
+                    if (collBookBean != null) {
+                        mAdapter.removeItem(collBookBean)
+                    }
+                }
+                BookShelfRefreshEvent.EVENT_TYPE_UPDATE -> {
+
+                }
+            }
+        }
+        addDisposable(disposable)
     }
 
     override fun onHiddenChanged(hidden: Boolean) {

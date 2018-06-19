@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.book.ireader.RxBus
+import com.book.ireader.event.BookShelfRefreshEvent
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.bean.packages.InterestedBookListPackage
@@ -167,6 +169,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                             .deleteCollBookInRx(mCollBookBean).subscribe()
                     mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_chase_update)
                     isCollected = false
+                    RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_DELETE))
                 } else {
                     mPresenter.addToBookShelf(mCollBookBean!!)
                 }
@@ -231,6 +234,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     override fun succeedToBookShelf() {
         mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
         isCollected = true
+        RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_ADD))
     }
 
     override fun getContentId(): Int {
