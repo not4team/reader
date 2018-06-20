@@ -20,10 +20,10 @@ import java.util.*
  */
 class BookshelfAdapter : BaseListAdapter<CollBookBean>(), ItemTouchHelperAdapter {
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
+        swapOrder(mList[fromPosition], mList[toPosition])
         //交换位置
         Collections.swap(mList, fromPosition, toPosition)
         notifyItemMoved(fromPosition, toPosition)
-        swapOrder(mList[fromPosition], mList[toPosition])
     }
 
     private fun swapOrder(collBook1: CollBookBean, collBook2: CollBookBean) {
