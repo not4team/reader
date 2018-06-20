@@ -31,8 +31,8 @@ import com.book.novel.presenter.contract.BookDetailContract
  */
 class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), BookDetailContract.View, View.OnClickListener {
     private var mBookId: String? = null
-    private lateinit var mTitle: String
-    private lateinit var mAuthor: String
+    private var mTitle: String? = null
+    private var mAuthor: String? = null
     private var mCollBookBean: CollBookBean? = null
     private var isCollected: Boolean = false
     private lateinit var mIvCover: ImageView
@@ -109,7 +109,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
             if (mBookId != null) {
                 mPresenter.refreshBookDetail(mBookId!!)
             } else {
-                mPresenter.refreshBookDetail(mTitle, mAuthor)
+                mPresenter.refreshBookDetail(mTitle!!, mAuthor!!)
             }
         }
         mBtnAddBookshelf.setOnClickListener(this)
@@ -141,7 +141,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         if (mBookId != null) {
             mPresenter.refreshBookDetail(mBookId!!)
         } else {
-            mPresenter.refreshBookDetail(mTitle, mAuthor)
+            mPresenter.refreshBookDetail(mTitle!!, mAuthor!!)
         }
     }
 

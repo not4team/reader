@@ -38,7 +38,7 @@ class RankCategoryHolder : ViewHolderImpl<BillBookBean>() {
         mTvName!!.text = data.title
         mTvAuthor!!.text = data.author
         mTvCategory!!.text = context.getString(R.string.rank_category_item_cat_wordcount, data.cat, data.wordCount)
-        mTvShortInstro.text = context.getString(R.string.nb_search_book_last_chapter, data.shortIntro)
+        mTvShortInstro.text = data.shortIntro
     }
 
     override fun getItemLayoutId(): Int {

@@ -1,6 +1,7 @@
 package com.book.novel.fragment
 
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
@@ -9,6 +10,7 @@ import android.widget.TextView
 import com.book.ireader.RxBus
 import com.book.ireader.event.BookShelfRefreshEvent
 import com.book.ireader.model.bean.CollBookBean
+import com.book.ireader.ui.activity.ReadActivity
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
 import com.book.novel.R
@@ -28,12 +30,16 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
     private lateinit var mRvBookShelf: RecyclerView
     private lateinit var mAdapter: BookshelfAdapter
     private lateinit var mTvEmpty: TextView
+    private lateinit var mSwipeRefreshLayout: SwipeRefreshLayout
+    private lateinit var mCollBookBeans: List<CollBookBean>
+    private var isInit = true
     override fun getContentId(): Int {
         return R.layout.fragment_bookshelf
     }
 
     override fun initWidget(savedInstanceState: Bundle?) {
         super.initWidget(savedInstanceState)
+        mSwipeRefreshLayout = getViewById(R.id.bookshelf_swipe_refresh)
         mRefreshLayout = getViewById(R.id.refresh_layout)
         mRvBookShelf = getViewById(R.id.refresh_rv_content)
         mTvEmpty = getViewById(R.id.bookshelf_tv_empty)
@@ -75,6 +81,18 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
             }
         }
         addDisposable(disposable)
+
+        mSwipeRefreshLayout.setOnRefreshListener {
+            mPresenter.updateCollBooks(mCollBookBeans)
+        }
+
+        mAdapter.setOnItemClickListener(
+                { view, pos ->
+                    val collBook = mAdapter.getItem(pos)
+                    ReadActivity.startActivity(context,
+                            collBook, true)
+                }
+        )
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
@@ -85,6 +103,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
     }
 
     override fun show(collBookBeans: List<CollBookBean>) {
+        this.mCollBookBeans = collBookBeans
         mRefreshLayout.showFinish()
         mAdapter.refreshItems(collBookBeans)
         if (collBookBeans.isNotEmpty()) {
@@ -92,6 +111,15 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
         } else {
             mTvEmpty.visibility = View.VISIBLE
         }
+        if (isInit) {
+            isInit = false
+            mPresenter.updateCollBooks(collBookBeans)
+        }
+    }
+
+    override fun finishUpdate() {
+        mSwipeRefreshLayout.isRefreshing = false
+        mPresenter.refreshCollBooks("male")
     }
 
     override fun complete() {

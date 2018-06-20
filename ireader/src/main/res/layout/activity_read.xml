@@ -64,8 +64,8 @@
                         android:id="@+id/read_tv_brief"
                         style="@style/NB.Theme.TextAppearance.Read.TopMenu"
                         android:layout_alignParentRight="true"
-                        android:text="@string/nb.read.brief"
-                        android:visibility="gone" />
+                        android:text="@string/nb.read.book.detail"
+                        android:visibility="visible" />
 
                     <TextView
                         android:id="@+id/read_tv_community"

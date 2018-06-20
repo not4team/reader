@@ -168,6 +168,7 @@
     <!--read-->
     <string name="nb.read.community">社区</string>
     <string name="nb.read.brief">简介</string>
+    <string name="nb.read.book.detail">详情</string>
     <string name="nb.read.setting">设置</string>
     <string name="nb.read.download">缓存</string>'
     <string name="nb.read.category">目录</string>

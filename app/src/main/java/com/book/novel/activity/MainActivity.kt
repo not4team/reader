@@ -175,7 +175,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             mBookShelfFragment = BookShelfFragment()
             val mFragmentTransaction = supportFragmentManager.beginTransaction()
             Log.e(TAG, "initWidget mBookShelfFragment add")
@@ -205,5 +205,11 @@ class MainActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mSearchView.isIconified = true
+        mSearchView.isIconified = true
     }
 }

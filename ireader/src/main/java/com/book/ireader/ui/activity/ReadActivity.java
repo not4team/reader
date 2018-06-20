@@ -102,6 +102,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     TextView mTvNextChapter;
     TextView mTvCategory;
     TextView mTvNightMode;
+    TextView mTvBrief;
     /*    @BindView(R.id.read_tv_download)
         TextView mTvDownload;*/
     TextView mTvSetting;
@@ -238,6 +239,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         mTvNightMode = findViewById(R.id.read_tv_night_mode);
         mTvSetting = findViewById(R.id.read_tv_setting);
         mLvCategory = findViewById(R.id.read_iv_category);
+        mTvBrief = findViewById(R.id.read_tv_brief);
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -530,9 +532,13 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                 }
         );
 
-//        mTvBrief.setOnClickListener(
-//                (v) -> BookDetailActivity.startActivity(this, mBookId)
-//        );
+        mTvBrief.setOnClickListener(
+                (v) -> {
+                    Intent intent = new Intent("com.book.novel.activity.BookDetailActivity");
+                    intent.putExtra("BOOK_ID_INTENT_KEY", mBookId);
+                    startActivity(intent);
+                }
+        );
 
 //        mTvCommunity.setOnClickListener(
 //                (v) -> {
