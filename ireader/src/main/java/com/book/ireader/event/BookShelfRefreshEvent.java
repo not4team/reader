@@ -8,6 +8,7 @@ package com.book.ireader.event;
  */
 public class BookShelfRefreshEvent {
     public String _id;
+    public int position = -1;
     public int type;
     public static int EVENT_TYPE_ADD = 0x1;
     public static int EVENT_TYPE_DELETE = 0x1;
@@ -15,6 +16,11 @@ public class BookShelfRefreshEvent {
 
     public BookShelfRefreshEvent setId(String id) {
         this._id = id;
+        return this;
+    }
+
+    public BookShelfRefreshEvent setPostion(int position) {
+        this.position = position;
         return this;
     }
 

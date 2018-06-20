@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <com.book.novel.widget.BookShelfSwipeRefreshLayout
         android:id="@+id/bookshelf_swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include layout="@layout/fragment_refresh_list" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.book.novel.widget.BookShelfSwipeRefreshLayout>
 
     <TextView
         android:id="@+id/bookshelf_tv_empty"

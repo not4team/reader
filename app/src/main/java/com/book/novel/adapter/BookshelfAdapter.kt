@@ -1,6 +1,8 @@
 package com.book.novel.adapter
 
 import android.util.Log
+import com.book.ireader.RxBus
+import com.book.ireader.event.BookShelfRefreshEvent
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.local.BookRepository
 import com.book.ireader.ui.base.adapter.BaseListAdapter
@@ -41,8 +43,9 @@ class BookshelfAdapter : BaseListAdapter<CollBookBean>(), ItemTouchHelperAdapter
     override fun onItemDissmiss(position: Int) {
         BookRepository.getInstance().deleteCollBookInRx(mList[position]).subscribe()
         //移除数据
+        val _id = mList[position]._id
         mList.removeAt(position)
-        notifyItemRemoved(position)
+        RxBus.getInstance().post(BookShelfRefreshEvent().setId(_id).setType(BookShelfRefreshEvent.EVENT_TYPE_DELETE))
     }
 
     override fun createViewHolder(viewType: Int): IViewHolder<CollBookBean> {

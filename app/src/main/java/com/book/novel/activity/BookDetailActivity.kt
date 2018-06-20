@@ -203,6 +203,12 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
             isCollected = true
             mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
             mBtnStartRead.text = "继续阅读"
+            if (bean.bookChapterBeans.size > mCollBookBean!!.bookChapters.size) {
+                mCollBookBean!!.setIsUpdate(true)
+                mCollBookBean!!.lastChapter = bean.lastChapter
+                mCollBookBean!!.update()
+                RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
+            }
         } else {
             mCollBookBean = bean.collBookBean
             mCollBookBean!!.bookChapters = bean.bookChapterBeans

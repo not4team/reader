@@ -64,19 +64,27 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
                 }
                 BookShelfRefreshEvent.EVENT_TYPE_DELETE -> {
                     val id = it._id
-                    var collBookBean: CollBookBean? = null
-                    for (index in mAdapter.items.indices) {
-                        if (id == mAdapter.items[index]._id) {
-                            collBookBean = mAdapter.items[index]
-                            break;
+                    val position = it.position
+                    if (position >= 0) {
+                        mAdapter.notifyItemRemoved(position)
+                    } else {
+                        var collBookBean: CollBookBean? = null
+                        for (index in mAdapter.items.indices) {
+                            if (id == mAdapter.items[index]._id) {
+                                collBookBean = mAdapter.items[index]
+                                break;
+                            }
+                        }
+                        if (collBookBean != null) {
+                            mAdapter.removeItem(collBookBean)
                         }
                     }
-                    if (collBookBean != null) {
-                        mAdapter.removeItem(collBookBean)
+                    if (mAdapter.itemCount == 0) {
+                        mTvEmpty.visibility = View.VISIBLE
                     }
                 }
                 BookShelfRefreshEvent.EVENT_TYPE_UPDATE -> {
-
+                    mPresenter.refreshCollBooks("male")
                 }
             }
         }
