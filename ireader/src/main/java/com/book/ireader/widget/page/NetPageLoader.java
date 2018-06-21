@@ -1,6 +1,8 @@
 package com.book.ireader.widget.page;
 
 
+import com.book.ireader.RxBus;
+import com.book.ireader.event.BookShelfRefreshEvent;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.CollBookBean;
 import com.book.ireader.model.local.BookRepository;
@@ -218,6 +220,7 @@ public class NetPageLoader extends PageLoader {
             //直接更新
             BookRepository.getInstance()
                     .saveCollBook(mCollBook);
+            RxBus.getInstance().post(new BookShelfRefreshEvent().setId(mCollBook.get_id()).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE));
         }
     }
 }

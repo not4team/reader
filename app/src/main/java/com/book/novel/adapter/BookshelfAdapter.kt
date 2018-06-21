@@ -19,6 +19,7 @@ import java.util.*
  * Time: 下午2:51
  */
 class BookshelfAdapter : BaseListAdapter<CollBookBean>(), ItemTouchHelperAdapter {
+    val TAG = "BookshelfAdapter"
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
         swapOrder(mList[fromPosition], mList[toPosition])
         //交换位置
@@ -27,13 +28,14 @@ class BookshelfAdapter : BaseListAdapter<CollBookBean>(), ItemTouchHelperAdapter
     }
 
     private fun swapOrder(collBook1: CollBookBean, collBook2: CollBookBean) {
+        Log.e(TAG, "swap pre collBook1.bookOrder : " + collBook1.bookOrder + ", collBook2.bookOrder : " + collBook2.bookOrder)
         val order = collBook1.bookOrder
         collBook1.bookOrder = collBook2.bookOrder
         collBook2.bookOrder = order
 
         Single.create<Unit> {
-            collBook1.update()
-            collBook2.update()
+            Log.e(TAG, "swap after collBook1.bookOrder : " + collBook1.bookOrder + ", collBook2.bookOrder : " + collBook2.bookOrder)
+            BookRepository.getInstance().swapCollBookOrder(collBook1, collBook2)
             it.onSuccess(Unit)
         }.compose(RxUtils::toSimpleSingle).subscribe { success ->
             Log.e("BookshelfAdapter", "swapOrder success")
@@ -51,4 +53,5 @@ class BookshelfAdapter : BaseListAdapter<CollBookBean>(), ItemTouchHelperAdapter
     override fun createViewHolder(viewType: Int): IViewHolder<CollBookBean> {
         return BookshelfHolder()
     }
+
 }

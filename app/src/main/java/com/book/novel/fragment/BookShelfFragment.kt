@@ -97,7 +97,7 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
         mAdapter.setOnItemClickListener(
                 { view, pos ->
                     val collBook = mAdapter.getItem(pos)
-                    ReadActivity.startActivity(context,
+                    ReadActivity.startActivity(activity,
                             collBook, true)
                 }
         )

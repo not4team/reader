@@ -2,6 +2,7 @@ package com.book.novel.adapter
 
 import android.content.Context
 import android.view.View
+import com.book.ireader.App
 import com.book.ireader.model.bean.BillBookBean
 import com.book.novel.GlideApp
 import com.book.novel.R
@@ -31,7 +32,7 @@ class BookCityRecyclerAdapter(context: Context, layoutId: Int) : CommonAdapter<B
         holder.setText(R.id.bookcity_rv_item_title, item.title)
         holder.setText(R.id.bookcity_rv_item_desc, item.shortIntro)
         holder.setText(R.id.bookcity_rv_item_author, item.author)
-        GlideApp.with(mContext).load(item.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(holder.getView(R.id.bookcity_rv_item_cover))
+        GlideApp.with(App.getContext()).load(item.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(holder.getView(R.id.bookcity_rv_item_cover))
     }
 
 }

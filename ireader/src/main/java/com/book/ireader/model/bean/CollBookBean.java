@@ -336,6 +336,7 @@ public class CollBookBean implements Parcelable {
         dest.writeString(this.lastChapter);
         dest.writeByte(this.isUpdate ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isLocal ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.bookOrder);
     }
 
     /**
@@ -363,13 +364,14 @@ public class CollBookBean implements Parcelable {
         this.lastChapter = in.readString();
         this.isUpdate = in.readByte() != 0;
         this.isLocal = in.readByte() != 0;
+        this.bookOrder = in.readInt();
     }
 
     @Generated(hash = 931041005)
     public CollBookBean(String _id, String title, String author, String shortIntro, String cover,
-            String category, boolean hasCp, int latelyFollower, double retentionRatio, String updated,
-            String lastRead, int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal,
-            int bookOrder) {
+                        String category, boolean hasCp, int latelyFollower, double retentionRatio, String updated,
+                        String lastRead, int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal,
+                        int bookOrder) {
         this._id = _id;
         this.title = title;
         this.author = author;

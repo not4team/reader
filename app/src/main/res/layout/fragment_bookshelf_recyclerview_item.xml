@@ -67,6 +67,13 @@
                 android:layout_below="@id/bookshelf_tv_category"
                 android:gravity="center_vertical">
 
+                <View
+                    android:id="@+id/bookshelf_v_red_tip"
+                    android:layout_width="6dp"
+                    android:layout_height="6dp"
+                    android:background="@drawable/book_update_tip_shape"
+                    android:visibility="gone" />
+
                 <TextView
                     android:id="@+id/bookshelf_tv_lastchapter"
                     android:layout_width="wrap_content"
@@ -76,14 +83,6 @@
                     android:text="@string/nb.search.book.last_chapter"
                     android:textColor="@color/nb.text.common_h2"
                     android:textSize="14sp" />
-
-                <View
-                    android:id="@+id/bookshelf_v_red_tip"
-                    android:layout_width="6dp"
-                    android:layout_height="6dp"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/book_update_tip_shape"
-                    android:visibility="gone" />
             </LinearLayout>
         </RelativeLayout>
     </RelativeLayout>

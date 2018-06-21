@@ -2,6 +2,7 @@ package com.book.novel.adapter
 
 import android.content.Intent
 import android.view.View
+import com.book.ireader.App
 import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.ui.base.adapter.BaseListAdapter
 import com.book.ireader.ui.base.adapter.IViewHolder
@@ -26,10 +27,10 @@ class RankCategoryRecyclerAdapter : BaseListAdapter<BillBookBean>() {
 
     override fun onItemClick(v: View, pos: Int) {
         super.onItemClick(v, pos)
-        val mIntent = Intent(v.context, BookDetailActivity::class.java)
+        val mIntent = Intent(App.getContext(), BookDetailActivity::class.java)
         mIntent.putExtra(BookDetailActivity.BOOK_ID_INTENT_KEY, mList[pos]._id)
         mIntent.putExtra(BookDetailActivity.BOOK_TILTE_INTENT_KEY, mList[pos].title)
         mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, mList[pos].author)
-        v.context.startActivity(mIntent)
+        App.getContext().startActivity(mIntent)
     }
 }

@@ -22,7 +22,7 @@ class BookShelfPresenter() : RxPresenter<BookShelfContract.View>(), BookShelfCon
             collBookBeans.forEach { oldBean ->
                 RemoteRepository.getInstance(App.getContext())
                         .getBookDetail(oldBean._id)
-                        .subscribe { newBean ->
+                        .subscribe({ newBean ->
                             val newCollBookBean = newBean.collBookBean
                             if (oldBean.isUpdate() || oldBean.lastChapter != newCollBookBean.lastChapter) {
                                 newCollBookBean.setUpdate(true)
@@ -32,16 +32,22 @@ class BookShelfPresenter() : RxPresenter<BookShelfContract.View>(), BookShelfCon
                             newCollBookBean.lastRead = oldBean.lastRead
                             newCollBookBean.bookOrder = oldBean.bookOrder
                             newCollBookBeans.add(newCollBookBean)
+                        }) { e ->
+                            e.printStackTrace()
                         }
             }
             BookRepository.getInstance().saveCollBooks(newCollBookBeans)
             it.onSuccess(newCollBookBeans)
         }.compose(RxUtils::toSimpleSingle)
                 .subscribe({ collBookBeans ->
-                    mView.finishUpdate()
+                    if (mView != null) {
+                        mView.finishUpdate()
+                    }
                 }) { e ->
                     e.printStackTrace()
-                    mView.showError()
+                    if (mView != null) {
+                        mView.showError()
+                    }
                 }
     }
 
@@ -50,7 +56,15 @@ class BookShelfPresenter() : RxPresenter<BookShelfContract.View>(), BookShelfCon
     }
 
     override fun refreshCollBooks(gender: String) {
-        val collBooks = BookRepository.getInstance().collBooks
-        mView.show(collBooks)
+        Single.create<List<CollBookBean>> {
+            val collBooks = BookRepository.getInstance().orderBooks
+            it.onSuccess(collBooks)
+        }.compose(RxUtils::toSimpleSingle)
+                .subscribe({ collBooks ->
+                    mView.show(collBooks)
+                }) { e ->
+                    e.printStackTrace()
+                    mView.showError()
+                }
     }
 }

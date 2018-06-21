@@ -3,6 +3,7 @@ package com.book.novel.adapter.view
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import com.book.ireader.App
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
 import com.book.ireader.utils.Constant
@@ -34,7 +35,7 @@ class BookshelfHolder : ViewHolderImpl<CollBookBean>() {
 
     override fun onBind(data: CollBookBean, pos: Int) {
         //显示图片
-        GlideApp.with(context)
+        GlideApp.with(App.getContext())
                 .load(Constant.IMG_BASE_URL + data.cover)
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)

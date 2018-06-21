@@ -2,6 +2,7 @@ package com.book.novel.adapter.view
 
 import android.widget.ImageView
 import android.widget.TextView
+import com.book.ireader.App
 import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
 import com.book.novel.GlideApp
@@ -29,7 +30,7 @@ class RankCategoryHolder : ViewHolderImpl<BillBookBean>() {
 
     override fun onBind(data: BillBookBean, pos: Int) {
         //显示图片
-        GlideApp.with(context)
+        GlideApp.with(App.getContext())
                 .load(data.cover)
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)

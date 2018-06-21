@@ -30,6 +30,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -81,6 +82,22 @@ public class BookRepository {
                             mCollBookDao.insertOrReplace(bean);
                         }
                 );
+    }
+
+    public void swapCollBookOrder(CollBookBean from, CollBookBean to) {
+        mSession.startAsyncSession()
+                .runInTx(
+                        () -> {
+                            updateCollBookOrder(from.get_id(), from.getBookOrder());
+                            updateCollBookOrder(to.get_id(), to.getBookOrder());
+                        }
+                );
+    }
+
+    public void updateCollBookOrder(String bookId, int bookOrder) {
+        Database db = DaoDbHelper.getInstance().getDatabase();
+        String sql = "UPDATE " + CollBookBeanDao.TABLENAME + " SET " + CollBookBeanDao.Properties.BookOrder.columnName + " = " + bookOrder + " WHERE " + CollBookBeanDao.Properties._id.columnName + " ='" + bookId + "'";
+        db.execSQL(sql);
     }
 
     /**
@@ -175,6 +192,42 @@ public class BookRepository {
                 .queryBuilder()
                 .orderDesc(CollBookBeanDao.Properties.BookOrder)
                 .list();
+    }
+
+    public List<CollBookBean> getOrderBooks() {
+        Database db = DaoDbHelper.getInstance().getDatabase();
+        String sql = "SELECT * FROM " + CollBookBeanDao.TABLENAME + " ORDER BY " + CollBookBeanDao.Properties.BookOrder.columnName + " DESC";
+        Cursor cursor = null;
+        List<CollBookBean> list = new ArrayList<>();
+        try {
+            cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties._id.columnName));
+                String title = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties.Title.columnName));
+                String author = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties.Author.columnName));
+                String shortIntro = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties.ShortIntro.columnName));
+                String cover = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties.Cover.columnName));
+                String category = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties.Category.columnName));
+                int hasCp = cursor.getInt(cursor.getColumnIndex(CollBookBeanDao.Properties.HasCp.columnName));
+                int latelyFollower = cursor.getInt(cursor.getColumnIndex(CollBookBeanDao.Properties.LatelyFollower.columnName));
+                double retentionRatio = cursor.getDouble(cursor.getColumnIndex(CollBookBeanDao.Properties.RetentionRatio.columnName));
+                String updated = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties.Updated.columnName));
+                String lastRead = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties.LastRead.columnName));
+                int chaptersCount = cursor.getInt(cursor.getColumnIndex(CollBookBeanDao.Properties.ChaptersCount.columnName));
+                String lastChapter = cursor.getString(cursor.getColumnIndex(CollBookBeanDao.Properties.LastChapter.columnName));
+                int isUpdate = cursor.getInt(cursor.getColumnIndex(CollBookBeanDao.Properties.IsUpdate.columnName));
+                int isLocal = cursor.getInt(cursor.getColumnIndex(CollBookBeanDao.Properties.IsLocal.columnName));
+                int bookOrder = cursor.getInt(cursor.getColumnIndex(CollBookBeanDao.Properties.BookOrder.columnName));
+                CollBookBean book = new CollBookBean(id, title, author, shortIntro, cover, category, hasCp == 1 ? true : false, latelyFollower,
+                        retentionRatio, updated, lastRead, chaptersCount, lastChapter, isUpdate == 1 ? true : false, isLocal == 1 ? true : false, bookOrder);
+                list.add(book);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return list;
     }
 
     public List<SearchHistoryBean> getSearchHistorys() {

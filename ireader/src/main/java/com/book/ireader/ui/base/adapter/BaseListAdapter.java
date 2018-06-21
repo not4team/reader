@@ -47,7 +47,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
         //设置点击事件
         holder.itemView.setOnClickListener((v) -> {
             if (mClickListener != null) {
-                mClickListener.onItemClick(v, position);
+                mClickListener.onItemClick(v, holder.getLayoutPosition());
             }
             //adapter监听点击事件
             iHolder.onClick();
@@ -58,7 +58,7 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter<RecyclerVi
                 (v) -> {
                     boolean isClicked = false;
                     if (mLongClickListener != null) {
-                        isClicked = mLongClickListener.onItemLongClick(v, position);
+                        isClicked = mLongClickListener.onItemLongClick(v, holder.getLayoutPosition());
                     }
                     //Adapter监听长点击事件
                     onItemLongClick(v, position);

@@ -2,6 +2,7 @@ package com.book.novel.adapter.view
 
 import android.widget.ImageView
 import android.widget.TextView
+import com.book.ireader.App
 
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
@@ -31,7 +32,7 @@ class SearchBookHolder : ViewHolderImpl<SearchBookPackage.BooksBean>() {
 
     override fun onBind(data: SearchBookPackage.BooksBean, pos: Int) {
         //显示图片
-        GlideApp.with(context)
+        GlideApp.with(App.getContext())
                 .load(Constant.IMG_BASE_URL + data.cover)
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)

@@ -206,7 +206,8 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
             if (bean.bookChapterBeans.size > mCollBookBean!!.bookChapters.size) {
                 mCollBookBean!!.setIsUpdate(true)
                 mCollBookBean!!.lastChapter = bean.lastChapter
-                mCollBookBean!!.update()
+                BookRepository.getInstance().saveCollBook(mCollBookBean)
+                BookRepository.getInstance().saveBookChaptersWithAsync(mCollBookBean!!.bookChapters)
                 RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
             }
         } else {
