@@ -3,7 +3,7 @@ package com.book.novel.adapter.view
 import android.widget.TextView
 
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
-import com.book.novel.R
+import com.lereader.novel.R
 
 /**
  * Created by newbiechen on 17-6-2.

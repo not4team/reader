@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -13,13 +14,16 @@ import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.model.bean.packages.BookCityPackage
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.novel.GlideApp
-import com.book.novel.R
 import com.book.novel.activity.BookDetailActivity
 import com.book.novel.adapter.BookCityRecyclerAdapter
 import com.book.novel.adapter.recyclerview.MultiItemTypeAdapter
 import com.book.novel.adapter.recyclerview.wrapper.HeaderAndFooterWrapper
 import com.book.novel.presenter.BookCityPresenter
 import com.book.novel.presenter.contract.BookCityContract
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.lereader.novel.R
 
 /**
  * Created with author.
@@ -34,6 +38,37 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
     private lateinit var mRecyclerAdapter: BookCityRecyclerAdapter
     private lateinit var mHeaderAndFooterWrapper: HeaderAndFooterWrapper
     private lateinit var mEmptyView: View
+    private lateinit var mAdView: AdView
+    private lateinit var mBannerImageView: ImageView
+    private val mAdListener = object : AdListener() {
+        override fun onAdLoaded() {
+            // Code to be executed when an ad finishes loading.
+            Log.e(TAG, "onAdLoaded")
+            mBannerImageView.visibility = View.GONE
+        }
+
+        override fun onAdFailedToLoad(errorCode: Int) {
+            // Code to be executed when an ad request fails.
+            Log.e(TAG, "onAdFailedToLoad")
+        }
+
+        override fun onAdOpened() {
+            // Code to be executed when an ad opens an overlay that
+            // covers the screen.
+            Log.e(TAG, "onAdOpened")
+        }
+
+        override fun onAdLeftApplication() {
+            // Code to be executed when the user has left the app.
+            Log.e(TAG, "onAdLeftApplication")
+        }
+
+        override fun onAdClosed() {
+            // Code to be executed when when the user is about to return
+            // to the app after tapping on an ad.
+            Log.e(TAG, "onAdClosed")
+        }
+    }
 
     override fun initWidget(savedInstanceState: Bundle?) {
         super.initWidget(savedInstanceState)
@@ -83,6 +118,11 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
         mSwipeRefreshLayout.isRefreshing = false
         mEmptyView.visibility = View.GONE
         val headerView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header, null)
+        mBannerImageView = headerView.findViewById(R.id.banner_image_view)
+        mAdView = headerView.findViewById(R.id.adView)
+        mAdView.adListener = mAdListener
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
         val linearLayout = headerView.findViewById<LinearLayout>(R.id.bookcity_rv_header_parent)
         bookCityPackage.hotBooks.forEach { item ->
             val itemView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header_item, null)

@@ -8,7 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.book.novel.R;
+import com.lereader.novel.R;
 
 /**
  * Created with author.

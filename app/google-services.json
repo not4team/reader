@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "15742483069",
+    "firebase_url": "https://happy-reader.firebaseio.com",
+    "project_id": "happy-reader",
+    "storage_bucket": "happy-reader.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:15742483069:android:e5178888fb921be0",
+        "android_client_info": {
+          "package_name": "com.lereader.novel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "15742483069-mkvuja7rmr9fbhv5khd3cnss014c8lv7.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "15742483069-mkvuja7rmr9fbhv5khd3cnss014c8lv7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBCykkSBDZwdDR29Y0tnC7WvHsVZw9kh4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

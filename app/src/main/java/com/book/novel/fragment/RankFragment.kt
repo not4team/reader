@@ -6,7 +6,7 @@ import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
 import com.book.ireader.model.bean.RankTabBean
 import com.book.ireader.ui.base.BaseMVPFragment
-import com.book.novel.R
+import com.lereader.novel.R
 import com.book.novel.adapter.RankViewPagerAdapter
 import com.book.novel.presenter.RankPresenter
 import com.book.novel.presenter.contract.RankContract

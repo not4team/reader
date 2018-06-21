@@ -12,7 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.book.ireader.ui.base.BaseActivity
-import com.book.novel.R
+import com.lereader.novel.R
 import com.book.novel.fragment.BookCityFragment
 import com.book.novel.fragment.BookShelfFragment
 import com.book.novel.fragment.RankFragment

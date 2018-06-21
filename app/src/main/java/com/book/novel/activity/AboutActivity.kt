@@ -2,7 +2,7 @@ package com.book.novel.activity
 
 import android.support.v7.widget.Toolbar
 import com.book.ireader.ui.base.BaseActivity
-import com.book.novel.R
+import com.lereader.novel.R
 
 /**
  * Created with author.

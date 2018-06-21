@@ -6,7 +6,7 @@ import com.book.ireader.App
 import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
 import com.book.novel.GlideApp
-import com.book.novel.R
+import com.lereader.novel.R
 
 /**
  * Created with author.

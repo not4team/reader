@@ -6,6 +6,9 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'io.fabric'
+
 def cfg = rootProject.ext.configuration // 项目配置
 def libs = rootProject.ext.libraries // 库
 android {
@@ -13,17 +16,18 @@ android {
     buildToolsVersion cfg.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.book.novel"
+        applicationId "com.lereader.novel"
         minSdkVersion cfg.minSdk
         targetSdkVersion cfg.targetSdk
         versionCode cfg.version_code
         versionName cfg.version_name
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -60,6 +64,12 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.7.1'
     kapt 'com.github.bumptech.glide:compiler:4.7.1'
     implementation "com.github.bumptech.glide:okhttp3-integration:4.7.1"
+
+    implementation "com.google.android.gms:play-services-ads:15.0.1"
+    implementation 'com.google.firebase:firebase-core:16.0.0'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.4'
+
+    implementation 'com.android.support:multidex:1.0.3'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

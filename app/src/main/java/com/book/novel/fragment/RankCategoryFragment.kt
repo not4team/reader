@@ -8,7 +8,7 @@ import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.model.bean.packages.RankCategoryPackage
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
-import com.book.novel.R
+import com.lereader.novel.R
 import com.book.novel.adapter.RankCategoryRecyclerAdapter
 import com.book.novel.adapter.recyclerview.wrapper.LoadMoreWrapper
 import com.book.novel.presenter.RankCategoryPresenter

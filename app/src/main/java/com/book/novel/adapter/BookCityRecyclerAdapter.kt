@@ -5,7 +5,7 @@ import android.view.View
 import com.book.ireader.App
 import com.book.ireader.model.bean.BillBookBean
 import com.book.novel.GlideApp
-import com.book.novel.R
+import com.lereader.novel.R
 import com.book.novel.adapter.recyclerview.CommonAdapter
 import com.book.novel.adapter.recyclerview.base.ViewHolder
 

@@ -20,7 +20,7 @@ import com.book.ireader.ui.activity.ReadActivity
 import com.book.ireader.ui.base.BaseMVPActivity
 import com.book.ireader.utils.Constant
 import com.book.novel.GlideApp
-import com.book.novel.R
+import com.lereader.novel.R
 import com.book.novel.adapter.BookDetailRecyclerAdapter
 import com.book.novel.adapter.recyclerview.MultiItemTypeAdapter
 import com.book.novel.presenter.BookDetailPresenter

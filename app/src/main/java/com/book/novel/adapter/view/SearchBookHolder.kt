@@ -8,7 +8,7 @@ import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
 import com.book.ireader.utils.Constant
 import com.book.novel.GlideApp
-import com.book.novel.R
+import com.lereader.novel.R
 
 /**
  * Created by newbiechen on 17-6-2.
@@ -36,12 +36,12 @@ class SearchBookHolder : ViewHolderImpl<SearchBookPackage.BooksBean>() {
                 .load(Constant.IMG_BASE_URL + data.cover)
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)
-                .into(mIvCover!!)
+                .into(mIvCover)
 
-        mTvName!!.text = data.title
+        mTvName.text = data.title
 
-        mTvAuthor!!.text = context.getString(R.string.nb_search_book_author, data.author)
-        mTvCategory!!.text = context.getString(R.string.nb_search_book_category, data.cat)
+        mTvAuthor.text = context.getString(R.string.nb_search_book_author, data.author)
+        mTvCategory.text = context.getString(R.string.nb_search_book_category, data.cat)
         mLastChapter.text = context.getString(R.string.nb_search_book_last_chapter, data.lastChapter)
     }
 

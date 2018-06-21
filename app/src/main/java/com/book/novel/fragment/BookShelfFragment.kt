@@ -13,7 +13,7 @@ import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.activity.ReadActivity
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
-import com.book.novel.R
+import com.lereader.novel.R
 import com.book.novel.adapter.BookshelfAdapter
 import com.book.novel.adapter.SimpleItemTouchHelperCallback
 import com.book.novel.presenter.BookShelfPresenter

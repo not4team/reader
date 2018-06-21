@@ -5,7 +5,7 @@ import android.content.SearchRecentSuggestionsProvider
 import android.database.Cursor
 import android.database.CursorWrapper
 import android.net.Uri
-import com.book.novel.R
+import com.lereader.novel.R
 
 
 /**

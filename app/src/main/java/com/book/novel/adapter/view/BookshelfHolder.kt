@@ -8,7 +8,7 @@ import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
 import com.book.ireader.utils.Constant
 import com.book.novel.GlideApp
-import com.book.novel.R
+import com.lereader.novel.R
 
 /**
  * Created with author.
