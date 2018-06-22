@@ -15,7 +15,7 @@ import com.lereader.novel.R
  * Time: 22:57
  */
 class MySuggestionProvider : SearchRecentSuggestionsProvider {
-    val mIconUri: String = "android.resource://com.book.novel/" + R.drawable.ic_search_history
+    val mIconUri: String = "android.resource://com.lereader.novel/" + R.drawable.ic_search_history
 
     companion object {
         const val AUTHORITY = "com.book.novel.MySuggestionProvider"

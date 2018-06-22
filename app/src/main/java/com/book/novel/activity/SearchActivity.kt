@@ -16,12 +16,12 @@ import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.ui.base.BaseMVPActivity
 import com.book.ireader.ui.base.adapter.BaseListAdapter
 import com.book.ireader.widget.RefreshLayout
-import com.lereader.novel.R
 import com.book.novel.adapter.KeyWordAdapter
 import com.book.novel.adapter.SearchBookAdapter
 import com.book.novel.presenter.SearchPresenter
 import com.book.novel.presenter.contract.SearchContract
 import com.book.novel.provider.MySuggestionProvider
+import com.lereader.novel.R
 
 
 /**
@@ -156,6 +156,9 @@ class SearchActivity : BaseMVPActivity<SearchContract.Presenter>(), SearchContra
     override fun finishBooks(books: List<SearchBookPackage.BooksBean>) {
         mRefreshLayout.showFinish()
         mSearchBookAdapter.refreshItems(books)
+        if (books.size == 0) {
+            mRefreshLayout.showEmpty()
+        }
     }
 
     override fun errorBooks() {
