@@ -55,7 +55,7 @@ class SearchActivity : BaseMVPActivity<SearchContract.Presenter>(), SearchContra
 
     override fun setUpToolbar(toolbar: Toolbar) {
         super.setUpToolbar(toolbar)
-        toolbar!!.setNavigationOnClickListener {
+        toolbar.setNavigationOnClickListener {
             if (mSearchView.isIconified) {
                 finish()
             } else {

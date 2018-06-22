@@ -34,11 +34,11 @@ class RankCategoryHolder : ViewHolderImpl<BillBookBean>() {
                 .load(data.cover)
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)
-                .into(mIvCover!!)
+                .into(mIvCover)
 
-        mTvName!!.text = data.title
-        mTvAuthor!!.text = data.author
-        mTvCategory!!.text = context.getString(R.string.rank_category_item_cat_wordcount, data.cat, data.wordCount)
+        mTvName.text = data.title
+        mTvAuthor.text = data.author
+        mTvCategory.text = context.getString(R.string.rank_category_item_cat_wordcount, data.cat, data.wordCount)
         mTvShortInstro.text = data.shortIntro
     }
 

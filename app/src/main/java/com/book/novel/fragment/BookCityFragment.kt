@@ -39,12 +39,11 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
     private lateinit var mHeaderAndFooterWrapper: HeaderAndFooterWrapper
     private lateinit var mEmptyView: View
     private lateinit var mAdView: AdView
-    private lateinit var mBannerImageView: ImageView
     private val mAdListener = object : AdListener() {
         override fun onAdLoaded() {
             // Code to be executed when an ad finishes loading.
             Log.e(TAG, "onAdLoaded")
-            mBannerImageView.visibility = View.GONE
+            mAdView.visibility = View.VISIBLE
         }
 
         override fun onAdFailedToLoad(errorCode: Int) {
@@ -79,6 +78,10 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
         mHeaderAndFooterWrapper = HeaderAndFooterWrapper(mRecyclerAdapter)
         mRecyclerView.adapter = mHeaderAndFooterWrapper
         mEmptyView = getViewById(R.id.rl_empty_view)
+        mAdView = getViewById(R.id.adView)
+        mAdView.adListener = mAdListener
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     override fun initClick() {
@@ -118,11 +121,6 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
         mSwipeRefreshLayout.isRefreshing = false
         mEmptyView.visibility = View.GONE
         val headerView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header, null)
-        mBannerImageView = headerView.findViewById(R.id.banner_image_view)
-        mAdView = headerView.findViewById(R.id.adView)
-        mAdView.adListener = mAdListener
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
         val linearLayout = headerView.findViewById<LinearLayout>(R.id.bookcity_rv_header_parent)
         bookCityPackage.hotBooks.forEach { item ->
             val itemView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header_item, null)

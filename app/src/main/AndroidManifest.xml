@@ -48,6 +48,7 @@
         </activity>
         <activity
             android:name="com.book.novel.activity.BookDetailActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.book.novel.activity.BookDetailActivity" />

@@ -25,10 +25,38 @@ android {
         multiDexEnabled true
     }
 
-    buildTypes {
+    signingConfigs {
+        debug {
+            storeFile file("novel.jks")
+            storePassword "nilm787&98"
+            keyAlias "novel"
+            keyPassword "nilm787&98"
+        }
         release {
-            minifyEnabled true
+            storeFile file("novel.jks")
+            storePassword "nilm787&98"
+            keyAlias "novel"
+            keyPassword "nilm787&98"
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+            minifyEnabled false
+            zipAlignEnabled true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            buildConfigField "boolean", "LOG_DEBUG", "false" //不显示log
+            minifyEnabled true//混淆
+            zipAlignEnabled true//内存对齐
+            shrinkResources true // 移除无用的resource文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 

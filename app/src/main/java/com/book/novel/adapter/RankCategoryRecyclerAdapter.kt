@@ -25,12 +25,4 @@ class RankCategoryRecyclerAdapter : BaseListAdapter<BillBookBean>() {
         mList.addAll(list)
     }
 
-    override fun onItemClick(v: View, pos: Int) {
-        super.onItemClick(v, pos)
-        val mIntent = Intent(App.getContext(), BookDetailActivity::class.java)
-        mIntent.putExtra(BookDetailActivity.BOOK_ID_INTENT_KEY, mList[pos]._id)
-        mIntent.putExtra(BookDetailActivity.BOOK_TILTE_INTENT_KEY, mList[pos].title)
-        mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, mList[pos].author)
-        App.getContext().startActivity(mIntent)
-    }
 }

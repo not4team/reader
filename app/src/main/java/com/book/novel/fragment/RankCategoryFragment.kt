@@ -1,5 +1,6 @@
 package com.book.novel.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -8,11 +9,12 @@ import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.model.bean.packages.RankCategoryPackage
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
-import com.lereader.novel.R
+import com.book.novel.activity.BookDetailActivity
 import com.book.novel.adapter.RankCategoryRecyclerAdapter
 import com.book.novel.adapter.recyclerview.wrapper.LoadMoreWrapper
 import com.book.novel.presenter.RankCategoryPresenter
 import com.book.novel.presenter.contract.RankCategoryContract
+import com.lereader.novel.R
 import java.io.Serializable
 
 /**
@@ -110,6 +112,14 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
 
                 }
             }
+        }
+
+        mAdapter.setOnItemClickListener { view, pos ->
+            val mIntent = Intent(activity, BookDetailActivity::class.java)
+            mIntent.putExtra(BookDetailActivity.BOOK_ID_INTENT_KEY, mBillBookBeans!![pos]._id)
+            mIntent.putExtra(BookDetailActivity.BOOK_TILTE_INTENT_KEY, mBillBookBeans!![pos].title)
+            mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, mBillBookBeans!![pos].author)
+            startActivity(mIntent)
         }
     }
 

@@ -4,17 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
+    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            ads:adSize="SMART_BANNER"
+            ads:adUnitId="ca-app-pub-7332030505319718/1835410792" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/bookcity_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/adView" />
 
         <include
             layout="@layout/view_empty"
             android:visibility="gone" />
-    </FrameLayout>
+    </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

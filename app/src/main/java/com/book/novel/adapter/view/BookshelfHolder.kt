@@ -39,12 +39,12 @@ class BookshelfHolder : ViewHolderImpl<CollBookBean>() {
                 .load(Constant.IMG_BASE_URL + data.cover)
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)
-                .into(mIvCover!!)
+                .into(mIvCover)
 
-        mTvName!!.text = data.title
+        mTvName.text = data.title
 
-        mTvAuthor!!.text = context.getString(R.string.nb_search_book_author, data.author)
-        mTvCategory!!.text = context.getString(R.string.nb_search_book_category, data.category)
+        mTvAuthor.text = context.getString(R.string.nb_search_book_author, data.author)
+        mTvCategory.text = context.getString(R.string.nb_search_book_category, data.category)
         mLastChapter.text = context.getString(R.string.nb_search_book_last_chapter, data.lastChapter)
         mUpdateTip.visibility = if (data.isUpdate()) View.VISIBLE else View.GONE
     }
