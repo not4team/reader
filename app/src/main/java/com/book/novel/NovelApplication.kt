@@ -3,6 +3,7 @@ package com.book.novel
 import android.content.Context
 import android.support.multidex.MultiDex
 import com.book.ireader.App
+import com.book.novel.utils.IMMLeaks
 import com.google.android.gms.ads.MobileAds
 
 /**
@@ -20,5 +21,6 @@ class NovelApplication : App() {
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)
+        IMMLeaks.fixFocusedViewLeak(this)
     }
 }
