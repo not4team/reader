@@ -14,10 +14,10 @@
     <application
         android:name="com.book.novel.NovelApplication"
         android:allowBackup="true"
-        android:debuggable="true"
-        android:icon="@mipmap/book"
+        android:debuggable="false"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/book"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode"

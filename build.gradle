@@ -8,7 +8,7 @@ ext {
             minSdk           : 19,
             targetSdk        : 27,
             version_code     : 1,
-            version_name     : "v1.0",
+            version_name     : "v1.0.0",
     ]
 
     //对一些库的版本进行统一管理
