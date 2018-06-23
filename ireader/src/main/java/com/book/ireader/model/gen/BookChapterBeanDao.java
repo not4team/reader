@@ -37,8 +37,8 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
         public final static Property End = new Property(7, long.class, "end", false, "END");
     }
 
-    private Query<BookChapterBean> downloadTaskBean_BookChapterListQuery;
     private Query<BookChapterBean> collBookBean_BookChapterListQuery;
+    private Query<BookChapterBean> downloadTaskBean_BookChapterListQuery;
 
     public BookChapterBeanDao(DaoConfig config) {
         super(config);
@@ -193,20 +193,6 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
         return true;
     }
     
-    /** Internal query to resolve the "bookChapterList" to-many relationship of DownloadTaskBean. */
-    public List<BookChapterBean> _queryDownloadTaskBean_BookChapterList(String taskName) {
-        synchronized (this) {
-            if (downloadTaskBean_BookChapterListQuery == null) {
-                QueryBuilder<BookChapterBean> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.TaskName.eq(null));
-                downloadTaskBean_BookChapterListQuery = queryBuilder.build();
-            }
-        }
-        Query<BookChapterBean> query = downloadTaskBean_BookChapterListQuery.forCurrentThread();
-        query.setParameter(0, taskName);
-        return query.list();
-    }
-
     /** Internal query to resolve the "bookChapterList" to-many relationship of CollBookBean. */
     public List<BookChapterBean> _queryCollBookBean_BookChapterList(String bookId) {
         synchronized (this) {
@@ -218,6 +204,20 @@ public class BookChapterBeanDao extends AbstractDao<BookChapterBean, String> {
         }
         Query<BookChapterBean> query = collBookBean_BookChapterListQuery.forCurrentThread();
         query.setParameter(0, bookId);
+        return query.list();
+    }
+
+    /** Internal query to resolve the "bookChapterList" to-many relationship of DownloadTaskBean. */
+    public List<BookChapterBean> _queryDownloadTaskBean_BookChapterList(String taskName) {
+        synchronized (this) {
+            if (downloadTaskBean_BookChapterListQuery == null) {
+                QueryBuilder<BookChapterBean> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.TaskName.eq(null));
+                downloadTaskBean_BookChapterListQuery = queryBuilder.build();
+            }
+        }
+        Query<BookChapterBean> query = downloadTaskBean_BookChapterListQuery.forCurrentThread();
+        query.setParameter(0, taskName);
         return query.list();
     }
 
