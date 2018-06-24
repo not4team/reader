@@ -5,7 +5,6 @@ import android.content.SearchRecentSuggestionsProvider
 import android.database.Cursor
 import android.database.CursorWrapper
 import android.net.Uri
-import com.lereader.novel.R
 
 
 /**
@@ -15,7 +14,7 @@ import com.lereader.novel.R
  * Time: 22:57
  */
 class MySuggestionProvider : SearchRecentSuggestionsProvider {
-    val mIconUri: String = "android.resource://com.lereader.novel/" + R.drawable.ic_search_history
+    val mIconUri: String = "android.resource://com.lereader.novel/drawable/ic_search_history"
 
     companion object {
         const val AUTHORITY = "com.book.novel.MySuggestionProvider"

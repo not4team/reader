@@ -107,6 +107,8 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
         super.processLogic()
         mSwipeRefreshLayout.isRefreshing = true
         mPresenter.load("male")
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     private fun toDetailActivity(bean: BillBookBean) {

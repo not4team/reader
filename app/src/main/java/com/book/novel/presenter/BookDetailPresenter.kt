@@ -110,8 +110,4 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
         }
 
     }
-
-    companion object {
-        private val TAG = "BookDetailPresenter"
-    }
 }

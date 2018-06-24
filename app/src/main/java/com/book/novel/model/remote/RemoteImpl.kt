@@ -7,6 +7,7 @@ import com.book.ireader.model.remote.IRemote
 import com.book.novel.utils.BiqugexswParser
 import com.book.novel.utils.GsonParser
 import com.book.novel.utils.QidianParser
+import com.lereader.novel.BuildConfig
 import io.reactivex.Single
 import retrofit2.Retrofit
 
@@ -53,7 +54,9 @@ class RemoteImpl : IRemote {
     }
 
     override fun getBookChapters(bookId: String): Single<List<BookChapterBean>> {
-        Log.e("RemoteImpl", "getBookChapters bookId:" + bookId)
+        if (BuildConfig.LOG_DEBUG) {
+            Log.e(TAG, "getBookChapters bookId:" + bookId)
+        }
         return mBookApi.getBookChapterPackage(bookId, "chapter")
                 .map { bean ->
                     BiqugexswParser.parseBookDetail(bean.string()).bookChapterBeans
@@ -67,7 +70,9 @@ class RemoteImpl : IRemote {
      * @return
      */
     override fun getChapterInfo(url: String): Single<ChapterInfoBean> {
-        Log.e("RemoteImpl", "getChapterInfo url:" + url)
+        if (BuildConfig.LOG_DEBUG) {
+            Log.e(TAG, "getChapterInfo url:" + url)
+        }
         return mBookApi.getChapterInfoPackage(url)
                 .map { bean ->
                     BiqugexswParser.parseChapterInfo(bean.string())
@@ -228,7 +233,9 @@ class RemoteImpl : IRemote {
 
     /***************************************书籍详情 */
     override fun getBookDetail(bookId: String): Single<BookDetailBean> {
-        Log.e("RemoteImpl", "getBookDetail bookId:" + bookId)
+        if (BuildConfig.LOG_DEBUG) {
+            Log.e(TAG, "getBookDetail bookId:" + bookId)
+        }
         return mBookApi.getBookDetail(bookId).map { bean ->
             BiqugexswParser.parseBookDetail(bean.string())
         }

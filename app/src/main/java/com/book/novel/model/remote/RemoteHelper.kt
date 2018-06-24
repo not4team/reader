@@ -2,6 +2,7 @@ package com.book.novel.model.remote
 
 import android.util.Log
 import com.book.ireader.utils.Constant
+import com.lereader.novel.BuildConfig
 import okhttp3.Cookie
 import okhttp3.CookieJar
 import okhttp3.HttpUrl
@@ -24,7 +25,9 @@ class RemoteHelper private constructor() {
                 .cookieJar(object : CookieJar {
                     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
                         cookieStore.put(HttpUrl.parse(mQidianUrl)!!, cookies)
-                        cookies.forEach { cookie -> Log.e(TAG, "name:" + cookie.name() + ",value:" + cookie.value()) }
+                        if (BuildConfig.LOG_DEBUG) {
+                            cookies.forEach { cookie -> Log.e(TAG, "name:" + cookie.name() + ",value:" + cookie.value()) }
+                        }
                     }
 
                     override fun loadForRequest(url: HttpUrl): List<Cookie>? {
@@ -39,12 +42,16 @@ class RemoteHelper private constructor() {
                     val request = chain.request()
                     //添加token
                     var url = request.url().toString()
-                    Log.d(TAG, "intercept: " + url)
+                    if (BuildConfig.LOG_DEBUG) {
+                        Log.d(TAG, "intercept: " + url)
+                    }
                     if (url.contains("m.qidian.com/majax/rank")) {
                         url = url + "&_csrfToken=" + getCookie("_csrfToken")
                     }
                     val addCookieTokenRequest = request.newBuilder().url(url).build()
-                    Log.d(TAG, "add cookie url: " + addCookieTokenRequest.url().toString())
+                    if (BuildConfig.LOG_DEBUG) {
+                        Log.d(TAG, "add cookie url: " + addCookieTokenRequest.url().toString())
+                    }
                     val response = chain.proceed(addCookieTokenRequest)
                     response
                 }.build()
