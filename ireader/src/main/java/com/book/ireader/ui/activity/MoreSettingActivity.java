@@ -47,7 +47,7 @@ public class MoreSettingActivity extends BaseActivity {
     @Override
     protected void setUpToolbar(Toolbar toolbar) {
         super.setUpToolbar(toolbar);
-        getSupportActionBar().setTitle("阅读设置");
+        getSupportActionBar().setTitle(getResources().getString(R.string.nb_read_setting_title));
     }
 
     @Override

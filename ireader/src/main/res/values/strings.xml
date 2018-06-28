@@ -173,6 +173,19 @@
     <string name="nb.read.download">缓存</string>'
     <string name="nb.read.category">目录</string>
     <string name="nb.read.no_chapter">第 %1$d 章(%2$d)</string>
+    <string name="nb.read.pre_chapter">上一章</string>
+    <string name="nb.read.next_chapter">下一章</string>
+    <string name="nb.read.setting.system">系统</string>
+    <string name="nb.read.setting.default">默认</string>
+    <string name="nb.read.setting.simulation">仿真</string>
+    <string name="nb.read.setting.cover">覆盖</string>
+    <string name="nb.read.setting.scroll">滚动</string>
+    <string name="nb.read.setting.nothing">无</string>
+    <string name="nb.read.setting.more">更多设置 >></string>
+    <string name="nb.read.setting.audio_button">音量键翻页</string>
+    <string name="nb.read.setting.full_screen">全屏模式</string>
+    <string name="nb.read.setting.fanjian">繁简转换</string>
+    <string name="nb_read_setting_title">阅读设置</string>
 
     <!--file system-->
     <string name="nb.file.sub_count">%1$d 项</string>

@@ -12,6 +12,6 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/about"
-        android:title="关于"
+        android:title="@string/about"
         app:showAsAction="never" />
 </menu>

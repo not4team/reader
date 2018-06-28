@@ -20,11 +20,11 @@ import com.book.ireader.ui.activity.ReadActivity
 import com.book.ireader.ui.base.BaseMVPActivity
 import com.book.ireader.utils.Constant
 import com.book.novel.GlideApp
-import com.lereader.novel.R
 import com.book.novel.adapter.BookDetailRecyclerAdapter
 import com.book.novel.adapter.recyclerview.MultiItemTypeAdapter
 import com.book.novel.presenter.BookDetailPresenter
 import com.book.novel.presenter.contract.BookDetailContract
+import com.lereader.novel.R
 
 /**
  * Created by author on 2018/6/9.
@@ -99,7 +99,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
 
     override fun setUpToolbar(toolbar: Toolbar) {
         super.setUpToolbar(toolbar)
-        supportActionBar!!.title = "书籍详情"
+        supportActionBar!!.title = resources.getString(R.string.bookdetail_title)
     }
 
     override fun initClick() {
@@ -202,10 +202,11 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         if (mCollBookBean != null) {
             isCollected = true
             mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
-            mBtnStartRead.text = "继续阅读"
+            mBtnStartRead.text = resources.getString(R.string.continue_read)
             if (bean.bookChapterBeans.size > mCollBookBean!!.bookChapters.size) {
                 mCollBookBean!!.setIsUpdate(true)
                 mCollBookBean!!.lastChapter = bean.lastChapter
+                mCollBookBean!!.bookChapters = bean.bookChapterBeans
                 BookRepository.getInstance().saveCollBook(mCollBookBean)
                 BookRepository.getInstance().saveBookChaptersWithAsync(mCollBookBean!!.bookChapters)
                 RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
@@ -258,7 +259,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
             isCollected = data.getBooleanExtra(RESULT_IS_COLLECTED, false)
             if (isCollected) {
                 mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
-                mBtnStartRead.text = "继续阅读"
+                mBtnStartRead.text = resources.getString(R.string.continue_read)
             }
         }
     }

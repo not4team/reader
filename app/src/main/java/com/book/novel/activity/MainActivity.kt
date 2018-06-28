@@ -12,10 +12,10 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.book.ireader.ui.base.BaseActivity
-import com.lereader.novel.R
 import com.book.novel.fragment.BookCityFragment
 import com.book.novel.fragment.BookShelfFragment
 import com.book.novel.fragment.RankFragment
+import com.lereader.novel.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -143,7 +143,7 @@ class MainActivity : BaseActivity() {
                         if (mBookCityFragment != null) {
                             mFragmentTransaction.hide(mBookCityFragment)
                         }
-                        if (mRankFragment != null) {
+                        if (mRankFragment == null) {
                             mRankFragment = RankFragment()
                             mFragmentTransaction.add(R.id.main_fl_content, mRankFragment, RANK_TAG)
                         } else {

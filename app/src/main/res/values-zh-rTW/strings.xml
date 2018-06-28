@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">樂閱</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_bookshelf">書架</string>
+    <string name="title_bookcity">書城</string>
+    <string name="title_rank">排行榜</string>
+    <string name="add_bookshelf">加入書架</string>
+    <string name="start_read">開始閱讀</string>
+    <string name="catalog">目錄</string>
+    <string name="reverse_order">倒序</string>
+    <string name="positive_order">正序</string>
+    <string name="books_maybe_interest">你可能感興趣</string>
+    <string name="search_label">搜索</string>
+    <string name="search_hint">請輸入書名|作者名</string>
+    <string name="bookdetail_wordcount">%1$d字</string>
+    <string name="bookshelf_empty">書架暫無書籍</string>
+    <string name="rank_category_item_cat_wordcount">%1$s·%2$s</string>
+    <string name="about">關於</string>
+    <string name="activity_about_text">作者自娛之作,內容均來源于網絡\n\n應用內書架為本地書架，卸載重裝或清除數據后無法恢復，只有加入書架的書籍章節會緩存
+    </string>
+    <string name="no_more_text">我是有底線的</string>
+    <string name="load_more_text">正在加載中</string>
+    <string name="load_failed_text">加載失敗，點擊重試</string>
+</resources>
