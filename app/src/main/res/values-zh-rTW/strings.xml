@@ -8,6 +8,7 @@
     <string name="title_rank">排行榜</string>
     <string name="add_bookshelf">加入書架</string>
     <string name="start_read">開始閱讀</string>
+    <string name="continue_read">繼續閱讀</string>
     <string name="catalog">目錄</string>
     <string name="reverse_order">倒序</string>
     <string name="positive_order">正序</string>
@@ -23,4 +24,5 @@
     <string name="no_more_text">我是有底線的</string>
     <string name="load_more_text">正在加載中</string>
     <string name="load_failed_text">加載失敗，點擊重試</string>
+    <string name="bookdetail_title">書籍詳情</string>
 </resources>
