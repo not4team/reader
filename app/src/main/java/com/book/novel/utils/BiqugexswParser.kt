@@ -4,6 +4,7 @@ import com.book.ireader.model.bean.BookChapterBean
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.ChapterInfoBean
 import com.book.ireader.model.bean.packages.SearchBookPackage
+import com.book.ireader.utils.MD5Utils
 import org.jsoup.Jsoup
 
 /**
@@ -80,6 +81,7 @@ class BiqugexswParser {
                 val bookChapterBean = BookChapterBean()
                 bookChapterBean.title = _title
                 bookChapterBean.link = _link.replaceFirst("/", "")
+                bookChapterBean.id = MD5Utils.strToMd5By16(bookChapterBean.link)
                 bookChapterBean.bookId = mBookDetailBean._id
                 chapterList.add(bookChapterBean)
             }
