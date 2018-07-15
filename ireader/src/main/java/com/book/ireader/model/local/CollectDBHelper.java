@@ -11,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class CollectDBHelper extends SQLiteOpenHelper {
 
     public CollectDBHelper(Context context) {
-        this(context, DBConstant.DB_NAME_USER, null, DBConstant.DB_VERSION_USER);
+        this(context, DBConstant.DB_NAME_USER, null, DBConstant.DB_VERSION_COLLECT);
     }
     public CollectDBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
