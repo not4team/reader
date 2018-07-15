@@ -1,9 +1,8 @@
 package com.book.ireader.model.bean;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
+import com.book.ireader.model.annotation.Column;
+import com.book.ireader.model.annotation.Id;
+import com.book.ireader.model.annotation.Table;
 
 import java.io.Serializable;
 
@@ -12,7 +11,7 @@ import java.io.Serializable;
  * 书的章节链接(作为下载的进度数据)
  * 同时作为网络章节和本地章节 (没有找到更好分离两者的办法)
  */
-@Entity
+@Table(name = BookChapterBean.TABLE_NAME)
 public class BookChapterBean implements Serializable {
     private static final long serialVersionUID = 56423411313L;
     /**
@@ -20,32 +19,42 @@ public class BookChapterBean implements Serializable {
      * link : http://read.qidian.com/chapter/rJgN8tJ_cVdRGoWu-UQg7Q2/6jr-buLIUJSaGfXRMrUjdw2
      * unreadble : false
      */
+    public static final String TABLE_NAME = "BookChapterBean";
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_LINK = "link";
+    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_TASK_NAME = "task_name";
+    public static final String COLUMN_UNREADBLE = "unreadble";
+    public static final String COLUMN_BOOK_ID = "book_id";
+    public static final String COLUMN_START = "start";
+    public static final String COLUMN_END = "end";
     @Id
+    @Column(name = COLUMN_ID)
     private String id;
-
+    @Column(name = COLUMN_LINK)
     private String link;
-
+    @Column(name = COLUMN_TITLE)
     private String title;
 
     //所属的下载任务
+    @Column(name = COLUMN_TASK_NAME)
     private String taskName;
 
+    @Column(name = COLUMN_UNREADBLE)
     private boolean unreadble;
 
     //所属的书籍
-    @Index
+    @Column(name = COLUMN_BOOK_ID)
     private String bookId;
 
-    //本地书籍参数
-
-
     //在书籍文件中的起始位置
+    @Column(name = COLUMN_START)
     private long start;
 
     //在书籍文件中的终止位置
+    @Column(name = COLUMN_END)
     private long end;
 
-    @Generated(hash = 1508543635)
     public BookChapterBean(String id, String link, String title, String taskName,
                            boolean unreadble, String bookId, long start, long end) {
         this.id = id;
@@ -58,7 +67,6 @@ public class BookChapterBean implements Serializable {
         this.end = end;
     }
 
-    @Generated(hash = 853839616)
     public BookChapterBean() {
     }
 

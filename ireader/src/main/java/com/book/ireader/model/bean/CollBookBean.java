@@ -4,16 +4,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.book.ireader.App;
-import com.book.ireader.model.gen.BookChapterBeanDao;
-import com.book.ireader.model.gen.CollBookBeanDao;
-import com.book.ireader.model.gen.DaoSession;
+import com.book.ireader.model.annotation.Column;
+import com.book.ireader.model.annotation.Id;
+import com.book.ireader.model.annotation.Table;
 import com.book.ireader.utils.StringUtils;
-
-import org.greenrobot.greendao.DaoException;
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.ToMany;
 
 import java.util.List;
 
@@ -21,9 +15,22 @@ import java.util.List;
  * Created by newbiechen on 17-5-8.
  * 收藏的书籍
  */
-@Entity
+@Table(name = CollBookBean.TABLE_NAME)
 public class CollBookBean implements Parcelable {
-
+    public static final String TABLE_NAME = "CollBookBean";
+    public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_TITLE = "title";
+    public static final String COLUMN_AUTHOR = "author";
+    public static final String COLUMN_SHORT_INTRO = "short_intro";
+    public static final String COLUMN_COVER = "cover";
+    public static final String COLUMN_CATEGORY = "category";
+    public static final String COLUMN_UPDATED_TIME = "updated_time";
+    public static final String COLUMN_LAST_READ_TIME = "last_read_time";
+    public static final String COLUMN_CHAPTERS_COUNT = "chapters_count";
+    public static final String COLUMN_LAST_CHAPTER = "last_chapter";
+    public static final String COLUMN_IS_UPDATE = "is_update";
+    public static final String COLUMN_IS_LOCAL = "is_local";
+    public static final String COLUMN_BOOK_ORDER = "book_order";
     public static final int STATUS_UNCACHE = 0; //未缓存
     public static final int STATUS_CACHING = 1; //正在缓存
     public static final int STATUS_CACHED = 2;  //已经缓存
@@ -42,39 +49,41 @@ public class CollBookBean implements Parcelable {
      * lastChapter : 第1659章 朱长老
      */
     @Id
+    @Column(name = COLUMN_ID)
     private String _id; // 本地书籍中，path 的 md5 值作为本地书籍的 id
+    @Column(name = COLUMN_TITLE)
     private String title;
+    @Column(name = COLUMN_AUTHOR)
     private String author;
+    @Column(name = COLUMN_SHORT_INTRO)
     private String shortIntro;
+    @Column(name = COLUMN_COVER)
     private String cover; // 在本地书籍中，该字段作为本地文件的路径
+    @Column(name = COLUMN_CATEGORY)
     private String category;//分类
     private boolean hasCp;
     private int latelyFollower;
     private double retentionRatio;
     //最新更新日期
+    @Column(name = COLUMN_UPDATED_TIME)
     private String updated;
     //最新阅读日期
+    @Column(name = COLUMN_LAST_READ_TIME)
     private String lastRead;
+    @Column(name = COLUMN_CHAPTERS_COUNT)
     private int chaptersCount;
+    @Column(name = COLUMN_LAST_CHAPTER)
     private String lastChapter;
     //是否更新或未阅读
+    @Column(name = COLUMN_IS_UPDATE)
     private boolean isUpdate = true;
     //是否是本地文件
+    @Column(name = COLUMN_IS_LOCAL)
     private boolean isLocal = false;
+    @Column(name = COLUMN_BOOK_ORDER)
     private int bookOrder;
 
-    @ToMany(referencedJoinProperty = "bookId")
     private List<BookChapterBean> bookChapterList;
-    /**
-     * Used to resolve relations
-     */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-    /**
-     * Used for active entity operations.
-     */
-    @Generated(hash = 1552163441)
-    private transient CollBookBeanDao myDao;
 
     public CollBookBean() {
     }
@@ -226,85 +235,9 @@ public class CollBookBean implements Parcelable {
         }
     }
 
-    public List<BookChapterBean> getBookChapters() {
-        if (daoSession == null) {
-            return bookChapterList;
-        } else {
-            return getBookChapterList();
-        }
-    }
-
-    /**
-     * To-many relationship, resolved on first access (and after reset).
-     * Changes to to-many relations are not persisted, make changes to the target entity.
-     */
-    @Generated(hash = 711740787)
     public List<BookChapterBean> getBookChapterList() {
-        if (bookChapterList == null) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            BookChapterBeanDao targetDao = daoSession.getBookChapterBeanDao();
-            List<BookChapterBean> bookChapterListNew = targetDao
-                    ._queryCollBookBean_BookChapterList(_id);
-            synchronized (this) {
-                if (bookChapterList == null) {
-                    bookChapterList = bookChapterListNew;
-                }
-            }
-        }
         return bookChapterList;
     }
-
-
-    /**
-     * Resets a to-many relationship, making the next get call to query for a fresh result.
-     */
-    @Generated(hash = 1077762221)
-    public synchronized void resetBookChapterList() {
-        bookChapterList = null;
-    }
-
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 128553479)
-    public void delete() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.delete(this);
-    }
-
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 1942392019)
-    public void refresh() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.refresh(this);
-    }
-
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 713229351)
-    public void update() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.update(this);
-    }
-
 
     public boolean getIsLocal() {
         return this.isLocal;
@@ -339,15 +272,6 @@ public class CollBookBean implements Parcelable {
         dest.writeInt(this.bookOrder);
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
-    @Generated(hash = 159260324)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getCollBookBeanDao() : null;
-    }
-
     protected CollBookBean(Parcel in) {
         this._id = in.readString();
         this.title = in.readString();
@@ -367,7 +291,6 @@ public class CollBookBean implements Parcelable {
         this.bookOrder = in.readInt();
     }
 
-    @Generated(hash = 931041005)
     public CollBookBean(String _id, String title, String author, String shortIntro, String cover,
                         String category, boolean hasCp, int latelyFollower, double retentionRatio, String updated,
                         String lastRead, int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal,

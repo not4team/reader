@@ -1,21 +1,8 @@
 package com.book.ireader.model.bean;
 
-import com.book.ireader.model.gen.AuthorBeanDao;
-import com.book.ireader.model.gen.BookHelpsBeanDao;
-import com.book.ireader.model.gen.DaoSession;
-
-import org.greenrobot.greendao.DaoException;
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Index;
-import org.greenrobot.greendao.annotation.Keep;
-import org.greenrobot.greendao.annotation.ToOne;
-
 /**
  * Created by newbiechen on 17-4-20.
  */
-@Entity
 public class BookHelpsBean {
     /**
      * _id : 58f7590223c128231d6fc3ec
@@ -28,33 +15,17 @@ public class BookHelpsBean {
      * created : 2017-04-19T12:33:06.285Z
      * commentCount : 46
      */
-    @Id
     private String _id;
     private String authorId;
-    @ToOne(joinProperty = "authorId")
     private AuthorBean author;
     private String title;
     private int likeCount;
     private boolean haveImage;
-    @Index
     private String state;
     private String updated;
     private String created;
     private int commentCount;
-    /**
-     * Used to resolve relations
-     */
-    @Generated(hash = 2040040024)
-    private transient DaoSession daoSession;
-    /**
-     * Used for active entity operations.
-     */
-    @Generated(hash = 899589534)
-    private transient BookHelpsBeanDao myDao;
-    @Generated(hash = 1349326057)
-    private transient String author__resolvedKey;
 
-    @Generated(hash = 2002227547)
     public BookHelpsBean(String _id, String authorId, String title, int likeCount, boolean haveImage, String state, String updated, String created, int commentCount) {
         this._id = _id;
         this.authorId = authorId;
@@ -67,7 +38,6 @@ public class BookHelpsBean {
         this.commentCount = commentCount;
     }
 
-    @Generated(hash = 1556001284)
     public BookHelpsBean() {
     }
 
@@ -143,97 +113,8 @@ public class BookHelpsBean {
         this.authorId = authorId;
     }
 
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 128553479)
-    public void delete() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.delete(this);
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 1942392019)
-    public void refresh() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.refresh(this);
-    }
-
-    /**
-     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
-     * Entity must attached to an entity context.
-     */
-    @Generated(hash = 713229351)
-    public void update() {
-        if (myDao == null) {
-            throw new DaoException("Entity is detached from DAO context");
-        }
-        myDao.update(this);
-    }
-
     public String getTitle() {
         return this.title;
     }
 
-    /**
-     * To-one relationship, resolved on first access.
-     */
-    @Generated(hash = 625279819)
-    public AuthorBean getAuthor() {
-        String __key = this.authorId;
-        if (author__resolvedKey == null || author__resolvedKey != __key) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            AuthorBeanDao targetDao = daoSession.getAuthorBeanDao();
-            AuthorBean authorNew = targetDao.load(__key);
-            synchronized (this) {
-                author = authorNew;
-                author__resolvedKey = __key;
-            }
-        }
-        return author;
-    }
-
-    @Keep
-    public AuthorBean getAuthorBean() {
-        if (authorId == null) {
-            setAuthor(author);
-        }
-        if (daoSession == null) {
-            return author;
-        } else {
-            return getAuthor();
-        }
-    }
-
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
-    @Generated(hash = 1823011606)
-    public void setAuthor(AuthorBean author) {
-        synchronized (this) {
-            this.author = author;
-            authorId = author == null ? null : author.get_id();
-            author__resolvedKey = authorId;
-        }
-    }
-
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
-    @Generated(hash = 1431996007)
-    public void __setDaoSession(DaoSession daoSession) {
-        this.daoSession = daoSession;
-        myDao = daoSession != null ? daoSession.getBookHelpsBeanDao() : null;
-    }
 }

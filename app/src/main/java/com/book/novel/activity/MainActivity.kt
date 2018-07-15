@@ -6,17 +6,24 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
+import android.support.v7.widget.AppCompatSpinner
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import com.book.ireader.ui.base.BaseActivity
+import com.book.ireader.utils.Constant
+import com.book.ireader.utils.SharedPreUtils
 import com.book.novel.fragment.BookCityFragment
 import com.book.novel.fragment.BookShelfFragment
 import com.book.novel.fragment.RankFragment
 import com.lereader.novel.R
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : BaseActivity() {
     val TAG = "MainActivity"
@@ -25,6 +32,7 @@ class MainActivity : BaseActivity() {
     private var mRankFragment: Fragment? = null
     private var mCurrFragmentTag: String? = null
     private var mSearchView: SearchView? = null
+    private var mSpinner: AppCompatSpinner? = null
     val BUNDLE_FRAGMENT_TAG = "bundle_fragment_tag"
     val BOOKSHELF_TAG = "bookshelf_fragment_tag"
     val BOOKCITY_TAG = "bookcity_fragment_tag"
@@ -171,6 +179,28 @@ class MainActivity : BaseActivity() {
                 mSearchView!!.isIconified = true
             }
         }
+        mSpinner = findViewById(R.id.main_toolbar_spinner)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        val adapter = ArrayAdapter.createFromResource(this,
+                R.array.male_or_female, R.layout.toolbar_spinner_item)
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        // Apply the adapter to the spinner
+        mSpinner!!.adapter = adapter
+        mSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                if (position == 0) {
+                    SharedPreUtils.getInstance().putString(Constant.SHARED_SEX, Constant.SEX_BOY)
+                } else {
+                    SharedPreUtils.getInstance().putString(Constant.SHARED_SEX, Constant.SEX_GIRL)
+                }
+            }
+
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -209,7 +239,7 @@ class MainActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-        if(mSearchView != null) {
+        if (mSearchView != null) {
             mSearchView!!.isIconified = true
             mSearchView!!.isIconified = true
         }

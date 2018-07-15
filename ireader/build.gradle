@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 27
@@ -27,12 +26,6 @@ android {
     }
 }
 
-greendao {
-    schemaVersion 4
-    daoPackage 'com.book.ireader.model.gen'
-    targetGenDir 'src/main/java'
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
@@ -48,8 +41,6 @@ dependencies {
     // RxJava
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
     implementation 'io.reactivex.rxjava2:rxjava:2.1.14'
-    // ORM Database
-    implementation 'org.greenrobot:greendao:3.2.2'
     // OpenCC to convert Simp. Chinese to Trad. Chinese
     implementation "com.zqc.opencc.android.lib:lib-opencc-android:0.8.0@aar"
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'

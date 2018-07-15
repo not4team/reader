@@ -1,27 +1,20 @@
 package com.book.ireader.model.bean;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-
 /**
  * Created by newbiechen on 17-4-26.
  */
-@Entity
 public class BookHelpfulBean {
     /**
      * total : 1
      * no : 5
      * yes : 6
      */
-    @Id
     private String _id;
 
     private int total;
     private int no;
     private int yes;
 
-    @Generated(hash = 1641622044)
     public BookHelpfulBean(String _id, int total, int no, int yes) {
         this._id = _id;
         this.total = total;
@@ -30,7 +23,6 @@ public class BookHelpfulBean {
     }
 
 
-    @Generated(hash = 534892841)
     public BookHelpfulBean() {
     }
 

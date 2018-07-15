@@ -1,15 +1,10 @@
 package com.book.ireader.model.bean;
 
-import org.greenrobot.greendao.annotation.Entity;
-import org.greenrobot.greendao.annotation.Generated;
-import org.greenrobot.greendao.annotation.Id;
-
 /**
  * Created by newbiechen on 17-4-26.
  * 书评区的书籍
  */
 
-@Entity
 public class ReviewBookBean {
     /**
      * _id : 530f3912651881e60d04deb3
@@ -18,7 +13,6 @@ public class ReviewBookBean {
      * site : zhuishuvip
      * type : dsyn
      */
-    @Id
     private String _id;
 
     private String cover;
@@ -26,7 +20,6 @@ public class ReviewBookBean {
     private String site;
     private String type;
 
-    @Generated(hash = 790216124)
     public ReviewBookBean(String _id, String cover, String title, String site, String type) {
         this._id = _id;
         this.cover = cover;
@@ -35,7 +28,6 @@ public class ReviewBookBean {
         this.type = type;
     }
 
-    @Generated(hash = 265504709)
     public ReviewBookBean() {
     }
 
