@@ -22,6 +22,8 @@ public interface IBookDao {
     //获取阅读记录
     public BookRecordBean getBookRecord(String bookId);
 
+    public List<BookChapterBean> getBookChapterBeans(String bookId);
+
     //交换书架顺序
     public void swapCollBookOrder(CollBookBean from, CollBookBean to);
 
@@ -30,6 +32,8 @@ public interface IBookDao {
 
     //保存章节
     public void saveBookChapters(List<BookChapterBean> bookChapterBeans);
+
+    public void saveBookRecord(BookRecordBean bookRecordBean);
 
     public void deleteCollBook(String bookId);
 

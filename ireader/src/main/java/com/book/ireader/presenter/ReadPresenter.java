@@ -4,7 +4,7 @@ package com.book.ireader.presenter;
 import com.book.ireader.App;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.ChapterInfoBean;
-import com.book.ireader.model.local.BookRepository;
+import com.book.ireader.model.local.BookDao;
 import com.book.ireader.model.remote.RemoteRepository;
 import com.book.ireader.presenter.contract.ReadContract;
 import com.book.ireader.ui.base.RxPresenter;
@@ -102,7 +102,7 @@ public class ReadPresenter extends RxPresenter<ReadContract.View>
                             @Override
                             public void onNext(ChapterInfoBean chapterInfoBean) {
                                 //存储数据
-                                BookRepository.getInstance().saveChapterInfo(
+                                BookDao.getInstance(App.getContext()).saveChapterInfo(
                                         bookId, title, chapterInfoBean.getBody()
                                 );
                                 mView.finishChapter();

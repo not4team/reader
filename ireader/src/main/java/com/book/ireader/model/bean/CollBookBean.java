@@ -228,8 +228,8 @@ public class CollBookBean implements Parcelable {
         this.bookOrder = bookOrder;
     }
 
-    public void setBookChapters(List<BookChapterBean> beans) {
-        bookChapterList = beans;
+    public void setBookChapterList(List<BookChapterBean> bookChapterList) {
+        this.bookChapterList = bookChapterList;
         for (BookChapterBean bean : bookChapterList) {
             bean.setBookId(get_id());
         }

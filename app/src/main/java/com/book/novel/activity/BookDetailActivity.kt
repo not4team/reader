@@ -10,12 +10,13 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import com.book.ireader.App
 import com.book.ireader.RxBus
 import com.book.ireader.event.BookShelfRefreshEvent
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.bean.packages.InterestedBookListPackage
-import com.book.ireader.model.local.BookRepository
+import com.book.ireader.model.local.BookDao
 import com.book.ireader.ui.activity.ReadActivity
 import com.book.ireader.ui.base.BaseMVPActivity
 import com.book.ireader.utils.Constant
@@ -165,7 +166,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                 //点击存储
                 if (isCollected) {
                     //放弃点击
-                    BookRepository.getInstance()
+                    BookDao.getInstance(App.getContext())
                             .deleteCollBookInRx(mCollBookBean).subscribe()
                     mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_chase_update)
                     isCollected = false
@@ -198,22 +199,22 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mTvLongInstro.text = bean.longIntro
 
         //判断是否收藏
-        mCollBookBean = BookRepository.getInstance().getCollBook(bean._id)
+        mCollBookBean = BookDao.getInstance(App.getContext()).getCollBook(bean._id)
         if (mCollBookBean != null) {
             isCollected = true
             mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
             mBtnStartRead.text = resources.getString(R.string.continue_read)
-            if (bean.bookChapterBeans.size > mCollBookBean!!.bookChapters.size) {
+            if (bean.bookChapterBeans.size > mCollBookBean!!.bookChapterList.size) {
                 mCollBookBean!!.setIsUpdate(true)
                 mCollBookBean!!.lastChapter = bean.lastChapter
-                mCollBookBean!!.bookChapters = bean.bookChapterBeans
-                BookRepository.getInstance().saveCollBook(mCollBookBean)
-                BookRepository.getInstance().saveBookChaptersWithAsync(mCollBookBean!!.bookChapters)
+                mCollBookBean!!.bookChapterList = bean.bookChapterBeans
+                BookDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBookBean)
+                BookDao.getInstance(App.getContext()).saveBookChaptersWithAsync(mCollBookBean!!.bookChapterList)
                 RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
             }
         } else {
             mCollBookBean = bean.collBookBean
-            mCollBookBean!!.bookChapters = bean.bookChapterBeans
+            mCollBookBean!!.bookChapterList = bean.bookChapterBeans
         }
         mAdapter.refreshItems(bean.bookChapterBeans)
     }

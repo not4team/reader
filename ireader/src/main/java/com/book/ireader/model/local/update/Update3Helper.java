@@ -1,10 +1,8 @@
 package com.book.ireader.model.local.update;
 
-import com.book.ireader.model.gen.CollBookBeanDao;
+import android.database.sqlite.SQLiteDatabase;
 
-import org.greenrobot.greendao.AbstractDao;
-import org.greenrobot.greendao.database.Database;
-import org.greenrobot.greendao.internal.DaoConfig;
+import com.book.ireader.model.bean.CollBookBean;
 
 /**
  * Created with author.
@@ -22,14 +20,12 @@ public class Update3Helper {
         return instance;
     }
 
-    public void update(Database db) {
+    public void update(SQLiteDatabase db) {
         updateCollBook(db);
     }
 
-    private void updateCollBook(Database db) {
-        Class<? extends AbstractDao<?, ?>> collBookClass = CollBookBeanDao.class;
-        DaoConfig daoConfig = new DaoConfig(db, collBookClass);
-        String tableName = daoConfig.tablename;
+    private void updateCollBook(SQLiteDatabase db) {
+        String tableName = CollBookBean.TABLE_NAME;
         String sql = String.format("ALTER TABLE %s ADD COLUMN CATEGORY char(50)", tableName);
         db.execSQL(sql);
     }

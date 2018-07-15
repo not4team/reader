@@ -1,11 +1,12 @@
 package com.book.ireader.widget.page;
 
 
+import com.book.ireader.App;
 import com.book.ireader.RxBus;
 import com.book.ireader.event.BookShelfRefreshEvent;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.CollBookBean;
-import com.book.ireader.model.local.BookRepository;
+import com.book.ireader.model.local.BookDao;
 import com.book.ireader.utils.BookManager;
 import com.book.ireader.utils.Constant;
 import com.book.ireader.utils.FileUtils;
@@ -44,10 +45,10 @@ public class NetPageLoader extends PageLoader {
 
     @Override
     public void refreshChapterList() {
-        if (mCollBook.getBookChapters() == null) return;
+        if (mCollBook.getBookChapterList() == null) return;
 
         // 将 BookChapter 转换成当前可用的 Chapter
-        mChapterList = convertTxtChapter(mCollBook.getBookChapters());
+        mChapterList = convertTxtChapter(mCollBook.getBookChapterList());
         isChapterListPrepare = true;
 
         // 目录加载完成，执行回调操作。
@@ -218,8 +219,8 @@ public class NetPageLoader extends PageLoader {
             mCollBook.setLastRead(StringUtils.
                     dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE));
             //直接更新
-            BookRepository.getInstance()
-                    .saveCollBook(mCollBook);
+            BookDao.getInstance(App.getContext())
+                    .insertOrReplaceCollBook(mCollBook);
             RxBus.getInstance().post(new BookShelfRefreshEvent().setId(mCollBook.get_id()).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE));
         }
     }

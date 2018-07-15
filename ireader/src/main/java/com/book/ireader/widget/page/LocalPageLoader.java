@@ -1,8 +1,9 @@
 package com.book.ireader.widget.page;
 
+import com.book.ireader.App;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.CollBookBean;
-import com.book.ireader.model.local.BookRepository;
+import com.book.ireader.model.local.BookDao;
 import com.book.ireader.model.local.Void;
 import com.book.ireader.utils.Charset;
 import com.book.ireader.utils.Constant;
@@ -326,8 +327,8 @@ public class LocalPageLoader extends PageLoader {
             mCollBook.setLastRead(StringUtils.
                     dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE));
             //直接更新
-            BookRepository.getInstance()
-                    .saveCollBook(mCollBook);
+            BookDao.getInstance(App.getContext())
+                    .insertOrReplaceCollBook(mCollBook);
         }
     }
 
@@ -352,9 +353,9 @@ public class LocalPageLoader extends PageLoader {
         // 判断文件是否已经加载过，并具有缓存
         if (!mCollBook.isUpdate() && mCollBook.getUpdated() != null
                 && mCollBook.getUpdated().equals(lastModified)
-                && mCollBook.getBookChapters() != null) {
+                && mCollBook.getBookChapterList() != null) {
 
-            mChapterList = convertTxtChapter(mCollBook.getBookChapters());
+            mChapterList = convertTxtChapter(mCollBook.getBookChapterList());
             isChapterListPrepare = true;
 
             //提示目录加载完成
@@ -405,11 +406,11 @@ public class LocalPageLoader extends PageLoader {
                             bean.setEnd(chapter.getEnd());
                             bookChapterBeanList.add(bean);
                         }
-                        mCollBook.setBookChapters(bookChapterBeanList);
+                        mCollBook.setBookChapterList(bookChapterBeanList);
                         mCollBook.setUpdated(lastModified);
 
-                        BookRepository.getInstance().saveBookChaptersWithAsync(bookChapterBeanList);
-                        BookRepository.getInstance().saveCollBook(mCollBook);
+                        BookDao.getInstance(App.getContext()).saveBookChaptersWithAsync(bookChapterBeanList);
+                        BookDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBook);
 
                         // 加载并显示当前章节
                         openChapter();

@@ -33,10 +33,11 @@ import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.book.ireader.App;
 import com.book.ireader.R;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.CollBookBean;
-import com.book.ireader.model.local.BookRepository;
+import com.book.ireader.model.local.BookDao;
 import com.book.ireader.model.local.ReadSettingManager;
 import com.book.ireader.presenter.ReadPresenter;
 import com.book.ireader.presenter.contract.ReadContract;
@@ -634,13 +635,13 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         }
         // 如果是已经收藏的，那么就从数据库中获取目录
         if (isCollected) {
-            Disposable disposable = BookRepository.getInstance()
+            Disposable disposable = BookDao.getInstance(App.getContext())
                     .getBookChaptersInRx(mBookId)
                     .compose(RxUtils::toSimpleSingle)
                     .subscribe(
                             (bookChapterBeen, throwable) -> {
                                 // 设置 CollBook
-                                mPageLoader.getCollBook().setBookChapters(bookChapterBeen);
+                                mPageLoader.getCollBook().setBookChapterList(bookChapterBeen);
                                 // 刷新章节列表
                                 mPageLoader.refreshChapterList();
                                 // 如果是网络小说并被标记更新的，则从网络下载目录
@@ -674,12 +675,12 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
     @Override
     public void showCategory(List<BookChapterBean> bookChapters) {
-        mPageLoader.getCollBook().setBookChapters(bookChapters);
+        mPageLoader.getCollBook().setBookChapterList(bookChapters);
         mPageLoader.refreshChapterList();
 
         // 如果是目录更新的情况，那么就需要存储更新数据
         if (mCollBook.isUpdate() && isCollected) {
-            BookRepository.getInstance()
+            BookDao.getInstance(App.getContext())
                     .saveBookChaptersWithAsync(bookChapters);
         }
     }
@@ -717,7 +718,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         }
 
         if (!mCollBook.isLocal() && !isCollected
-                && mCollBook.getBookChapters() != null && !mCollBook.getBookChapters().isEmpty()) {
+                && mCollBook.getBookChapterList() != null && !mCollBook.getBookChapterList().isEmpty()) {
             AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.AppAlertDialogTheme)
                     .setTitle("加入书架")
                     .setMessage("喜欢本书就加入书架吧")
@@ -728,7 +729,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                         mCollBook.setLastRead(StringUtils.
                                 dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE));
 
-                        BookRepository.getInstance()
+                        BookDao.getInstance(App.getContext())
                                 .saveCollBookWithAsync(mCollBook);
 
                         exit();

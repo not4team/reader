@@ -2,7 +2,7 @@ package com.book.novel.presenter
 
 import com.book.ireader.App
 import com.book.ireader.model.bean.CollBookBean
-import com.book.ireader.model.local.BookRepository
+import com.book.ireader.model.local.BookDao
 import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
 import com.book.ireader.utils.RxUtils
@@ -36,7 +36,7 @@ class BookShelfPresenter() : RxPresenter<BookShelfContract.View>(), BookShelfCon
                             e.printStackTrace()
                         }
             }
-            BookRepository.getInstance().saveCollBooks(newCollBookBeans)
+            BookDao.getInstance(App.getContext()).updateCollBooks(newCollBookBeans)
             it.onSuccess(newCollBookBeans)
         }.compose(RxUtils::toSimpleSingle)
                 .subscribe({ collBookBeans ->
@@ -52,12 +52,12 @@ class BookShelfPresenter() : RxPresenter<BookShelfContract.View>(), BookShelfCon
     }
 
     override fun deleteCollBook(collBookBean: CollBookBean) {
-        BookRepository.getInstance().deleteCollBookInRx(collBookBean).subscribe()
+        BookDao.getInstance(App.getContext()).deleteCollBookInRx(collBookBean).subscribe()
     }
 
     override fun refreshCollBooks(gender: String) {
         Single.create<List<CollBookBean>> {
-            val collBooks = BookRepository.getInstance().orderBooks
+            val collBooks = BookDao.getInstance(App.getContext()).orderBooks
             it.onSuccess(collBooks)
         }.compose(RxUtils::toSimpleSingle)
                 .subscribe({ collBooks ->

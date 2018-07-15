@@ -11,9 +11,10 @@ import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
 import android.text.TextPaint;
 
+import com.book.ireader.App;
 import com.book.ireader.model.bean.BookRecordBean;
 import com.book.ireader.model.bean.CollBookBean;
-import com.book.ireader.model.local.BookRepository;
+import com.book.ireader.model.local.BookDao;
 import com.book.ireader.model.local.ReadSettingManager;
 import com.book.ireader.utils.Constant;
 import com.book.ireader.utils.IOUtils;
@@ -566,7 +567,7 @@ public abstract class PageLoader {
         }
 
         //存储到数据库
-        BookRepository.getInstance()
+        BookDao.getInstance(App.getContext())
                 .saveBookRecord(mBookRecord);
     }
 
@@ -574,7 +575,7 @@ public abstract class PageLoader {
      * 初始化书籍
      */
     private void prepareBook() {
-        mBookRecord = BookRepository.getInstance()
+        mBookRecord = BookDao.getInstance(App.getContext())
                 .getBookRecord(mCollBook.get_id());
 
         if (mBookRecord == null) {

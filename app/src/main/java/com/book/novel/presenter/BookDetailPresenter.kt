@@ -3,7 +3,7 @@ package com.book.novel.presenter
 import com.book.ireader.App
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.CollBookBean
-import com.book.ireader.model.local.BookRepository
+import com.book.ireader.model.local.BookDao
 import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
 import com.book.ireader.utils.MD5Utils
@@ -33,12 +33,12 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
 
     override fun addToBookShelf(collBookBean: CollBookBean) {
         //设置 id
-        for (bean in collBookBean.bookChapters) {
+        for (bean in collBookBean.bookChapterList) {
             //相同的link只会插入一条数据
             bean.id = MD5Utils.strToMd5By16(bean.link)
         }
         //存储收藏
-        BookRepository.getInstance().saveCollBookWithAsync(collBookBean)
+        BookDao.getInstance(App.getContext()).saveCollBookWithAsync(collBookBean)
         mView.succeedToBookShelf()
     }
 

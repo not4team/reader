@@ -37,7 +37,7 @@ public class BookDao extends DBHelper implements IBookDao {
         super(context);
     }
 
-    public BookDao getInstance(Context context) {
+    public static BookDao getInstance(Context context) {
         if (mBookDao == null) {
             synchronized (BookDao.class) {
                 if (mBookDao == null) {
@@ -46,6 +46,74 @@ public class BookDao extends DBHelper implements IBookDao {
             }
         }
         return mBookDao;
+    }
+
+    @Override
+    public CollBookBean getCollBook(String bookId) {
+        return null;
+    }
+
+    //获取书籍列表
+    public Single<List<BookChapterBean>> getBookChaptersInRx(String bookId) {
+        return Single.create(new SingleOnSubscribe<List<BookChapterBean>>() {
+            @Override
+            public void subscribe(SingleEmitter<List<BookChapterBean>> e) throws Exception {
+                List<BookChapterBean> beans = getBookChapterBeans(bookId);
+                e.onSuccess(beans);
+            }
+        });
+    }
+
+    @Override
+    public List<CollBookBean> getOrderBooks() {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM " + CollBookBean.TABLE_NAME + " ORDER BY " + CollBookBean.COLUMN_BOOK_ORDER + " DESC";
+        Cursor cursor = null;
+        List<CollBookBean> list = new ArrayList<>();
+        try {
+            cursor = db.rawQuery(sql, null);
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_ID));
+                String title = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_TITLE));
+                String author = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_AUTHOR));
+                String shortIntro = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_SHORT_INTRO));
+                String cover = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_COVER));
+                String category = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_CATEGORY));
+                String updated = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_UPDATED_TIME));
+                String lastRead = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LAST_READ_TIME));
+                int chaptersCount = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_CHAPTERS_COUNT));
+                String lastChapter = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LAST_CHAPTER));
+                int isUpdate = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_UPDATE));
+                int isLocal = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_LOCAL));
+                int bookOrder = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_BOOK_ORDER));
+                CollBookBean book = new CollBookBean(id, title, author, shortIntro, cover, category, true, 0,
+                        0, updated, lastRead, chaptersCount, lastChapter, isUpdate == 1 ? true : false, isLocal == 1 ? true : false, bookOrder);
+                list.add(book);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public BookRecordBean getBookRecord(String bookId) {
+        return null;
+    }
+
+    @Override
+    public List<BookChapterBean> getBookChapterBeans(String bookId) {
+        return null;
+    }
+
+    public void insertOrReplaceCollBook(CollBookBean bean) {
+
+    }
+
+    public void updateCollBooks(List<CollBookBean> bookBeans) {
+
     }
 
     /**
@@ -90,28 +158,6 @@ public class BookDao extends DBHelper implements IBookDao {
         }
     }
 
-    @Override
-    public void saveBookChapters(List<BookChapterBean> bookChapterBeans) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.beginTransaction();
-        try {
-            db.setTransactionSuccessful();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            db.endTransaction();
-        }
-    }
-
-    @Override
-    public void deleteCollBook(String id) {
-        getWritableDatabase().execSQL("DELETE FROM " + CollBookBean.TABLE_NAME + " WHERE " + CollBookBean.COLUMN_ID + " = " + id);
-    }
-
-    public void insertOrReplaceCollBook(CollBookBean bean) {
-
-    }
-
     public int getMaxCollBookOrder() {
         SQLiteDatabase db = getReadableDatabase();
         String sql = "SELECT MAX(" + CollBookBean.COLUMN_BOOK_ORDER + ") FROM " + CollBookBean.TABLE_NAME;
@@ -130,6 +176,33 @@ public class BookDao extends DBHelper implements IBookDao {
     }
 
     @Override
+    public void saveBookChapters(List<BookChapterBean> bookChapterBeans) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
+    public void saveBookRecord(BookRecordBean bookRecordBean) {
+
+    }
+
+    public void saveBookChaptersWithAsync(List<BookChapterBean> bookChapterBeans) {
+
+    }
+
+    @Override
+    public void deleteCollBook(String id) {
+        getWritableDatabase().execSQL("DELETE FROM " + CollBookBean.TABLE_NAME + " WHERE " + CollBookBean.COLUMN_ID + " = " + id);
+    }
+
+    @Override
     public void swapCollBookOrder(CollBookBean from, CollBookBean to) {
         updateCollBookOrder(from.get_id(), from.getBookOrder());
         updateCollBookOrder(to.get_id(), to.getBookOrder());
@@ -139,50 +212,6 @@ public class BookDao extends DBHelper implements IBookDao {
         SQLiteDatabase db = getWritableDatabase();
         String sql = "UPDATE " + CollBookBean.TABLE_NAME + " SET " + CollBookBean.COLUMN_BOOK_ORDER + " = " + bookOrder + " WHERE " + CollBookBean.COLUMN_ID + " ='" + bookId + "'";
         db.execSQL(sql);
-    }
-
-    @Override
-    public CollBookBean getCollBook(String bookId) {
-        return null;
-    }
-
-    @Override
-    public List<CollBookBean> getOrderBooks() {
-        SQLiteDatabase db = getReadableDatabase();
-        String sql = "SELECT * FROM " + CollBookBean.TABLE_NAME + " ORDER BY " + CollBookBean.COLUMN_BOOK_ORDER + " DESC";
-        Cursor cursor = null;
-        List<CollBookBean> list = new ArrayList<>();
-        try {
-            cursor = db.rawQuery(sql, null);
-            while (cursor.moveToNext()) {
-                String id = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_ID));
-                String title = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_TITLE));
-                String author = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_AUTHOR));
-                String shortIntro = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_SHORT_INTRO));
-                String cover = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_COVER));
-                String category = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_CATEGORY));
-                String updated = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_UPDATED_TIME));
-                String lastRead = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LAST_READ_TIME));
-                int chaptersCount = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_CHAPTERS_COUNT));
-                String lastChapter = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LAST_CHAPTER));
-                int isUpdate = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_UPDATE));
-                int isLocal = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_LOCAL));
-                int bookOrder = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_BOOK_ORDER));
-                CollBookBean book = new CollBookBean(id, title, author, shortIntro, cover, category, true, 0,
-                        0, updated, lastRead, chaptersCount, lastChapter, isUpdate == 1 ? true : false, isLocal == 1 ? true : false, bookOrder);
-                list.add(book);
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return list;
-    }
-
-    @Override
-    public BookRecordBean getBookRecord(String bookId) {
-        return null;
     }
 
     @Override
