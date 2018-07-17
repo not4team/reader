@@ -100,11 +100,32 @@ public class BookDao extends DBHelper implements IBookDao {
 
     @Override
     public BookRecordBean getBookRecord(String bookId) {
-        return null;
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM " + BookRecordBean.TABLE_NAME + " WHERE " + BookRecordBean.COLUMN_BOOK_ID + " = ?";
+        BookRecordBean bookRecordBean = null;
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(sql, new String[]{bookId});
+            if (cursor.moveToFirst()) {
+                String id = cursor.getString(cursor.getColumnIndex(BookRecordBean.COLUMN_BOOK_ID));
+                int chapter = cursor.getInt(cursor.getColumnIndex(BookRecordBean.COLUMN_CHAPTER));
+                int pagePos = cursor.getInt(cursor.getColumnIndex(BookRecordBean.COLUMN_PAGE_POS));
+                bookRecordBean = new BookRecordBean(id, chapter, pagePos);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return bookRecordBean;
     }
 
     @Override
     public List<BookChapterBean> getBookChapterBeans(String bookId) {
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = "SELECT * FROM " + BookChapterBean.TABLE_NAME;
         return null;
     }
 
