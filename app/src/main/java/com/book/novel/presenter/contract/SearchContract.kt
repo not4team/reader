@@ -22,11 +22,6 @@ interface SearchContract : BaseContract {
     interface Presenter : BaseContract.BasePresenter<View> {
         fun searchHistory()
 
-        fun searchHotWord()
-
-        //搜索提示
-        fun searchKeyWord(query: String)
-
         //搜索书籍
         fun searchBook(query: String)
     }

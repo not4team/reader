@@ -19,36 +19,6 @@ class SearchPresenter : RxPresenter<SearchContract.View>(), SearchContract.Prese
 
     }
 
-    override fun searchHotWord() {
-        try {
-            val disp = RemoteRepository.getInstance(App.getContext())
-                    .hotWords
-                    .compose(RxUtils::toSimpleSingle)
-                    .subscribe(
-                            { bean -> mView.finishHistory(bean) }
-                    ) { e -> LogUtils.e(e) }
-            addDisposable(disp)
-        } catch (e: Exception) {
-            Log.e(TAG, "searchHotWord error", e)
-        }
-
-    }
-
-    override fun searchKeyWord(query: String) {
-        try {
-            val disp = RemoteRepository.getInstance(App.getContext())
-                    .getKeyWords(query)
-                    .compose(RxUtils::toSimpleSingle)
-                    .subscribe(
-                            { bean -> mView.finishKeyWords(bean) }
-                    ) { e -> LogUtils.e(e) }
-            addDisposable(disp)
-        } catch (e: Exception) {
-            Log.e(TAG, "searchKeyWord error", e)
-        }
-
-    }
-
     override fun searchBook(query: String) {
         try {
             val disp = RemoteRepository.getInstance(App.getContext())

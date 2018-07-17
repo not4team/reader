@@ -18,18 +18,24 @@ public class SharedPreUtils {
     private static SharedPreUtils sInstance;
     private SharedPreferences sharedReadable;
     private SharedPreferences.Editor sharedWritable;
-    public String[] bookSources;
     public Map<String, String> bookSourcesMap;
+    public Map<String, String> bookSourceSearchMap;
 
     private SharedPreUtils() {
         sharedReadable = App.getContext()
                 .getSharedPreferences(SHARED_NAME, Context.MODE_MULTI_PROCESS);
         sharedWritable = sharedReadable.edit();
         bookSourcesMap = new HashMap<>();
-        bookSources = App.getContext().getResources().getStringArray(R.array.book_source);
+        String[] bookSources = App.getContext().getResources().getStringArray(R.array.book_source);
         for (String source : bookSources) {
             String[] item = source.split("->");
             bookSourcesMap.put(item[0], item[1]);
+        }
+        bookSourceSearchMap = new HashMap<>();
+        String[] bookSourceSearch = App.getContext().getResources().getStringArray(R.array.book_source_search);
+        for (String source : bookSourceSearch) {
+            String[] item = source.split("->");
+            bookSourceSearchMap.put(item[0], item[1]);
         }
     }
 
