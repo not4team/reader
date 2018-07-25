@@ -15,7 +15,7 @@ class Registry {
         return this
     }
 
-    fun getParser(source: Source): Parser {
-        return parserRegistry.get(source.getSourceClass())!!
+    fun getParser(source: Source): Parser? {
+        return parserRegistry.get(source.getSourceClass())
     }
 }
