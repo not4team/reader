@@ -17,7 +17,7 @@
         android:theme="@style/Theme.ToolBar.Menu">
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/main_toolbar_spinner"
-            android:layout_width="70dp"
+            android:layout_width="@dimen/toolbar_spinner_dropdown_item_width"
             android:layout_height="wrap_content" />
     </android.support.v7.widget.Toolbar>
 

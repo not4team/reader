@@ -9,13 +9,27 @@ import com.book.novel.model.Source
  * Time: 0:24
  */
 class Registry {
-    private val parserRegistry: ParserRegistry = ParserRegistry()
-    fun <source> register(sourceClass: Class<source>, parser: Parser): Registry {
-        parserRegistry.append(sourceClass, parser)
+    private val parserRegistry = ParserRegistry()
+    private val sourceRegistry = SourceRegistry()
+    fun register(url: String, parser: Parser): Registry {
+        parserRegistry.append(url, parser)
         return this
     }
 
-    fun getParser(source: Source): Parser? {
-        return parserRegistry.get(source.getSourceClass())
+    fun register(url: String, source: Source): Registry {
+        sourceRegistry.append(url, source)
+        return this
+    }
+
+    fun getParser(url: String): Parser? {
+        return parserRegistry.get(url)
+    }
+
+    fun getSource(url: String): Source? {
+        return sourceRegistry.get(url)
+    }
+
+    fun getAllSource(): List<SourceRegistry.Entry> {
+        return sourceRegistry.sources
     }
 }

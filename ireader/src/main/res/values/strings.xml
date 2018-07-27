@@ -215,12 +215,4 @@
         <item>臺灣正體到簡體</item>
         <item>香港繁體到簡體</item>
     </string-array>
-    <string-array name="book_source">
-        <item>bxwx3->http://www.bxwx3.org</item>
-        <item>biqugexsw->http://www.biqugexsw.com</item>
-    </string-array>
-    <string-array name="book_source_search">
-        <item>bxwx3->http://www.bxwx3.org/search.aspx?bookname=</item>
-        <item>biqugexsw->http://www.biqugexsw.com/s.php?q=</item>
-    </string-array>
 </resources>

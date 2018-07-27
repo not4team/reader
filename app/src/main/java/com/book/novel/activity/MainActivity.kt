@@ -186,8 +186,8 @@ class MainActivity : BaseActivity() {
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Apply the adapter to the spinner
-        mSpinner!!.adapter = adapter
-        mSpinner!!.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        mSpinner?.adapter = adapter
+        mSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
             }
@@ -225,6 +225,7 @@ class MainActivity : BaseActivity() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         mSearchView = menu.findItem(R.id.action_search).actionView as SearchView
         mSearchView!!.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        mSearchView.setOn
         return true
     }
 

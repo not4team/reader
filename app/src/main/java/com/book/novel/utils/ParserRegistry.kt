@@ -7,32 +7,36 @@ package com.book.novel.utils
  * Time: 0:41
  */
 class ParserRegistry {
-    private val parsers = mutableListOf<Entry<*>>()
+    private val parsers = mutableListOf<Entry>()
 
     @Synchronized
-    fun <Z> append(sourceClass: Class<Z>, parser: Parser) {
-        parsers.add(Entry(sourceClass, parser))
+    fun append(url: String, parser: Parser) {
+        parsers.add(Entry(url, parser))
     }
 
     @Synchronized
-    fun <Z> prepend(sourceClass: Class<Z>, parser: Parser) {
-        parsers.add(0, Entry(sourceClass, parser))
+    fun prepend(url: String, parser: Parser) {
+        parsers.add(0, Entry(url, parser))
     }
 
     @Synchronized
-    fun <Z> get(sourceClass: Class<Z>): Parser? {
+    fun get(url: String): Parser? {
         for (index in parsers.indices) {
-            val entry: Entry<Z> = parsers[index] as Entry<Z>
-            if (entry.handles(sourceClass)) {
+            val entry: Entry = parsers[index]
+            if (parsers[index].equals(url)) {
                 return entry.parser
             }
         }
         return null;
     }
 
-    private inner class Entry<T>(val sourceClass: Class<T>, val parser: Parser) {
-        fun handles(sourceClass: Class<T>): Boolean {
-            return this.sourceClass.isAssignableFrom(sourceClass)
+    private inner class Entry(val url: String, val parser: Parser) {
+        override fun equals(other: Any?): Boolean {
+            if (other is String) {
+                return url.equals(other)
+            } else {
+                return super.equals(other)
+            }
         }
     }
 }

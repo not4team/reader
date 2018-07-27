@@ -9,5 +9,6 @@ package com.book.novel.model
 interface Source {
     fun getSourceClass(): Class<Any>
     fun getSourceName(): String
-    fun getSourceUrl(): String
+    fun getSourceBaseUrl(): String
+    fun getSourceSearchUrl(): String
 }

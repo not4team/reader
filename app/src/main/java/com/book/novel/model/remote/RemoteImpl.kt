@@ -9,8 +9,8 @@ import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.model.remote.IRemote
 import com.book.ireader.utils.Constant
 import com.book.ireader.utils.SharedPreUtils
-import com.book.novel.utils.BiqugexswParser
 import com.book.novel.utils.GsonParser
+import com.book.novel.utils.ParserManager
 import com.book.novel.utils.QidianParser
 import com.lereader.novel.BuildConfig
 import io.reactivex.Single
@@ -60,7 +60,8 @@ class RemoteImpl : IRemote {
         }
         return mBookApi.getBookChapterPackage(bookId)
                 .map { bean ->
-                    BiqugexswParser.parseBookDetail(bean.string()).bookChapterBeans
+                    val parser = ParserManager.getParser(SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE))
+                    parser?.parseBookDetail(bean.string())?.bookChapterBeans
                 }
     }
 
@@ -76,7 +77,8 @@ class RemoteImpl : IRemote {
         }
         return mBookApi.getChapterInfoPackage(url)
                 .map { bean ->
-                    BiqugexswParser.parseChapterInfo(bean.string())
+                    val parser = ParserManager.getParser(SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE))
+                    parser?.parseChapterInfo(bean.string())
                 }
     }
 
@@ -86,7 +88,8 @@ class RemoteImpl : IRemote {
             Log.e(TAG, "getBookDetail bookId:" + bookId)
         }
         return mBookApi.getBookDetail(bookId).map { bean ->
-            BiqugexswParser.parseBookDetail(bean.string())
+            val parser = ParserManager.getParser(SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE))
+            parser?.parseBookDetail(bean.string())
         }
     }
 
@@ -103,11 +106,11 @@ class RemoteImpl : IRemote {
      * @return
      */
     override fun getSearchBooks(query: String): Single<List<SearchBookPackage.BooksBean>> {
-        val bookSource = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE);
-        val url = SharedPreUtils.getInstance().bookSourceSearchMap[bookSource] + query
-        return mBookApi.getSearchBookPackage(url)
+        val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
+        val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
+        return mBookApi.getSearchBookPackage(source.getSourceSearchUrl())
                 .map { bean ->
-                    BiqugexswParser.parseSearchResult(bean.string())
+                    ParserManager.getParser(source.getSourceBaseUrl())?.parseSearchResult(bean.string())
                 }
     }
 }
