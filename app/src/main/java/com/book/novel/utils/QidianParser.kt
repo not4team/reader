@@ -5,6 +5,7 @@ import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.model.bean.RankTabBean
 import com.book.ireader.model.bean.packages.BookCityPackage
 import com.book.ireader.model.bean.packages.RankCategoryPackage
+import com.book.ireader.utils.Constant
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import org.jsoup.Jsoup
@@ -66,15 +67,24 @@ class QidianParser {
             val doc = Jsoup.parse(html)
             val rankTabBeans = mutableListOf<RankTabBean>()
             val rankWrapper = doc.select("div#rankWrapper").first()
-            rankWrapper.select("div.toplist-tag a").forEach {
-                val tab = it.text()
-                //https://m.qidian.com/rank/hotsales/male?gender=male&catId=21
-                val catId = it.attr("data-value")
+            if (gender == Constant.SEX_BOY) {
+                rankWrapper.select("div.toplist-tag a").forEach {
+                    val tab = it.text()
+                    //https://m.qidian.com/rank/hotsales/male?gender=male&catId=21
+                    val catId = it.attr("data-value")
+                    val rankTabBean = RankTabBean()
+                    rankTabBean.tab = tab
+                    rankTabBean.rank = rank
+                    rankTabBean.gender = gender
+                    rankTabBean.catId = catId
+                    rankTabBeans.add(rankTabBean)
+                }
+            } else if (gender == Constant.SEX_GIRL) {
                 val rankTabBean = RankTabBean()
-                rankTabBean.tab = tab
+                rankTabBean.tab = "女频"
                 rankTabBean.rank = rank
                 rankTabBean.gender = gender
-                rankTabBean.catId = catId
+                rankTabBean.catId = "-1"
                 rankTabBeans.add(rankTabBean)
             }
             val billBookBeans = mutableListOf<BillBookBean>()
@@ -125,7 +135,7 @@ class QidianParser {
             return billBookBeans
         }
 
-        fun parseRankCategoryPage(json: String): RankCategoryPackage? {
+        fun parseRankCategoryPage(json: String, gender: String): RankCategoryPackage? {
             val gson = Gson()
             val type = object : TypeToken<Map<String, Any>>() {}.type
             val map: Map<String, Any> = gson.fromJson(json, type)
@@ -135,9 +145,16 @@ class QidianParser {
                 val data = map["data"]
                 Log.e("QidianParser", "data:$data")
                 val dataMap: Map<String, Any> = gson.fromJson(gson.toJson(data), type)
-                val total = dataMap["total"] as Double
                 val isLast: Double = dataMap["isLast"] as Double
-                val pageNum: Double = dataMap["pageNum"] as Double
+                var total = 0.0
+                var pageNum = 0.0
+                if (gender == "male") {
+                    total = dataMap["total"] as Double
+                    pageNum = dataMap["pageNum"] as Double
+                } else {
+                    total = dataMap["pageNum"] as Double * 20
+                    pageNum = dataMap["pageIndex"] as Double
+                }
                 val records = dataMap["records"] as List<Any>
                 rankCategoryPackage = RankCategoryPackage()
                 rankCategoryPackage.total = total.toInt()

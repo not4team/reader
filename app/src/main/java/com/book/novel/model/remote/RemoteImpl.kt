@@ -50,7 +50,7 @@ class RemoteImpl : IRemote {
 
     override fun rankCategoryPage(rankName: String, gender: String, catId: String, pageNum: Int): Single<RankCategoryPackage> {
         return mBookApi.rankCategoryPage(rankName, gender, catId, pageNum).map { bean ->
-            QidianParser.parseRankCategoryPage(bean.string())
+            QidianParser.parseRankCategoryPage(bean.string(), gender)
         }
     }
 

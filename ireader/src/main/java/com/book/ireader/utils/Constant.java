@@ -18,8 +18,8 @@ public class Constant {
     public static final String SHARED_SAVE_BOOK_SORT = "book_sort";
     public static final String SHARED_SAVE_BILLBOARD = "billboard";
     public static final String SHARED_CONVERT_TYPE = "convert_type";
-    public static final String SEX_BOY = "boy";
-    public static final String SEX_GIRL = "girl";
+    public static final String SEX_BOY = "male";
+    public static final String SEX_GIRL = "female";
     public static final String SHARED_BOOK_SOURCE = "book_source";
 
     /*URL_BASE*/

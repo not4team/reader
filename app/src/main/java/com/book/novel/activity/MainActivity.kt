@@ -187,6 +187,11 @@ class MainActivity : BaseActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Apply the adapter to the spinner
         mSpinner?.adapter = adapter
+        if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_BOY) {
+            mSpinner?.setSelection(0)
+        } else {
+            mSpinner?.setSelection(1)
+        }
         mSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
 
@@ -224,8 +229,14 @@ class MainActivity : BaseActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         mSearchView = menu.findItem(R.id.action_search).actionView as SearchView
-        mSearchView!!.setSearchableInfo(searchManager.getSearchableInfo(componentName))
-        mSearchView.setOn
+        mSearchView?.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        mSearchView?.setOnCloseListener {
+            mSpinner?.visibility = View.VISIBLE
+            false
+        }
+        mSearchView?.setOnSearchClickListener {
+            mSpinner?.visibility = View.GONE
+        }
         return true
     }
 
@@ -240,9 +251,7 @@ class MainActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-        if (mSearchView != null) {
-            mSearchView!!.isIconified = true
-            mSearchView!!.isIconified = true
-        }
+        mSearchView?.isIconified = true
+        mSearchView?.isIconified = true
     }
 }

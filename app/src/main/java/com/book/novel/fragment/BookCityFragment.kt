@@ -13,6 +13,8 @@ import android.widget.TextView
 import com.book.ireader.model.bean.BillBookBean
 import com.book.ireader.model.bean.packages.BookCityPackage
 import com.book.ireader.ui.base.BaseMVPFragment
+import com.book.ireader.utils.Constant
+import com.book.ireader.utils.SharedPreUtils
 import com.book.novel.GlideApp
 import com.book.novel.activity.BookDetailActivity
 import com.book.novel.adapter.BookCityRecyclerAdapter
@@ -87,7 +89,7 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
     override fun initClick() {
         super.initClick()
         mSwipeRefreshLayout.setOnRefreshListener {
-            mPresenter.load("male")
+            mPresenter.load(SharedPreUtils.getInstance().getString(Constant.SHARED_SEX))
         }
         mRecyclerAdapter.setOnItemClickListener(object : MultiItemTypeAdapter.OnItemClickListener {
             override fun onItemLongClick(view: View?, holder: RecyclerView.ViewHolder?, position: Int): Boolean {
@@ -106,7 +108,7 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
     override fun processLogic() {
         super.processLogic()
         mSwipeRefreshLayout.isRefreshing = true
-        mPresenter.load("male")
+        mPresenter.load(SharedPreUtils.getInstance().getString(Constant.SHARED_SEX))
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
     }

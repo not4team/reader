@@ -57,7 +57,7 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
             args.putString(BUNDLE_RANK_NAME, rankName)
             args.putString(BUNDLE_RANK_GENDER, gender)
             args.putString(BUNDLE_RANK_CATID, catId)
-            f.setArguments(args)
+            f.arguments = args
             return f
         }
     }

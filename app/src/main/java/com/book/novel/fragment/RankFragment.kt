@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
+import android.view.View
 import com.book.ireader.model.bean.RankTabBean
 import com.book.ireader.ui.base.BaseMVPFragment
+import com.book.ireader.utils.Constant
+import com.book.ireader.utils.SharedPreUtils
 import com.book.novel.adapter.RankViewPagerAdapter
 import com.book.novel.presenter.RankPresenter
 import com.book.novel.presenter.contract.RankContract
@@ -33,12 +36,15 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
         mRankViewPager = getViewById(R.id.rank_viewpager)
         mRankTabLayout = getViewById(R.id.rank_tablayout)
         mRankTabLayout.setupWithViewPager(mRankViewPager)
+        if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_GIRL) {
+            mRankTabLayout.visibility = View.GONE
+        }
     }
 
     override fun processLogic() {
         super.processLogic()
         mRankSwipeRefreshLayout.isRefreshing = true
-        mPresenter.load("hotsales", "male")
+        mPresenter.load("hotsales", SharedPreUtils.getInstance().getString(Constant.SHARED_SEX))
     }
 
     override fun initClick() {
