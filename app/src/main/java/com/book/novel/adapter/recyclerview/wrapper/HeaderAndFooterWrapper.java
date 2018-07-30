@@ -3,6 +3,7 @@ package com.book.novel.adapter.recyclerview.wrapper;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -21,12 +22,19 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
 
     private RecyclerView.Adapter mInnerAdapter;
 
+    private OnHeaderRefresh mOnHeaderRefresh;
+
     public HeaderAndFooterWrapper(RecyclerView.Adapter adapter) {
         mInnerAdapter = adapter;
     }
 
+    public interface OnHeaderRefresh {
+        public void onRefresh(RecyclerView.ViewHolder holder, int position);
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.e("Header", "onCreateViewHolder viewType:" + viewType);
         if (mHeaderViews.get(viewType) != null) {
             ViewHolder holder = ViewHolder.createViewHolder(parent.getContext(), mHeaderViews.get(viewType));
             return holder;
@@ -41,6 +49,7 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
         if (isHeaderViewPos(position)) {
+            Log.e("Header", "getItemViewType position:" + position + ",viewType:" + mHeaderViews.keyAt(position));
             return mHeaderViews.keyAt(position);
         } else if (isFooterViewPos(position)) {
             return mFootViews.keyAt(position - getHeadersCount() - getRealItemCount());
@@ -55,7 +64,10 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        Log.e("Header", "onBindViewHolder position:" + position);
         if (isHeaderViewPos(position)) {
+            Log.e("Header", "isHeaderViewPos");
+            mOnHeaderRefresh.onRefresh(holder, position);
             return;
         }
         if (isFooterViewPos(position)) {
@@ -129,4 +141,7 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
         return mFootViews.size();
     }
 
+    public void setmOnHeaderRefresh(OnHeaderRefresh mOnHeaderRefresh) {
+        this.mOnHeaderRefresh = mOnHeaderRefresh;
+    }
 }

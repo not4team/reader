@@ -33,6 +33,7 @@ class MainActivity : BaseActivity() {
     private var mCurrFragmentTag: String? = null
     private var mSearchView: SearchView? = null
     private var mSpinner: AppCompatSpinner? = null
+    private var mSexPosition = 0
     val BUNDLE_FRAGMENT_TAG = "bundle_fragment_tag"
     val BOOKSHELF_TAG = "bookshelf_fragment_tag"
     val BOOKCITY_TAG = "bookcity_fragment_tag"
@@ -189,8 +190,10 @@ class MainActivity : BaseActivity() {
         mSpinner?.adapter = adapter
         if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_BOY) {
             mSpinner?.setSelection(0)
+            mSexPosition = 0
         } else {
             mSpinner?.setSelection(1)
+            mSexPosition = 1
         }
         mSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -202,6 +205,17 @@ class MainActivity : BaseActivity() {
                     SharedPreUtils.getInstance().putString(Constant.SHARED_SEX, Constant.SEX_BOY)
                 } else {
                     SharedPreUtils.getInstance().putString(Constant.SHARED_SEX, Constant.SEX_GIRL)
+                }
+                if (mSexPosition != position) {
+                    mSexPosition = position
+                    if (mBookCityFragment != null) {
+                        val fragment = mBookCityFragment as BookCityFragment
+                        fragment.refresh()
+                    }
+                    if (mRankFragment != null) {
+                        val fragment = mRankFragment as RankFragment
+                        fragment.refresh()
+                    }
                 }
             }
 

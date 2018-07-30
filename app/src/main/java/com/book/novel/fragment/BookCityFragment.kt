@@ -103,6 +103,9 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
             }
 
         })
+        mHeaderAndFooterWrapper.setmOnHeaderRefresh { holder, position ->
+            
+        }
     }
 
     override fun processLogic() {
@@ -111,6 +114,10 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
         mPresenter.load(SharedPreUtils.getInstance().getString(Constant.SHARED_SEX))
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
+    }
+
+    fun refresh() {
+        mPresenter.load(SharedPreUtils.getInstance().getString(Constant.SHARED_SEX))
     }
 
     private fun toDetailActivity(bean: BillBookBean) {

@@ -47,6 +47,15 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
         mPresenter.load("hotsales", SharedPreUtils.getInstance().getString(Constant.SHARED_SEX))
     }
 
+    fun refresh() {
+        mPresenter.load("hotsales", SharedPreUtils.getInstance().getString(Constant.SHARED_SEX))
+        if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_GIRL) {
+            mRankTabLayout.visibility = View.GONE
+        } else {
+            mRankTabLayout.visibility = View.VISIBLE
+        }
+    }
+
     override fun initClick() {
         super.initClick()
         mRankSwipeRefreshLayout.setOnRefreshListener {
