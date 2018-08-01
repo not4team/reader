@@ -39,6 +39,7 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mRecyclerAdapter: BookCityRecyclerAdapter
     private lateinit var mHeaderAndFooterWrapper: HeaderAndFooterWrapper
+    private lateinit var bookCityPackage: BookCityPackage
     private lateinit var mEmptyView: View
     private lateinit var mAdView: AdView
     private val mAdListener = object : AdListener() {
@@ -104,7 +105,21 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
 
         })
         mHeaderAndFooterWrapper.setmOnHeaderRefresh { holder, position ->
-            
+            val headerView = holder.itemView
+            val linearLayout = headerView.findViewById<LinearLayout>(R.id.bookcity_rv_header_parent)
+            bookCityPackage.hotBooks.forEach { item ->
+                val itemView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header_item, null)
+                val title = itemView.findViewById<TextView>(R.id.bookcity_rv_header_item_title)
+                title.text = item.title
+                val author = itemView.findViewById<TextView>(R.id.bookcity_rv_header_item_author)
+                author.text = item.author
+                val cover = itemView.findViewById<ImageView>(R.id.bookcity_rv_header_item_cover)
+                GlideApp.with(activity!!).load(item.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(cover)
+                itemView.setOnClickListener {
+                    toDetailActivity(item)
+                }
+                linearLayout.addView(itemView)
+            }
         }
     }
 
@@ -129,23 +144,10 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
     }
 
     override fun show(bookCityPackage: BookCityPackage) {
+        this.bookCityPackage = bookCityPackage
         mSwipeRefreshLayout.isRefreshing = false
         mEmptyView.visibility = View.GONE
         val headerView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header, null)
-        val linearLayout = headerView.findViewById<LinearLayout>(R.id.bookcity_rv_header_parent)
-        bookCityPackage.hotBooks.forEach { item ->
-            val itemView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header_item, null)
-            val title = itemView.findViewById<TextView>(R.id.bookcity_rv_header_item_title)
-            title.text = item.title
-            val author = itemView.findViewById<TextView>(R.id.bookcity_rv_header_item_author)
-            author.text = item.author
-            val cover = itemView.findViewById<ImageView>(R.id.bookcity_rv_header_item_cover)
-            GlideApp.with(activity!!).load(item.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(cover)
-            itemView.setOnClickListener {
-                toDetailActivity(item)
-            }
-            linearLayout.addView(itemView)
-        }
         mHeaderAndFooterWrapper.removeLastHeaderView()
         mHeaderAndFooterWrapper.addHeaderView(headerView)
         mRecyclerAdapter.newBooks = bookCityPackage.newBooks
