@@ -107,6 +107,7 @@ class BookCityFragment : BaseMVPFragment<BookCityPresenter>(), BookCityContract.
         mHeaderAndFooterWrapper.setmOnHeaderRefresh { holder, position ->
             val headerView = holder.itemView
             val linearLayout = headerView.findViewById<LinearLayout>(R.id.bookcity_rv_header_parent)
+            linearLayout.removeAllViews();
             bookCityPackage.hotBooks.forEach { item ->
                 val itemView = layoutInflater.inflate(R.layout.fragment_bookcity_recyclerview_header_item, null)
                 val title = itemView.findViewById<TextView>(R.id.bookcity_rv_header_item_title)

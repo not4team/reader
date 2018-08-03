@@ -33,9 +33,9 @@ class SearchBookHolder : ViewHolderImpl<SearchBookPackage.BooksBean>() {
     override fun onBind(data: SearchBookPackage.BooksBean, pos: Int) {
         //显示图片
         GlideApp.with(App.getContext())
-                .load(Constant.IMG_BASE_URL + data.cover)
+                .load(data.cover)
                 .placeholder(R.drawable.ic_book_loading)
-                .error(R.drawable.ic_load_error)
+                .error(R.drawable.ic_book_loading)
                 .into(mIvCover)
 
         mTvName.text = data.title

@@ -55,13 +55,13 @@
                     android:layout_marginTop="@dimen/bookdetail_info_text_margin_top"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="author"
+                    android:text="@string/bookdetail_author"
                     android:textSize="@dimen/bookdetail_info_text_size"
                     app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
                     app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_title" />
 
                 <LinearLayout
-                    android:id="@+id/bookdetail_ll_author"
+                    android:id="@+id/bookdetail_ll_cat_wordcount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -99,23 +99,24 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/bookdetail_info_text_margin_top"
-                    android:text="lasttime"
+                    android:text="@string/bookdetail_updated"
                     android:textSize="@dimen/bookdetail_info_text_size"
                     app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
-                    app:layout_constraintTop_toBottomOf="@id/bookdetail_ll_author" />
+                    app:layout_constraintTop_toBottomOf="@id/bookdetail_ll_cat_wordcount" />
 
                 <TextView
                     android:id="@+id/bookdetail_tv_lastcapture"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
                     android:layout_marginTop="@dimen/bookdetail_info_text_margin_top"
                     android:ellipsize="end"
                     android:singleLine="true"
-                    android:text="lastchapter"
+                    android:text="@string/bookdetail_last_chapter"
                     android:textSize="@dimen/bookdetail_info_text_size"
                     app:layout_constraintLeft_toRightOf="@id/bookdetail_iv_cover"
-                    app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_lasttime" />
+                    app:layout_constraintTop_toBottomOf="@id/bookdetail_tv_lasttime"
+                    app:layout_constraintRight_toRightOf="parent"/>
 
                 <LinearLayout
                     android:id="@+id/bookdetail_ll_add_bookshelf"

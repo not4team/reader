@@ -3,7 +3,10 @@ package com.book.novel
 import android.content.Context
 import android.support.multidex.MultiDex
 import com.book.ireader.App
+import com.book.ireader.utils.Constant
+import com.book.ireader.utils.SharedPreUtils
 import com.book.novel.utils.IMMLeaks
+import com.book.novel.utils.ParserManager
 import com.google.android.gms.ads.MobileAds
 
 /**
@@ -15,7 +18,9 @@ import com.google.android.gms.ads.MobileAds
 class NovelApplication : App() {
     override fun onCreate() {
         super.onCreate()
-        MobileAds.initialize(this, "ca-app-pub-7332030505319718~5396323800");
+        MobileAds.initialize(this, "ca-app-pub-7332030505319718~5396323800")
+        val source = ParserManager.getDefaultSource()
+        SharedPreUtils.getInstance().putString(Constant.SHARED_BOOK_SOURCE, source.sourceBaseUrl)
     }
 
     override fun attachBaseContext(base: Context?) {

@@ -1,6 +1,6 @@
 package com.book.novel.utils
 
-import com.book.novel.model.Source
+import com.book.ireader.model.bean.Source
 
 /**
  * Created with author.

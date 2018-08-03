@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.AppCompatSpinner
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
+import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -188,12 +189,18 @@ class MainActivity : BaseActivity() {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Apply the adapter to the spinner
         mSpinner?.adapter = adapter
-        if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_BOY) {
+        val currentGender = SharedPreUtils.getInstance().getString(Constant.SHARED_SEX)
+        if (TextUtils.isEmpty(currentGender)) {
             mSpinner?.setSelection(0)
             mSexPosition = 0
         } else {
-            mSpinner?.setSelection(1)
-            mSexPosition = 1
+            if (currentGender == Constant.SEX_BOY) {
+                mSpinner?.setSelection(0)
+                mSexPosition = 0
+            } else {
+                mSpinner?.setSelection(1)
+                mSexPosition = 1
+            }
         }
         mSpinner?.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {

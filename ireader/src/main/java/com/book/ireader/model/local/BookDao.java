@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Base64;
 
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.BookRecordBean;
@@ -13,12 +14,16 @@ import com.book.ireader.utils.Constant;
 import com.book.ireader.utils.FileUtils;
 import com.book.ireader.utils.IOUtils;
 import com.book.ireader.utils.RxUtils;
+import com.book.ireader.utils.SharedPreUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,19 +40,39 @@ import io.reactivex.SingleOnSubscribe;
 public class BookDao extends DBHelper implements IBookDao {
     private static volatile BookDao mBookDao;
 
-    private BookDao(Context context) {
-        super(context);
+    private BookDao(Context context, String DBName) {
+        super(context, DBName, null, DBConstant.DB_VERSION);
     }
 
     public static BookDao getInstance(Context context) {
         if (mBookDao == null) {
             synchronized (BookDao.class) {
                 if (mBookDao == null) {
-                    mBookDao = new BookDao(context);
+                    try {
+                        String DBName = getDBName();
+                        mBookDao = new BookDao(context, DBName);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
         return mBookDao;
+    }
+
+    public static String getDBName() throws MalformedURLException, UnsupportedEncodingException {
+        //获取当前来源
+        String bookSource = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE);
+        if (bookSource != null) {
+            URL url = new URL(bookSource);
+            String encodeHost = Base64.encodeToString(url.getHost().getBytes("utf-8"), Base64.NO_WRAP);
+            String dbName = String.format(DBConstant.DB_NAME, encodeHost);
+            return dbName;
+        } else {
+            return DBConstant.DB_NAME;
+        }
     }
 
     @Override

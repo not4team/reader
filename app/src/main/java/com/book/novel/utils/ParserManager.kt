@@ -1,7 +1,7 @@
 package com.book.novel.utils
 
+import com.book.ireader.model.bean.Source
 import com.book.novel.model.SimpleSource
-import com.book.novel.model.Source
 
 /**
  * Created with author.
@@ -13,10 +13,10 @@ object ParserManager {
     private val registry = Registry()
 
     init {
-        val bxwxSource = SimpleSource("笔下文学", "http://www.bxwx3.org", "http://www.bxwx3.org/search.aspx?bookname=")
-        val biqugexswSource = SimpleSource("笔趣阁", "http://www.biqugexsw.com", "http://www.biqugexsw.com/s.php?q=")
+        val bxwxSource = SimpleSource("bxwx3", "http://www.bxwx3.org", "http://www.bxwx3.org/search.aspx?bookname=", "gb2312")
+        val biqugexswSource = SimpleSource("biqugexsw", "http://www.biqugexsw.com", "http://www.biqugexsw.com/s.php?q=", null)
         registry.register(bxwxSource.baseUrl, bxwxSource)
-        registry.register(bxwxSource.baseUrl, BiqugexswParser())
+        registry.register(bxwxSource.baseUrl, BxwxParser())
         registry.register(biqugexswSource.baseUrl, biqugexswSource)
         registry.register(biqugexswSource.baseUrl, BiqugexswParser())
     }

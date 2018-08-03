@@ -15,6 +15,7 @@ import com.book.novel.utils.QidianParser
 import com.lereader.novel.BuildConfig
 import io.reactivex.Single
 import retrofit2.Retrofit
+import java.net.URLEncoder
 
 /**
  * Created by newbiechen on 17-4-20.
@@ -60,7 +61,9 @@ class RemoteImpl : IRemote {
         }
         return mBookApi.getBookChapterPackage(bookId)
                 .map { bean ->
-                    val parser = ParserManager.getParser(SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE))
+                    val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
+                    val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
+                    val parser = ParserManager.getParser(source.getSourceBaseUrl())
                     parser?.parseBookDetail(bean.string())?.bookChapterBeans
                 }
     }
@@ -77,7 +80,9 @@ class RemoteImpl : IRemote {
         }
         return mBookApi.getChapterInfoPackage(url)
                 .map { bean ->
-                    val parser = ParserManager.getParser(SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE))
+                    val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
+                    val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
+                    val parser = ParserManager.getParser(source.getSourceBaseUrl())
                     parser?.parseChapterInfo(bean.string())
                 }
     }
@@ -88,7 +93,9 @@ class RemoteImpl : IRemote {
             Log.e(TAG, "getBookDetail bookId:" + bookId)
         }
         return mBookApi.getBookDetail(bookId).map { bean ->
-            val parser = ParserManager.getParser(SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE))
+            val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
+            val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
+            val parser = ParserManager.getParser(source.getSourceBaseUrl())
             parser?.parseBookDetail(bean.string())
         }
     }
@@ -108,9 +115,17 @@ class RemoteImpl : IRemote {
     override fun getSearchBooks(query: String): Single<List<SearchBookPackage.BooksBean>> {
         val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
         val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
-        return mBookApi.getSearchBookPackage(source.getSourceSearchUrl())
+        val encode = source.getSourceEncode()
+        var encodeQuery = query
+        if (encode != null) {
+            encodeQuery = URLEncoder.encode(query, encode)
+        }
+        Log.e("RemoteHelper", "encodeQuery:" + encodeQuery)
+        return mBookApi.getSearchBookPackage(source.getSourceSearchUrl() + encodeQuery)
                 .map { bean ->
-                    ParserManager.getParser(source.getSourceBaseUrl())?.parseSearchResult(bean.string())
+                    Log.e("RemoteHelper", "search success")
+                    val parser = ParserManager.getParser(source.getSourceBaseUrl())
+                    parser?.parseSearchResult(bean.string())
                 }
     }
 }

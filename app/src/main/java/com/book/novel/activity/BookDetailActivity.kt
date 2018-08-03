@@ -19,12 +19,12 @@ import com.book.ireader.model.bean.packages.InterestedBookListPackage
 import com.book.ireader.model.local.BookDao
 import com.book.ireader.ui.activity.ReadActivity
 import com.book.ireader.ui.base.BaseMVPActivity
-import com.book.ireader.utils.Constant
 import com.book.novel.GlideApp
 import com.book.novel.adapter.BookDetailRecyclerAdapter
 import com.book.novel.adapter.recyclerview.MultiItemTypeAdapter
 import com.book.novel.presenter.BookDetailPresenter
 import com.book.novel.presenter.contract.BookDetailContract
+import com.book.novel.utils.LoggingListener
 import com.lereader.novel.R
 
 /**
@@ -189,13 +189,18 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mSwipeRefreshLayout.isRefreshing = false
         mEmptyView.visibility = View.GONE
         mContent.visibility = View.VISIBLE
-        GlideApp.with(this).load(Constant.IMG_BASE_URL + bean.cover).placeholder(R.drawable.ic_book_loading).error(R.drawable.ic_book_loading).into(mIvCover)
+        GlideApp
+                .with(this)
+                .load(bean.cover)
+                .placeholder(R.drawable.ic_book_loading)
+                .error(R.drawable.ic_book_loading)
+                .into(mIvCover)
         mTvTitle.text = bean.title
-        mTvAuthor.text = bean.author
+        mTvAuthor.text = resources.getString(R.string.bookdetail_author, bean.author)
         mTvCategory.text = bean.cat
         mTvWordCount.text = resources.getString(R.string.bookdetail_wordcount, bean.wordCount)
-        mTvUpdated.text = bean.updated
-        mTvLastCapture.text = bean.lastChapter
+        mTvUpdated.text = resources.getString(R.string.bookdetail_updated, bean.updated)
+        mTvLastCapture.text = resources.getString(R.string.bookdetail_last_chapter, bean.lastChapter)
         mTvLongInstro.text = bean.longIntro
 
         //判断是否收藏

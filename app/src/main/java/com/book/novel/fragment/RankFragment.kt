@@ -49,11 +49,6 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
 
     fun refresh() {
         mPresenter.load("hotsales", SharedPreUtils.getInstance().getString(Constant.SHARED_SEX))
-        if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_GIRL) {
-            mRankTabLayout.visibility = View.GONE
-        } else {
-            mRankTabLayout.visibility = View.VISIBLE
-        }
     }
 
     override fun initClick() {
@@ -71,6 +66,11 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
     }
 
     override fun show(rankTabBeans: List<RankTabBean>) {
+        if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_GIRL) {
+            mRankTabLayout.visibility = View.GONE
+        } else {
+            mRankTabLayout.visibility = View.VISIBLE
+        }
         mRankTabBeans = rankTabBeans
         mRankSwipeRefreshLayout.isRefreshing = false
         mPagerAdapter = RankViewPagerAdapter(fragmentManager!!, rankTabBeans)
