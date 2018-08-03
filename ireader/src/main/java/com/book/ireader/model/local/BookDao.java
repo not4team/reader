@@ -354,7 +354,8 @@ public class BookDao extends DBHelper implements IBookDao {
 
     @Override
     public void deleteCollBook(String id) {
-        getWritableDatabase().execSQL("DELETE FROM " + CollBookBean.TABLE_NAME + " WHERE " + CollBookBean.COLUMN_ID + " = " + id);
+        String sql = "DELETE FROM " + CollBookBean.TABLE_NAME + " WHERE " + CollBookBean.COLUMN_ID + " =' " + id + "'";
+        getWritableDatabase().execSQL(sql);
     }
 
     @Override
