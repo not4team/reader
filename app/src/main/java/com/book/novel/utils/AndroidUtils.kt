@@ -2,6 +2,7 @@ package com.book.novel.utils
 
 import android.content.Context
 import android.support.annotation.DrawableRes
+import android.util.Base64
 import android.view.View
 import com.lereader.novel.R
 
@@ -28,5 +29,14 @@ class AndroidUtils {
             layoutParams.width = width
             view.layoutParams = layoutParams
         }
+
+        fun base64Encode(content: String): String {
+            return Base64.encodeToString(content.toByteArray(charset("utf-8")), Base64.NO_WRAP)
+        }
+
+        fun base64Decode(content: String): String {
+            return String(Base64.decode(content.toByteArray(charset("utf-8")), Base64.NO_WRAP), charset("utf-8"))
+        }
+
     }
 }

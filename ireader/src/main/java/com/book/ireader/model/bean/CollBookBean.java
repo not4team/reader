@@ -7,6 +7,7 @@ import com.book.ireader.App;
 import com.book.ireader.model.annotation.Column;
 import com.book.ireader.model.annotation.Id;
 import com.book.ireader.model.annotation.Table;
+import com.book.ireader.model.local.BookDao;
 import com.book.ireader.utils.StringUtils;
 
 import java.util.List;
@@ -236,6 +237,9 @@ public class CollBookBean implements Parcelable {
     }
 
     public List<BookChapterBean> getBookChapterList() {
+        if (bookChapterList == null) {
+            bookChapterList = BookDao.getInstance(App.getContext()).getBookChapterBeans(this._id);
+        }
         return bookChapterList;
     }
 

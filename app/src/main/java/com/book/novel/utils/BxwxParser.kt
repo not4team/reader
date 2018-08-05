@@ -6,6 +6,7 @@ import com.book.ireader.model.bean.ChapterInfoBean
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.utils.MD5Utils
 import org.jsoup.Jsoup
+import java.net.URLEncoder
 
 /**
  * Created with author.
@@ -49,7 +50,7 @@ class BxwxParser : Parser {
         val intro = mainInfo.select("div#intro p").first().text()
         val cover = elements[1].select("div#sidebar div img").attr("src")
         val mBookDetailBean = BookDetailBean()
-        mBookDetailBean._id = _id.substring(0, _id.lastIndexOf("/"))
+        mBookDetailBean._id = AndroidUtils.base64Encode(URLEncoder.encode(_id.substring(0, _id.lastIndexOf("/")), "utf-8"))
         mBookDetailBean.title = title
         mBookDetailBean.author = author.replace("作 者：", "")
         mBookDetailBean.lastChapter = lastChapter

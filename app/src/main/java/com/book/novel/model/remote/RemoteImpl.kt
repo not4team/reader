@@ -9,12 +9,14 @@ import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.model.remote.IRemote
 import com.book.ireader.utils.Constant
 import com.book.ireader.utils.SharedPreUtils
+import com.book.novel.utils.AndroidUtils
 import com.book.novel.utils.GsonParser
 import com.book.novel.utils.ParserManager
 import com.book.novel.utils.QidianParser
 import com.lereader.novel.BuildConfig
 import io.reactivex.Single
 import retrofit2.Retrofit
+import java.net.URLDecoder
 import java.net.URLEncoder
 
 /**
@@ -59,7 +61,8 @@ class RemoteImpl : IRemote {
         if (BuildConfig.LOG_DEBUG) {
             Log.e(TAG, "getBookChapters bookId:" + bookId)
         }
-        return mBookApi.getBookChapterPackage(bookId)
+        val url = URLDecoder.decode(AndroidUtils.base64Decode(bookId), "utf-8")
+        return mBookApi.getBookChapterPackage(url)
                 .map { bean ->
                     val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
                     val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()

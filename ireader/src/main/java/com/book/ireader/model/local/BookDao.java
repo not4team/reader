@@ -320,7 +320,7 @@ public class BookDao extends DBHelper implements IBookDao {
     public void saveBookChapter(BookChapterBean bookChapterBean) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(BookChapterBean.COLUMN_ID, bookChapterBean.COLUMN_ID);
+        contentValues.put(BookChapterBean.COLUMN_ID, bookChapterBean.getId());
         contentValues.put(BookChapterBean.COLUMN_LINK, bookChapterBean.getLink());
         contentValues.put(BookChapterBean.COLUMN_TITLE, bookChapterBean.getTitle());
         contentValues.put(BookChapterBean.COLUMN_TASK_NAME, bookChapterBean.getTaskName());
@@ -354,7 +354,7 @@ public class BookDao extends DBHelper implements IBookDao {
 
     @Override
     public void deleteCollBook(String id) {
-        String sql = "DELETE FROM " + CollBookBean.TABLE_NAME + " WHERE " + CollBookBean.COLUMN_ID + " =' " + id + "'";
+        String sql = "DELETE FROM " + CollBookBean.TABLE_NAME + " WHERE " + CollBookBean.COLUMN_ID + " = '" + id + "'";
         getWritableDatabase().execSQL(sql);
     }
 
@@ -373,7 +373,7 @@ public class BookDao extends DBHelper implements IBookDao {
     @Override
     public void deleteBookChapter(String bookId) {
         SQLiteDatabase db = getWritableDatabase();
-        String sql = "DELETE FROM " + BookChapterBean.TABLE_NAME + " WHERE " + BookChapterBean.COLUMN_BOOK_ID + " = " + bookId;
+        String sql = "DELETE FROM " + BookChapterBean.TABLE_NAME + " WHERE " + BookChapterBean.COLUMN_BOOK_ID + " = '" + bookId + "'";
         db.execSQL(sql);
     }
 

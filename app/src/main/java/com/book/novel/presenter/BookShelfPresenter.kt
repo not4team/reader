@@ -7,7 +7,9 @@ import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
 import com.book.ireader.utils.RxUtils
 import com.book.novel.presenter.contract.BookShelfContract
+import com.book.novel.utils.AndroidUtils
 import io.reactivex.Single
+import java.net.URLDecoder
 
 /**
  * Created with author.
@@ -21,7 +23,7 @@ class BookShelfPresenter() : RxPresenter<BookShelfContract.View>(), BookShelfCon
             val newCollBookBeans = mutableListOf<CollBookBean>()
             collBookBeans.forEach { oldBean ->
                 RemoteRepository.getInstance(App.getContext())
-                        .getBookDetail(oldBean._id)
+                        .getBookDetail(URLDecoder.decode(AndroidUtils.base64Decode(oldBean._id), "utf-8"))
                         .subscribe({ newBean ->
                             val newCollBookBean = newBean.collBookBean
                             if (oldBean.isUpdate() || oldBean.lastChapter != newCollBookBean.lastChapter) {
