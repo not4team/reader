@@ -35,7 +35,7 @@ class BookshelfHolder : ViewHolderImpl<CollBookBean>() {
     override fun onBind(data: CollBookBean, pos: Int) {
         //显示图片
         GlideApp.with(App.getContext())
-                .load("http://images2.bxwx3.org/images2/20180403/201804030348484542.jpg")
+                .load(data.cover)
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)
                 .into(mIvCover)
