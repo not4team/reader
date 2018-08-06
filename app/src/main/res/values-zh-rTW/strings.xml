@@ -23,6 +23,7 @@
     <string name="rank_category_item_cat_wordcount">%1$s·%2$s</string>
     <string name="about">關於</string>
     <string name="change_source">切換來源</string>
+    <string name="change_source_text">切換來源後會依次修改書架上書籍鏈接（若新的來源找不到該書籍則不會做修改），此過程可能需要花費幾分鐘。</string>
     <string name="activity_about_text">
         作者自娛之作,內容均來源于網絡。\n\n
         應用內書架為本地書架，卸載重裝或清除數據后無法恢復，只有加入書架的書籍章節會緩存。\n\n

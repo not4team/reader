@@ -14,11 +14,11 @@ object ParserManager {
 
     init {
         val bxwxSource = SimpleSource("bxwx3", "http://www.bxwx3.org", "http://www.bxwx3.org/search.aspx?bookname=", "gb2312")
-        val biqugexswSource = SimpleSource("biqugexsw", "http://www.biqugexsw.com", "http://www.biqugexsw.com/s.php?q=", null)
+        val biqudaoSource = SimpleSource("biqudao", "https://www.biqudao.com", "https://www.biqudao.com/searchbook.php?keyword=", null)
         registry.register(bxwxSource.baseUrl, bxwxSource)
         registry.register(bxwxSource.baseUrl, BxwxParser())
-        registry.register(biqugexswSource.baseUrl, biqugexswSource)
-        registry.register(biqugexswSource.baseUrl, BiqugexswParser())
+        registry.register(biqudaoSource.baseUrl, biqudaoSource)
+        registry.register(biqudaoSource.baseUrl, BiqudaoParser())
     }
 
     fun getAllSources(): List<SourceRegistry.Entry> {

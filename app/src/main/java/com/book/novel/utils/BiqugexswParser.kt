@@ -3,6 +3,7 @@ package com.book.novel.utils
 import com.book.ireader.model.bean.BookChapterBean
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.ChapterInfoBean
+import com.book.ireader.model.bean.Source
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.utils.MD5Utils
 import org.jsoup.Jsoup
@@ -14,7 +15,7 @@ import org.jsoup.Jsoup
  * Time: 下午3:52
  */
 class BiqugexswParser : Parser {
-    override fun parseSearchResult(html: String): List<SearchBookPackage.BooksBean> {
+    override fun parseSearchResult(source: Source, html: String): List<SearchBookPackage.BooksBean> {
         val doc = Jsoup.parse(html)
         val list = mutableListOf<SearchBookPackage.BooksBean>()
         doc.select("div.bookbox").forEach {
@@ -36,7 +37,7 @@ class BiqugexswParser : Parser {
         return list
     }
 
-    override fun parseBookDetail(html: String): BookDetailBean {
+    override fun parseBookDetail(source: Source, html: String): BookDetailBean {
         val doc = Jsoup.parse(html)
         val body = doc.body()
         val bookInfo = body.select("div.info").first()
@@ -88,7 +89,7 @@ class BiqugexswParser : Parser {
         return mBookDetailBean
     }
 
-    override fun parseChapterInfo(html: String): ChapterInfoBean {
+    override fun parseChapterInfo(source: Source, html: String): ChapterInfoBean {
         val doc = Jsoup.parse(html)
         val content = doc.select("div.content").first()
         val title = content.select("h1").text()

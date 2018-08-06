@@ -67,7 +67,7 @@ class RemoteImpl : IRemote {
                     val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
                     val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
                     val parser = ParserManager.getParser(source.getSourceBaseUrl())
-                    parser?.parseBookDetail(bean.string())?.bookChapterBeans
+                    parser?.parseBookDetail(source, bean.string())?.bookChapterBeans
                 }
     }
 
@@ -86,7 +86,7 @@ class RemoteImpl : IRemote {
                     val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
                     val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
                     val parser = ParserManager.getParser(source.getSourceBaseUrl())
-                    parser?.parseChapterInfo(bean.string())
+                    parser?.parseChapterInfo(source, bean.string())
                 }
     }
 
@@ -99,7 +99,7 @@ class RemoteImpl : IRemote {
             val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
             val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
             val parser = ParserManager.getParser(source.getSourceBaseUrl())
-            parser?.parseBookDetail(bean.string())
+            parser?.parseBookDetail(source, bean.string())
         }
     }
 
@@ -128,7 +128,7 @@ class RemoteImpl : IRemote {
                 .map { bean ->
                     Log.e("RemoteHelper", "search success")
                     val parser = ParserManager.getParser(source.getSourceBaseUrl())
-                    parser?.parseSearchResult(bean.string())
+                    parser?.parseSearchResult(source, bean.string())
                 }
     }
 }

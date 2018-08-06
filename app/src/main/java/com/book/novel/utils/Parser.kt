@@ -2,6 +2,7 @@ package com.book.novel.utils
 
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.ChapterInfoBean
+import com.book.ireader.model.bean.Source
 import com.book.ireader.model.bean.packages.SearchBookPackage
 
 /**
@@ -11,7 +12,7 @@ import com.book.ireader.model.bean.packages.SearchBookPackage
  * Time: 0:46
  */
 interface Parser {
-    fun parseSearchResult(html: String): List<SearchBookPackage.BooksBean>
-    fun parseBookDetail(html: String): BookDetailBean
-    fun parseChapterInfo(html: String): ChapterInfoBean
+    fun parseSearchResult(source: Source, html: String): List<SearchBookPackage.BooksBean>
+    fun parseBookDetail(source: Source, html: String): BookDetailBean
+    fun parseChapterInfo(source: Source, html: String): ChapterInfoBean
 }

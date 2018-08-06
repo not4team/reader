@@ -266,6 +266,9 @@ class MainActivity : BaseActivity() {
             R.id.about -> {
                 startActivity(Intent(this, AboutActivity::class.java))
             }
+            R.id.change_source -> {
+                startActivity(Intent(this, ChangeSourceActivity::class.java))
+            }
         }
         return super.onOptionsItemSelected(item)
     }
