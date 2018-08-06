@@ -39,5 +39,10 @@ class SourceRegistry {
                 return super.equals(other)
             }
         }
+
+        override fun toString(): String {
+            return source.sourceName
+        }
+
     }
 }
