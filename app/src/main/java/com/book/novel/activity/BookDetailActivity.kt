@@ -17,6 +17,7 @@ import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.bean.packages.InterestedBookListPackage
 import com.book.ireader.model.local.BookDao
+import com.book.ireader.model.local.CollectDao
 import com.book.ireader.ui.activity.ReadActivity
 import com.book.ireader.ui.base.BaseMVPActivity
 import com.book.novel.GlideApp
@@ -24,7 +25,7 @@ import com.book.novel.adapter.BookDetailRecyclerAdapter
 import com.book.novel.adapter.recyclerview.MultiItemTypeAdapter
 import com.book.novel.presenter.BookDetailPresenter
 import com.book.novel.presenter.contract.BookDetailContract
-import com.book.novel.utils.LoggingListener
+import com.book.novel.utils.AndroidUtils
 import com.lereader.novel.R
 
 /**
@@ -166,7 +167,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                 //点击存储
                 if (isCollected) {
                     //放弃点击
-                    BookDao.getInstance(App.getContext())
+                    CollectDao.getInstance(App.getContext())
                             .deleteCollBookInRx(mCollBookBean).subscribe()
                     mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_chase_update)
                     isCollected = false
@@ -191,7 +192,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mContent.visibility = View.VISIBLE
         GlideApp
                 .with(this)
-                .load(bean.cover)
+                .load(AndroidUtils.generateGlideUrl(bean.cover))
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_book_loading)
                 .into(mIvCover)
@@ -204,7 +205,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mTvLongInstro.text = bean.longIntro
 
         //判断是否收藏
-        mCollBookBean = BookDao.getInstance(App.getContext()).getCollBook(bean._id)
+        mCollBookBean = CollectDao.getInstance(App.getContext()).getCollBook(bean._id)
         if (mCollBookBean != null) {
             isCollected = true
             mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
@@ -213,7 +214,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                 mCollBookBean!!.setIsUpdate(true)
                 mCollBookBean!!.lastChapter = bean.lastChapter
                 mCollBookBean!!.bookChapterList = bean.bookChapterBeans
-                BookDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBookBean)
+                CollectDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBookBean)
                 BookDao.getInstance(App.getContext()).saveBookChaptersWithAsync(mCollBookBean!!.bookChapterList)
                 RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
             }

@@ -26,6 +26,7 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
     private lateinit var mRankTabLayout: TabLayout
     private lateinit var mPagerAdapter: RankViewPagerAdapter
     private lateinit var mRankTabBeans: List<RankTabBean>
+    private lateinit var mEmptyView: View
     override fun getContentId(): Int {
         return R.layout.fragment_rank
     }
@@ -39,6 +40,7 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
         if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_GIRL) {
             mRankTabLayout.visibility = View.GONE
         }
+        mEmptyView = getViewById(R.id.rl_empty_view)
     }
 
     override fun processLogic() {
@@ -66,6 +68,7 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
     }
 
     override fun show(rankTabBeans: List<RankTabBean>) {
+        mEmptyView.visibility = View.GONE
         if (SharedPreUtils.getInstance().getString(Constant.SHARED_SEX) == Constant.SEX_GIRL) {
             mRankTabLayout.visibility = View.GONE
         } else {
@@ -87,5 +90,6 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
 
     override fun showError() {
         mRankSwipeRefreshLayout.isRefreshing = false
+        mEmptyView.visibility = View.VISIBLE
     }
 }

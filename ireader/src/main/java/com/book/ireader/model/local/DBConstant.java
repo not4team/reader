@@ -10,8 +10,10 @@ public interface DBConstant {
     public static String DB_NAME_USER = "collect.db";
     public static int DB_VERSION = 1;
     public static int DB_VERSION_COLLECT = 1;
+    public static final Class<?>[] DB_COLLECT_CLASSES = new Class[]{
+            CollBookBean.class
+    };
     public static final Class<?>[] DB_CLASSES = new Class[]{
-            CollBookBean.class,
             BookChapterBean.class,
             ChapterInfoBean.class,
             BookRecordBean.class

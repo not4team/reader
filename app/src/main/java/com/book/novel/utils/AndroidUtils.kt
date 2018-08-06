@@ -4,7 +4,12 @@ import android.content.Context
 import android.support.annotation.DrawableRes
 import android.util.Base64
 import android.view.View
+import com.book.ireader.utils.Constant
+import com.book.ireader.utils.SharedPreUtils
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.lereader.novel.R
+
 
 /**
  * Created with author.
@@ -38,5 +43,15 @@ class AndroidUtils {
             return String(Base64.decode(content.toByteArray(charset("utf-8")), Base64.NO_WRAP), charset("utf-8"))
         }
 
+        fun generateGlideUrl(url: String): GlideUrl {
+            return GlideUrl(url, LazyHeaders.Builder()
+                    .addHeader("Accept", "*/*")
+                    .addHeader("Accept-Encoding", "gzip, deflate")
+                    .addHeader("Accept-Language", "zh-CN,en-US;q=0.7,en;q=0.3")
+                    .addHeader("Cache-Control", "max-age=0")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Referer", url)
+                    .build())
+        }
     }
 }

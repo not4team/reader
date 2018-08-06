@@ -19,7 +19,7 @@ public class CollectDBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        TableHelper.createTablesByClasses(db, DBConstant.DB_COLLECT_CLASSES);
     }
 
     @Override

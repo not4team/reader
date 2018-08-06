@@ -4,6 +4,7 @@ import com.book.ireader.App
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.local.BookDao
+import com.book.ireader.model.local.CollectDao
 import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
 import com.book.ireader.utils.MD5Utils
@@ -33,7 +34,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
 
     override fun addToBookShelf(collBookBean: CollBookBean) {
         //存储收藏
-        BookDao.getInstance(App.getContext()).saveCollBookWithAsync(collBookBean)
+        CollectDao.getInstance(App.getContext()).saveCollBookWithAsync(collBookBean)
         mView.succeedToBookShelf()
     }
 

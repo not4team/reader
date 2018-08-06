@@ -140,5 +140,6 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
 
     override fun showError() {
         mRefreshLayout.showFinish()
+        mTvEmpty.visibility = View.VISIBLE
     }
 }

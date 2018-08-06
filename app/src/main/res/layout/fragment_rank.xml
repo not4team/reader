@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.book.novel.widget.ViewPagerSwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rank_swipe_refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.book.novel.widget.ViewPagerSwipeRefreshLayout
-        android:id="@+id/rank_swipe_refresh_layout"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,5 +23,9 @@
                 app:tabMode="scrollable" />
 
         </android.support.v4.view.ViewPager>
-    </com.book.novel.widget.ViewPagerSwipeRefreshLayout>
-</android.support.constraint.ConstraintLayout>
+
+        <include
+            layout="@layout/view_empty"
+            android:visibility="gone" />
+    </android.support.constraint.ConstraintLayout>
+</com.book.novel.widget.ViewPagerSwipeRefreshLayout>

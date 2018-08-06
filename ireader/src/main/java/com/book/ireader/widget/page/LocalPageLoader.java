@@ -4,6 +4,7 @@ import com.book.ireader.App;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.CollBookBean;
 import com.book.ireader.model.local.BookDao;
+import com.book.ireader.model.local.CollectDao;
 import com.book.ireader.model.local.Void;
 import com.book.ireader.utils.Charset;
 import com.book.ireader.utils.Constant;
@@ -327,7 +328,7 @@ public class LocalPageLoader extends PageLoader {
             mCollBook.setLastRead(StringUtils.
                     dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE));
             //直接更新
-            BookDao.getInstance(App.getContext())
+            CollectDao.getInstance(App.getContext())
                     .insertOrReplaceCollBook(mCollBook);
         }
     }
@@ -410,7 +411,7 @@ public class LocalPageLoader extends PageLoader {
                         mCollBook.setUpdated(lastModified);
 
                         BookDao.getInstance(App.getContext()).saveBookChaptersWithAsync(bookChapterBeanList);
-                        BookDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBook);
+                        CollectDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBook);
 
                         // 加载并显示当前章节
                         openChapter();

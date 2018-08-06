@@ -38,6 +38,7 @@ import com.book.ireader.R;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.CollBookBean;
 import com.book.ireader.model.local.BookDao;
+import com.book.ireader.model.local.CollectDao;
 import com.book.ireader.model.local.ReadSettingManager;
 import com.book.ireader.presenter.ReadPresenter;
 import com.book.ireader.presenter.contract.ReadContract;
@@ -729,7 +730,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                         mCollBook.setLastRead(StringUtils.
                                 dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE));
 
-                        BookDao.getInstance(App.getContext())
+                        CollectDao.getInstance(App.getContext())
                                 .saveCollBookWithAsync(mCollBook);
 
                         exit();

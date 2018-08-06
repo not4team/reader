@@ -7,6 +7,7 @@ import com.book.ireader.App
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
 import com.book.novel.GlideApp
+import com.book.novel.utils.AndroidUtils
 import com.lereader.novel.R
 
 /**
@@ -35,7 +36,7 @@ class BookshelfHolder : ViewHolderImpl<CollBookBean>() {
     override fun onBind(data: CollBookBean, pos: Int) {
         //显示图片
         GlideApp.with(App.getContext())
-                .load(data.cover)
+                .load(AndroidUtils.generateGlideUrl(data.cover))
                 .placeholder(R.drawable.ic_book_loading)
                 .error(R.drawable.ic_load_error)
                 .into(mIvCover)

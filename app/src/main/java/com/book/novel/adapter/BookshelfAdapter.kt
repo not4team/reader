@@ -6,6 +6,7 @@ import com.book.ireader.RxBus
 import com.book.ireader.event.BookShelfRefreshEvent
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.local.BookDao
+import com.book.ireader.model.local.CollectDao
 import com.book.ireader.ui.base.adapter.BaseListAdapter
 import com.book.ireader.ui.base.adapter.IViewHolder
 import com.book.ireader.utils.RxUtils
@@ -36,7 +37,7 @@ class BookshelfAdapter : BaseListAdapter<CollBookBean>(), ItemTouchHelperAdapter
 
         Single.create<Unit> {
             Log.e(TAG, "swap after collBook1.bookOrder : " + collBook1.bookOrder + ", collBook2.bookOrder : " + collBook2.bookOrder)
-            BookDao.getInstance(App.getContext()).swapCollBookOrder(collBook1, collBook2)
+            CollectDao.getInstance(App.getContext()).swapCollBookOrder(collBook1, collBook2)
             it.onSuccess(Unit)
         }.compose(RxUtils::toSimpleSingle).subscribe { success ->
             Log.e("BookshelfAdapter", "swapOrder success")
@@ -44,7 +45,7 @@ class BookshelfAdapter : BaseListAdapter<CollBookBean>(), ItemTouchHelperAdapter
     }
 
     override fun onItemDissmiss(position: Int) {
-        BookDao.getInstance(App.getContext()).deleteCollBookInRx(mList[position]).subscribe()
+        CollectDao.getInstance(App.getContext()).deleteCollBookInRx(mList[position]).subscribe()
         //移除数据
         val _id = mList[position]._id
         mList.removeAt(position)
