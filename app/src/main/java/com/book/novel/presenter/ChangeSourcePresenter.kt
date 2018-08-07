@@ -2,6 +2,8 @@ package com.book.novel.presenter
 
 import android.util.Log
 import com.book.ireader.App
+import com.book.ireader.RxBus
+import com.book.ireader.event.BookShelfRefreshEvent
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.bean.Source
 import com.book.ireader.model.local.CollectDao
@@ -31,6 +33,7 @@ class ChangeSourcePresenter : RxPresenter<ChangeSourceContract.View>(), ChangeSo
                 }) {
                     Log.e("ChangeSourcePresenter", "onComplete")
                     mView.complete()
+                    RxBus.getInstance().post(BookShelfRefreshEvent().setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
                 }
         addDisposable(disposable)
     }
