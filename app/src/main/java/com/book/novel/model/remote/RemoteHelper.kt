@@ -17,23 +17,22 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 class RemoteHelper private constructor() {
     val retrofit: Retrofit
     val okHttpClient: OkHttpClient
-    val mQidianUrl = "https://m.qidian.com"
     val cookieStore = mutableMapOf<HttpUrl, List<Cookie>>()
 
     init {
         okHttpClient = OkHttpClient.Builder()
                 .cookieJar(object : CookieJar {
                     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-                        cookieStore.put(HttpUrl.parse(mQidianUrl)!!, cookies)
+                        cookieStore.put(url, cookies)
                         if (BuildConfig.LOG_DEBUG) {
                             cookies.forEach { cookie -> Log.e(TAG, "name:" + cookie.name() + ",value:" + cookie.value()) }
                         }
                     }
 
-                    override fun loadForRequest(url: HttpUrl): List<Cookie>? {
-                        var cookies = cookieStore.get(HttpUrl.parse(mQidianUrl))
+                    override fun loadForRequest(url: HttpUrl): List<Cookie> {
+                        var cookies = cookieStore.get(url)
                         if (cookies == null) {
-                            cookies = listOf()
+                            cookies = listOf<Cookie>()
                         }
                         return cookies
                     }
@@ -41,14 +40,15 @@ class RemoteHelper private constructor() {
                 .addNetworkInterceptor { chain ->
                     val request = chain.request()
                     //添加token
-                    var url = request.url().toString()
+                    var url = request.url()
+                    var urlStr = url.toString()
                     if (BuildConfig.LOG_DEBUG) {
                         Log.d(TAG, "intercept: " + url)
                     }
-                    if (url.contains("m.qidian.com/majax/rank")) {
-                        url = url + "&_csrfToken=" + getCookie("_csrfToken")
+                    if (urlStr.contains("m.qidian.com/majax/rank")) {
+                        urlStr = urlStr + "&_csrfToken=" + getCookie(url, "_csrfToken")
                     }
-                    val addCookieTokenRequest = request.newBuilder().url(url).build()
+                    val addCookieTokenRequest = request.newBuilder().url(urlStr).build()
                     if (BuildConfig.LOG_DEBUG) {
                         Log.d(TAG, "add cookie url: " + addCookieTokenRequest.url().toString())
                     }
@@ -63,8 +63,8 @@ class RemoteHelper private constructor() {
                 .build()
     }
 
-    fun getCookie(name: String): String? {
-        val cookies: List<Cookie>? = cookieStore.get(HttpUrl.parse(mQidianUrl)!!)
+    fun getCookie(url: HttpUrl, name: String): String? {
+        val cookies: List<Cookie>? = cookieStore.get(url)
         if (cookies != null) {
             for (index in cookies.indices) {
                 if (cookies[index].name() == name) {

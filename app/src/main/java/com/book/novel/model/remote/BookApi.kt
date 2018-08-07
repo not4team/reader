@@ -2,10 +2,7 @@ package com.book.novel.model.remote
 
 import io.reactivex.Single
 import okhttp3.ResponseBody
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
-import retrofit2.http.Url
+import retrofit2.http.*
 
 /**
  * Created by newbiechen on 17-4-20.
@@ -76,5 +73,8 @@ interface BookApi {
      * @return
      */
     @GET
-    fun getSearchBookPackage(@Url url: String): Single<ResponseBody>
+    fun getSearchBookPackage(@Url url: String, @QueryMap params: Map<String, String>): Single<ResponseBody>
+
+    @POST
+    fun getSearchBookPackagePost(@Url url: String, @FieldMap params: Map<String, String>): Single<ResponseBody>
 }

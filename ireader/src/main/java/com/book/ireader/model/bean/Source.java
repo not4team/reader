@@ -15,5 +15,9 @@ public interface Source {
 
     public String getSourceSearchUrl();
 
+    public String getSourceSearchParam();
+
+    public String getSourceSearchMethod();
+
     public String getSourceEncode();
 }
