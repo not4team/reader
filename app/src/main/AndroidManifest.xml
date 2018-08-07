@@ -74,6 +74,9 @@
         <activity
             android:name="com.book.novel.activity.AboutActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="com.book.novel.activity.ChangeSourceActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -50,7 +50,7 @@ class BiqudaoParser : Parser {
         val lastChapter = info.select("p")[3].select("a").text()
         val _id = info.select("p")[3].select("a").attr("href")
         val intro = mainInfo.select("div#intro").first().text()
-        val cover = elements[1].select("div#sidebar div img").attr("src")
+        val cover = elements[0].select("div#sidebar div img").attr("src")
         val mBookDetailBean = BookDetailBean()
         mBookDetailBean._id = AndroidUtils.base64Encode(URLEncoder.encode(source.sourceBaseUrl + _id.substring(0, _id.lastIndexOf("/")), "utf-8"))
         mBookDetailBean.title = title

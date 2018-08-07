@@ -173,8 +173,8 @@ class MainActivity : BaseActivity() {
 
     override fun setUpToolbar(toolbar: Toolbar?) {
         super.setUpToolbar(toolbar)
-        supportActionBar!!.title = resources.getString(R.string.app_name)
-        toolbar!!.setNavigationOnClickListener {
+        supportActionBar?.title = resources.getString(R.string.app_name)
+        toolbar?.setNavigationOnClickListener {
             if (mSearchView!!.isIconified) {
                 finish()
             } else {
