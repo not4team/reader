@@ -27,7 +27,7 @@ public class SearchBookPackage extends BaseBean {
          * title : 大主宰
          * cat : 玄幻
          * author : 天蚕土豆
-         * site : zhuishuvip
+         * site : "http://www.xxx.com"
          * cover : /agent/http://image.cmfu.com/books/2750457/2750457.jpg
          * shortIntro : 大千世界，位面交汇，万族林立，群雄荟萃，一位位来自下位面的天之至尊，在这无尽世界，演绎着令人向往的传奇，追求着那主宰之路。 无尽火域，炎帝执掌，万火焚苍穹。 武...
          * lastChapter : 第1565章 人法合一

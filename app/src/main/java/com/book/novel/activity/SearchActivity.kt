@@ -83,6 +83,7 @@ class SearchActivity : BaseMVPActivity<SearchContract.Presenter>(), SearchContra
             override fun onItemClick(view: View, pos: Int) {
                 val mIntent = Intent(this@SearchActivity, BookDetailActivity::class.java)
                 mIntent.putExtra(BookDetailActivity.BOOK_ID_INTENT_KEY, mSearchBookAdapter.getItem(pos)._id)
+                mIntent.putExtra(BookDetailActivity.BOOK_LINK_INTENT_KEY, mSearchBookAdapter.getItem(pos).site)
                 mIntent.putExtra(BookDetailActivity.BOOK_TILTE_INTENT_KEY, mSearchBookAdapter.getItem(pos).title)
                 mIntent.putExtra(BookDetailActivity.BOOK_AUTHOR_INTENT_KEY, mSearchBookAdapter.getItem(pos).author)
                 startActivity(mIntent)

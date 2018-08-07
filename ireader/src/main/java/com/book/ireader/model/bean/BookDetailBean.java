@@ -49,6 +49,7 @@ public class BookDetailBean {
      */
 
     private String _id;
+    private String link;
     private String author;
     private String cover;
     private String creater;
@@ -88,6 +89,14 @@ public class BookDetailBean {
 
     public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getAuthor() {
@@ -332,6 +341,7 @@ public class BookDetailBean {
     public CollBookBean createCollBookBean() {
         CollBookBean bean = new CollBookBean();
         bean.set_id(get_id());
+        bean.setLink(getLink());
         bean.setTitle(getTitle());
         bean.setAuthor(getAuthor());
         bean.setShortIntro(getLongIntro());

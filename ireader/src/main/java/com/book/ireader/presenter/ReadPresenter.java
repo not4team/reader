@@ -36,9 +36,9 @@ public class ReadPresenter extends RxPresenter<ReadContract.View>
     private Subscription mChapterSub;
 
     @Override
-    public void loadCategory(String bookId) throws Exception {
+    public void loadCategory(String bookId, String bookLink) throws Exception {
         Disposable disposable = RemoteRepository.getInstance(App.getContext())
-                .getBookChapters(bookId)
+                .getBookChapters(bookLink)
                 .doOnSuccess(new Consumer<List<BookChapterBean>>() {
                     @Override
                     public void accept(List<BookChapterBean> bookChapterBeen) throws Exception {

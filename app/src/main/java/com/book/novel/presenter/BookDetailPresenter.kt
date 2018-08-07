@@ -3,11 +3,9 @@ package com.book.novel.presenter
 import com.book.ireader.App
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.CollBookBean
-import com.book.ireader.model.local.BookDao
 import com.book.ireader.model.local.CollectDao
 import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
-import com.book.ireader.utils.MD5Utils
 import com.book.ireader.utils.RxUtils
 import com.book.novel.presenter.contract.BookDetailContract
 import io.reactivex.SingleObserver
@@ -21,10 +19,10 @@ import io.reactivex.schedulers.Schedulers
 
 class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailContract.Presenter {
     val TAG = "BookDetailPresenter"
-    private var bookId: String? = null
+    private var bookLink: String? = null
 
-    override fun refreshBookDetail(bookId: String) {
-        this.bookId = bookId
+    override fun refreshBookDetail(bookLink: String) {
+        this.bookLink = bookLink
         refreshBook()
     }
 
@@ -49,7 +47,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                     run breakTag@{
                         beans.forEach continueTag@{
                             if (title.equals(it.title) && author.equals(it.author)) {
-                                this@BookDetailPresenter.bookId = it._id
+                                this@BookDetailPresenter.bookLink = it.site
                                 refreshBook()
                                 return@breakTag
                             }
@@ -65,7 +63,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
         try {
             RemoteRepository
                     .getInstance(App.getContext())
-                    .getBookDetail(bookId)
+                    .getBookDetail(bookLink)
                     .compose(RxUtils::toSimpleSingle)
                     .subscribe(object : SingleObserver<BookDetailBean> {
                         override fun onSubscribe(d: Disposable) {
@@ -96,7 +94,7 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
         try {
             val disposable = RemoteRepository
                     .getInstance(App.getContext())
-                    .getRecommendBooks(bookId)
+                    .getRecommendBooks(bookLink)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe { value -> mView.finishRecommendBooks(value) }

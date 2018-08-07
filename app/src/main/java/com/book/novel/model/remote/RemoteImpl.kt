@@ -57,12 +57,11 @@ class RemoteImpl : IRemote {
         }
     }
 
-    override fun getBookChapters(bookId: String): Single<List<BookChapterBean>> {
+    override fun getBookChapters(bookLink: String): Single<List<BookChapterBean>> {
         if (BuildConfig.LOG_DEBUG) {
-            Log.e(TAG, "getBookChapters bookId:" + bookId)
+            Log.e(TAG, "getBookChapters bookId:" + bookLink)
         }
-        val url = URLDecoder.decode(AndroidUtils.base64Decode(bookId), "utf-8")
-        return mBookApi.getBookChapterPackage(url)
+        return mBookApi.getBookChapterPackage(bookLink)
                 .map { bean ->
                     val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
                     val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
@@ -91,11 +90,11 @@ class RemoteImpl : IRemote {
     }
 
     /***************************************书籍详情 */
-    override fun getBookDetail(bookId: String): Single<BookDetailBean> {
+    override fun getBookDetail(link: String): Single<BookDetailBean> {
         if (BuildConfig.LOG_DEBUG) {
-            Log.e(TAG, "getBookDetail bookId:" + bookId)
+            Log.e(TAG, "getBookDetail bookId:" + link)
         }
-        return mBookApi.getBookDetail(bookId).map { bean ->
+        return mBookApi.getBookDetail(link).map { bean ->
             val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
             val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
             val parser = ParserManager.getParser(source.getSourceBaseUrl())

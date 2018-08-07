@@ -12,7 +12,7 @@ import com.book.ireader.ui.base.BaseContract
 interface BookShelfContract : BaseContract {
     interface View : BaseContract.BaseView {
         fun show(collBookBeans: List<CollBookBean>)
-        fun finishUpdate()
+        fun finishUpdate(collBookBean: CollBookBean)
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {

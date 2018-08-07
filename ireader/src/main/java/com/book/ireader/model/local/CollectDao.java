@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.book.ireader.App;
 import com.book.ireader.model.bean.CollBookBean;
+import com.book.ireader.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class CollectDao extends CollectDBHelper {
             cursor = db.query(CollBookBean.TABLE_NAME, null, CollBookBean.COLUMN_ID + " = ?", new String[]{bookId}, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 String id = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_ID));
+                String link = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LINK));
                 String title = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_TITLE));
                 String author = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_AUTHOR));
                 String shortIntro = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_SHORT_INTRO));
@@ -59,7 +61,7 @@ public class CollectDao extends CollectDBHelper {
                 boolean isUpdate = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_UPDATE)) == 1 ? true : false;
                 boolean isLocal = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_LOCAL)) == 1 ? true : false;
                 int bookOrder = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_BOOK_ORDER));
-                CollBookBean book = new CollBookBean(id, title, author, shortIntro, cover, category, true, 0,
+                CollBookBean book = new CollBookBean(id, link, title, author, shortIntro, cover, category, true, 0,
                         0, updateTime, lastReadTime, chaptersCount, lastChapter, isUpdate, isLocal, bookOrder);
                 return book;
             }
@@ -83,6 +85,7 @@ public class CollectDao extends CollectDBHelper {
             cursor = db.rawQuery(sql, null);
             while (cursor.moveToNext()) {
                 String id = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_ID));
+                String link = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LINK));
                 String title = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_TITLE));
                 String author = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_AUTHOR));
                 String shortIntro = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_SHORT_INTRO));
@@ -95,7 +98,7 @@ public class CollectDao extends CollectDBHelper {
                 int isUpdate = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_UPDATE));
                 int isLocal = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_LOCAL));
                 int bookOrder = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_BOOK_ORDER));
-                CollBookBean book = new CollBookBean(id, title, author, shortIntro, cover, category, true, 0,
+                CollBookBean book = new CollBookBean(id, link, title, author, shortIntro, cover, category, true, 0,
                         0, updated, lastRead, chaptersCount, lastChapter, isUpdate == 1 ? true : false, isLocal == 1 ? true : false, bookOrder);
                 list.add(book);
             }
@@ -110,7 +113,10 @@ public class CollectDao extends CollectDBHelper {
     public void insertOrReplaceCollBook(CollBookBean bean) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(CollBookBean.COLUMN_ID, bean.get_id());
+        //title + author当主键
+        String id = StringUtils.base64Encode(bean.getTitle() + "," + bean.getAuthor());
+        contentValues.put(CollBookBean.COLUMN_ID, id);
+        contentValues.put(CollBookBean.COLUMN_LINK, bean.getLink());
         contentValues.put(CollBookBean.COLUMN_TITLE, bean.getTitle());
         contentValues.put(CollBookBean.COLUMN_AUTHOR, bean.getAuthor());
         contentValues.put(CollBookBean.COLUMN_SHORT_INTRO, bean.getShortIntro());

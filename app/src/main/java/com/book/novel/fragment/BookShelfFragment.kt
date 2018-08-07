@@ -13,11 +13,11 @@ import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.ui.activity.ReadActivity
 import com.book.ireader.ui.base.BaseMVPFragment
 import com.book.ireader.widget.RefreshLayout
-import com.lereader.novel.R
 import com.book.novel.adapter.BookshelfAdapter
 import com.book.novel.adapter.SimpleItemTouchHelperCallback
 import com.book.novel.presenter.BookShelfPresenter
 import com.book.novel.presenter.contract.BookShelfContract
+import com.lereader.novel.R
 
 /**
  * Created with author.
@@ -125,13 +125,22 @@ class BookShelfFragment : BaseMVPFragment<BookShelfPresenter>(), BookShelfContra
         }
     }
 
-    override fun finishUpdate() {
-        mSwipeRefreshLayout.isRefreshing = false
-        mPresenter.refreshCollBooks("male")
+    override fun finishUpdate(collBookBean: CollBookBean) {
+        //局部刷新书籍
+        for (book in mAdapter.items) {
+            if (book._id == collBookBean._id) {
+                book.setUpdate(collBookBean.isUpdate())
+                book.lastChapter = collBookBean.lastChapter
+                book.link = collBookBean.link
+                book.bookChapterList = collBookBean.bookChapterList
+                break
+            }
+        }
+        mAdapter.notifyDataSetChanged()
     }
 
     override fun complete() {
-
+        mSwipeRefreshLayout.isRefreshing = false
     }
 
     override fun bindPresenter(): BookShelfPresenter {

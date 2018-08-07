@@ -7,7 +7,6 @@ import com.book.ireader.model.bean.Source
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.utils.MD5Utils
 import org.jsoup.Jsoup
-import java.net.URLEncoder
 
 /**
  * Created with author.
@@ -24,14 +23,15 @@ class BxwxParser : Parser {
             val spans = it.select("span")
             val category = spans[0].text()
             val title = spans[1].text()
-            val id = spans[1].select("a").attr("href")
+            val link = spans[1].select("a").attr("href")
             val lastChapter = spans[2].text()
             val author = spans[3].text()
             val book = SearchBookPackage.BooksBean()
             book.title = title
             book.author = author
+            book._id = AndroidUtils.base64Encode(book.title + "," + book.author)
             book.cat = category.substring(1, category.length - 1)
-            book._id = id
+            book.site = link
             book.lastChapter = lastChapter
             list.add(book)
         }
@@ -47,13 +47,14 @@ class BxwxParser : Parser {
         val title = info.select("h1").first().text()
         val author = info.select("div div").first().text()
         val lastChapter = info.select("div div")[3].select("span a").text()
-        val _id = info.select("div div")[3].select("span a").attr("href")
+        val link = info.select("div div")[3].select("span a").attr("href")
         val intro = mainInfo.select("div#intro p").first().text()
         val cover = elements[1].select("div#sidebar div img").attr("src")
         val mBookDetailBean = BookDetailBean()
-        mBookDetailBean._id = AndroidUtils.base64Encode(URLEncoder.encode(_id.substring(0, _id.lastIndexOf("/")), "utf-8"))
+        mBookDetailBean.link = link.substring(0, link.lastIndexOf("/"))
         mBookDetailBean.title = title
         mBookDetailBean.author = author.replace("作 者：", "")
+        mBookDetailBean._id = AndroidUtils.base64Encode(mBookDetailBean.title + "," + mBookDetailBean.author)
         mBookDetailBean.lastChapter = lastChapter
         mBookDetailBean.longIntro = intro
         mBookDetailBean.cover = cover

@@ -3,11 +3,13 @@ package com.book.ireader.utils;
 import android.content.Context;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import com.book.ireader.App;
 import com.zqc.opencc.android.lib.ChineseConverter;
 import com.zqc.opencc.android.lib.ConversionType;
 
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -175,5 +177,23 @@ public class StringUtils {
         }
 
         return (convertType != 0) ? ChineseConverter.convert(input, currentConversionType, context) : input;
+    }
+
+    public static String base64Decode(String content) {
+        try {
+            return new String(Base64.decode(content.getBytes("utf-8"), Base64.NO_WRAP), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return content;
+        }
+    }
+
+    public static String base64Encode(String content) {
+        try {
+            return Base64.encodeToString(content.getBytes("utf-8"), Base64.NO_WRAP);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return content;
+        }
     }
 }

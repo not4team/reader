@@ -61,6 +61,7 @@ class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.Presenter>(), 
 
     override fun initWidget() {
         super.initWidget()
+        mLoading = findViewById(R.id.change_source_loading)
         mSpinner = findViewById(R.id.change_source_spinner)
         // Create an ArrayAdapter using the string array and a default spinner layout
         mSources = ParserManager.getAllSources()
@@ -94,6 +95,7 @@ class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.Presenter>(), 
                     mCurrentPosition = position
                     val entry = mSources[position]
                     SharedPreUtils.getInstance().putString(Constant.SHARED_BOOK_SOURCE, entry.url)
+                    mLoading.visibility = View.VISIBLE
                     //替换书架书籍链接
                     mPresenter.startChange(entry.source)
                 }

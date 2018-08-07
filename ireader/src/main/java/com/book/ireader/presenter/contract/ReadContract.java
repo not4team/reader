@@ -20,7 +20,7 @@ public interface ReadContract extends BaseContract {
     }
 
     interface Presenter extends BaseContract.BasePresenter<View> {
-        void loadCategory(String bookId) throws Exception;
+        void loadCategory(String bookId, String bookLink) throws Exception;
 
         void loadChapter(String bookId, List<TxtChapter> bookChapterList) throws Exception;
     }

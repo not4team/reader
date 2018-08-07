@@ -20,6 +20,7 @@ import java.util.List;
 public class CollBookBean implements Parcelable {
     public static final String TABLE_NAME = "CollBookBean";
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_LINK = "link";
     public static final String COLUMN_TITLE = "title";
     public static final String COLUMN_AUTHOR = "author";
     public static final String COLUMN_SHORT_INTRO = "short_intro";
@@ -51,7 +52,9 @@ public class CollBookBean implements Parcelable {
      */
     @Id
     @Column(name = COLUMN_ID)
-    private String _id; // 本地书籍中，path 的 md5 值作为本地书籍的 id
+    private String _id;
+    @Column(name = COLUMN_LINK)
+    private String link;// 本地书籍中，path 的 md5 值作为本地书籍的 id
     @Column(name = COLUMN_TITLE)
     private String title;
     @Column(name = COLUMN_AUTHOR)
@@ -95,6 +98,14 @@ public class CollBookBean implements Parcelable {
 
     public void set_id(String _id) {
         this._id = _id;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getTitle() {
@@ -259,6 +270,7 @@ public class CollBookBean implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this._id);
+        dest.writeString(this.link);
         dest.writeString(this.title);
         dest.writeString(this.author);
         dest.writeString(this.shortIntro);
@@ -278,6 +290,7 @@ public class CollBookBean implements Parcelable {
 
     protected CollBookBean(Parcel in) {
         this._id = in.readString();
+        this.link = in.readString();
         this.title = in.readString();
         this.author = in.readString();
         this.shortIntro = in.readString();
@@ -295,11 +308,12 @@ public class CollBookBean implements Parcelable {
         this.bookOrder = in.readInt();
     }
 
-    public CollBookBean(String _id, String title, String author, String shortIntro, String cover,
+    public CollBookBean(String _id, String link, String title, String author, String shortIntro, String cover,
                         String category, boolean hasCp, int latelyFollower, double retentionRatio, String updated,
                         String lastRead, int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal,
                         int bookOrder) {
         this._id = _id;
+        this.link = link;
         this.title = title;
         this.author = author;
         this.shortIntro = shortIntro;

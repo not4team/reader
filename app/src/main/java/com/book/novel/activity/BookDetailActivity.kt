@@ -33,6 +33,7 @@ import com.lereader.novel.R
  */
 class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), BookDetailContract.View, View.OnClickListener {
     private var mBookId: String? = null
+    private var mBookLink: String? = null
     private var mTitle: String? = null
     private var mAuthor: String? = null
     private var mCollBookBean: CollBookBean? = null
@@ -58,6 +59,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         const val BOOK_TILTE_INTENT_KEY = "BOOK_TILTE_INTENT_KEY"
         const val BOOK_AUTHOR_INTENT_KEY = "BOOK_AUTHOR_INTENT_KEY"
         const val BOOK_ID_INTENT_KEY = "BOOK_ID_INTENT_KEY"
+        const val BOOK_LINK_INTENT_KEY = "BOOK_LINK_INTENT_KEY"
         const val REQUEST_READ = 0x1
         const val RESULT_IS_COLLECTED = "RESULT_IS_COLLECTED"
     }
@@ -87,6 +89,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     override fun initData(savedInstanceState: Bundle?) {
         super.initData(savedInstanceState)
         mBookId = intent.getStringExtra(BOOK_ID_INTENT_KEY)
+        mBookLink = intent.getStringExtra(BOOK_LINK_INTENT_KEY)
         mTitle = intent.getStringExtra(BOOK_TILTE_INTENT_KEY)
         mAuthor = intent.getStringExtra(BOOK_AUTHOR_INTENT_KEY)
     }
@@ -141,7 +144,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
         mSwipeRefreshLayout.isRefreshing = true
         mContent.visibility = View.INVISIBLE
         if (mBookId != null) {
-            mPresenter.refreshBookDetail(mBookId!!)
+            mPresenter.refreshBookDetail(mBookLink!!)
         } else {
             mPresenter.refreshBookDetail(mTitle!!, mAuthor!!)
         }

@@ -7,7 +7,6 @@ import com.book.ireader.model.bean.Source
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.utils.MD5Utils
 import org.jsoup.Jsoup
-import java.net.URLEncoder
 
 /**
  * Created with author.
@@ -24,14 +23,15 @@ class BiqudaoParser : Parser {
         for (i in 1 until liList.size) {
             val category = liList[i].select("span.s1").first().text()
             val title = liList[i].select("span.s2 a").first().text()
-            val id = liList[i].select("span.s2 a").attr("href")
+            val link = liList[i].select("span.s2 a").attr("href")
             val lastChapter = liList[i].select("span.s3").first().text()
             val author = liList[i].select("span.s4").first().text()
             val book = SearchBookPackage.BooksBean()
             book.title = title
             book.author = author
+            book._id = AndroidUtils.base64Encode(book.title + "," + book.author)
             book.cat = category.substring(1, category.length - 1)
-            book._id = source.sourceBaseUrl + id
+            book.site = source.sourceBaseUrl + link
             book.lastChapter = lastChapter
             list.add(book)
         }
@@ -48,13 +48,14 @@ class BiqudaoParser : Parser {
         val author = info.select("p").first().text()
         val updated = info.select("p")[2].text()
         val lastChapter = info.select("p")[3].select("a").text()
-        val _id = info.select("p")[3].select("a").attr("href")
+        val link = info.select("p")[3].select("a").attr("href")
         val intro = mainInfo.select("div#intro").first().text()
         val cover = elements[0].select("div#sidebar div img").attr("src")
         val mBookDetailBean = BookDetailBean()
-        mBookDetailBean._id = AndroidUtils.base64Encode(URLEncoder.encode(source.sourceBaseUrl + _id.substring(0, _id.lastIndexOf("/")), "utf-8"))
+        mBookDetailBean.link = source.sourceBaseUrl + link.substring(0, link.lastIndexOf("/"))
         mBookDetailBean.title = title
-        mBookDetailBean.author = author.replace("作  者：", "")
+        mBookDetailBean.author = author.replace("作 者：", "")
+        mBookDetailBean._id = AndroidUtils.base64Encode(mBookDetailBean.title + "," + mBookDetailBean.author)
         mBookDetailBean.lastChapter = lastChapter
         mBookDetailBean.longIntro = intro
         mBookDetailBean.cover = source.sourceBaseUrl + cover
