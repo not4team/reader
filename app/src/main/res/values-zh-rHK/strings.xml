@@ -16,7 +16,7 @@
     <string name="search_label">搜索</string>
     <string name="search_hint">請輸入書名|作者名</string>
     <string name="bookdetail_author">作者：%1$s</string>
-    <string name="bookdetail_wordcount">%1$d字</string>
+    <string name="bookdetail_wordcount">%1$s字</string>
     <string name="bookdetail_updated">更新時間：%1$s</string>
     <string name="bookdetail_last_chapter">最新一章：%1$s</string>
     <string name="bookshelf_empty">書架暫無書籍</string>

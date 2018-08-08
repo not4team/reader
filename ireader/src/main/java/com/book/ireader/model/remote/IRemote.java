@@ -51,5 +51,5 @@ public interface IRemote {
      * @param query:书名|作者名
      * @return
      */
-    public Single<List<SearchBookPackage.BooksBean>> getSearchBooks(String query);
+    public Single<List<BookDetailBean>> getSearchBooks(String query);
 }

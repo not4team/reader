@@ -4,7 +4,6 @@ import com.book.ireader.model.bean.BookChapterBean
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.ChapterInfoBean
 import com.book.ireader.model.bean.Source
-import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.utils.MD5Utils
 import org.jsoup.Jsoup
 
@@ -15,9 +14,9 @@ import org.jsoup.Jsoup
  * Time: 下午3:19
  */
 class BxwxParser : Parser {
-    override fun parseSearchResult(source: Source, html: String): List<SearchBookPackage.BooksBean> {
+    override fun parseSearchResult(source: Source, html: String): List<BookDetailBean> {
         val doc = Jsoup.parse(html)
-        val list = mutableListOf<SearchBookPackage.BooksBean>()
+        val list = mutableListOf<BookDetailBean>()
         val elements = doc.select("#newscontent div ul").first()
         elements.select("li").forEach {
             val spans = it.select("span")
@@ -26,12 +25,12 @@ class BxwxParser : Parser {
             val link = spans[1].select("a").attr("href")
             val lastChapter = spans[2].text()
             val author = spans[3].text()
-            val book = SearchBookPackage.BooksBean()
+            val book = BookDetailBean()
             book.title = title
             book.author = author
             book._id = AndroidUtils.base64Encode(book.title + "," + book.author)
             book.cat = category.substring(1, category.length - 1)
-            book.site = link
+            book.link = link
             book.lastChapter = lastChapter
             list.add(book)
         }
@@ -75,6 +74,10 @@ class BxwxParser : Parser {
         mBookDetailBean.bookChapterBeans = chapterList
         mBookDetailBean.chaptersCount = chapterList.size
         return mBookDetailBean
+    }
+
+    override fun parseBookChapter(source: Source, html: String): List<BookChapterBean> {
+        return parseBookDetail(source, html)?.bookChapterBeans
     }
 
     override fun parseChapterInfo(source: Source, html: String): ChapterInfoBean {

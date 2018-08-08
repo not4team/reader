@@ -30,9 +30,12 @@ class RemoteHelper private constructor() {
                     }
 
                     override fun loadForRequest(url: HttpUrl): List<Cookie> {
+                        if (url.toString().contains("https://www.sczprc.com/modules/article/search.php")) {
+                            return listOf()
+                        }
                         var cookies = cookieStore.get(url)
                         if (cookies == null) {
-                            cookies = listOf<Cookie>()
+                            cookies = listOf()
                         }
                         return cookies
                     }

@@ -30,6 +30,7 @@ public class CollBookBean implements Parcelable {
     public static final String COLUMN_LAST_READ_TIME = "last_read_time";
     public static final String COLUMN_CHAPTERS_COUNT = "chapters_count";
     public static final String COLUMN_LAST_CHAPTER = "last_chapter";
+    public static final String COLUMN_CHAPTER_DIR = "chapter_dir";
     public static final String COLUMN_IS_UPDATE = "is_update";
     public static final String COLUMN_IS_LOCAL = "is_local";
     public static final String COLUMN_BOOK_ORDER = "book_order";
@@ -78,6 +79,8 @@ public class CollBookBean implements Parcelable {
     private int chaptersCount;
     @Column(name = COLUMN_LAST_CHAPTER)
     private String lastChapter;
+    @Column(name = COLUMN_CHAPTER_DIR)
+    private String chapterDir;
     //是否更新或未阅读
     @Column(name = COLUMN_IS_UPDATE)
     private boolean isUpdate = true;
@@ -178,6 +181,14 @@ public class CollBookBean implements Parcelable {
 
     public void setUpdated(String updated) {
         this.updated = updated;
+    }
+
+    public String getChapterDir() {
+        return chapterDir;
+    }
+
+    public void setChapterDir(String chapterDir) {
+        this.chapterDir = chapterDir;
     }
 
     public int getChaptersCount() {
@@ -283,6 +294,7 @@ public class CollBookBean implements Parcelable {
         dest.writeString(this.lastRead);
         dest.writeInt(this.chaptersCount);
         dest.writeString(this.lastChapter);
+        dest.writeString(this.chapterDir);
         dest.writeByte(this.isUpdate ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isLocal ? (byte) 1 : (byte) 0);
         dest.writeInt(this.bookOrder);
@@ -303,6 +315,7 @@ public class CollBookBean implements Parcelable {
         this.lastRead = in.readString();
         this.chaptersCount = in.readInt();
         this.lastChapter = in.readString();
+        this.chapterDir = in.readString();
         this.isUpdate = in.readByte() != 0;
         this.isLocal = in.readByte() != 0;
         this.bookOrder = in.readInt();
@@ -310,7 +323,7 @@ public class CollBookBean implements Parcelable {
 
     public CollBookBean(String _id, String link, String title, String author, String shortIntro, String cover,
                         String category, boolean hasCp, int latelyFollower, double retentionRatio, String updated,
-                        String lastRead, int chaptersCount, String lastChapter, boolean isUpdate, boolean isLocal,
+                        String lastRead, int chaptersCount, String lastChapter, String chapterDir, boolean isUpdate, boolean isLocal,
                         int bookOrder) {
         this._id = _id;
         this.link = link;
@@ -326,6 +339,7 @@ public class CollBookBean implements Parcelable {
         this.lastRead = lastRead;
         this.chaptersCount = chaptersCount;
         this.lastChapter = lastChapter;
+        this.chapterDir = chapterDir;
         this.isUpdate = isUpdate;
         this.isLocal = isLocal;
         this.bookOrder = bookOrder;

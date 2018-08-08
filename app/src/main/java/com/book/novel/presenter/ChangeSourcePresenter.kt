@@ -48,7 +48,7 @@ class ChangeSourcePresenter : RxPresenter<ChangeSourceContract.View>(), ChangeSo
                         run breakTag@{
                             books.forEach continueTag@{
                                 if (oldBean.title.equals(it.title) && oldBean.author.equals(it.author)) {
-                                    oldBean.link = it.site
+                                    oldBean.link = it.link
                                     oldBean.lastChapter = it.lastChapter
                                     oldBean.category = it.cat
                                     CollectDao.getInstance(App.getContext()).insertOrReplaceCollBook(oldBean)

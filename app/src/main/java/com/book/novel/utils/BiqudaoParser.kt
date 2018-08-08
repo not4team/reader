@@ -4,7 +4,6 @@ import com.book.ireader.model.bean.BookChapterBean
 import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.ChapterInfoBean
 import com.book.ireader.model.bean.Source
-import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.utils.MD5Utils
 import org.jsoup.Jsoup
 
@@ -15,8 +14,8 @@ import org.jsoup.Jsoup
  * Time: 下午3:56
  */
 class BiqudaoParser : Parser {
-    override fun parseSearchResult(source: Source, html: String): List<SearchBookPackage.BooksBean> {
-        val list = mutableListOf<SearchBookPackage.BooksBean>()
+    override fun parseSearchResult(source: Source, html: String): List<BookDetailBean> {
+        val list = mutableListOf<BookDetailBean>()
         val doc = Jsoup.parse(html)
         val elements = doc.select("div#main div.novelslist2")
         val liList = elements.select("ul li")
@@ -26,12 +25,12 @@ class BiqudaoParser : Parser {
             val link = liList[i].select("span.s2 a").attr("href")
             val lastChapter = liList[i].select("span.s3").first().text()
             val author = liList[i].select("span.s4").first().text()
-            val book = SearchBookPackage.BooksBean()
+            val book = BookDetailBean()
             book.title = title
             book.author = author
             book._id = AndroidUtils.base64Encode(book.title + "," + book.author)
             book.cat = category.substring(1, category.length - 1)
-            book.site = source.sourceBaseUrl + link
+            book.link = source.sourceBaseUrl + link
             book.lastChapter = lastChapter
             list.add(book)
         }
@@ -85,6 +84,10 @@ class BiqudaoParser : Parser {
         mBookDetailBean.bookChapterBeans = chapterList
         mBookDetailBean.chaptersCount = chapterList.size
         return mBookDetailBean
+    }
+
+    override fun parseBookChapter(source: Source, html: String): List<BookChapterBean> {
+        return parseBookDetail(source, html)?.bookChapterBeans
     }
 
     override fun parseChapterInfo(source: Source, html: String): ChapterInfoBean {

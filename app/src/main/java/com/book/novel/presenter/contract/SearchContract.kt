@@ -1,5 +1,6 @@
 package com.book.novel.presenter.contract
 
+import com.book.ireader.model.bean.BookDetailBean
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.ui.base.BaseContract
 
@@ -14,7 +15,7 @@ interface SearchContract : BaseContract {
 
         fun finishKeyWords(keyWords: List<String>)
 
-        fun finishBooks(books: List<SearchBookPackage.BooksBean>)
+        fun finishBooks(books: List<BookDetailBean>)
 
         fun errorBooks()
     }

@@ -67,13 +67,15 @@ public class BookDetailBean {
     private int postCount;
     private int latelyFollower;
     private int followerCount;
-    private int wordCount;
+    private String wordCount;
     private int serializeWordCount;
     private String retentionRatio;
     private String updated;
     private boolean isSerial;
     private int chaptersCount;
     private String lastChapter;
+    //章节目录
+    private String chapterDir;
     private boolean donate;
     private String copyright;
     private List<String> gender;
@@ -227,11 +229,11 @@ public class BookDetailBean {
         this.followerCount = followerCount;
     }
 
-    public int getWordCount() {
+    public String getWordCount() {
         return wordCount;
     }
 
-    public void setWordCount(int wordCount) {
+    public void setWordCount(String wordCount) {
         this.wordCount = wordCount;
     }
 
@@ -323,6 +325,14 @@ public class BookDetailBean {
         this.status = status;
     }
 
+    public String getChapterDir() {
+        return chapterDir;
+    }
+
+    public void setChapterDir(String chapterDir) {
+        this.chapterDir = chapterDir;
+    }
+
     public List<BookChapterBean> getBookChapterBeans() {
         return bookChapterBeans;
     }
@@ -355,6 +365,7 @@ public class BookDetailBean {
         bean.setUpdated(getUpdated());
         bean.setChaptersCount(getChaptersCount());
         bean.setLastChapter(getLastChapter());
+        bean.setChapterDir(getChapterDir());
         return bean;
     }
 }

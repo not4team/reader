@@ -58,11 +58,12 @@ public class CollectDao extends CollectDBHelper {
                 String lastReadTime = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LAST_READ_TIME));
                 int chaptersCount = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_CHAPTERS_COUNT));
                 String lastChapter = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LAST_CHAPTER));
+                String chapterDir = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_CHAPTER_DIR));
                 boolean isUpdate = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_UPDATE)) == 1 ? true : false;
                 boolean isLocal = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_LOCAL)) == 1 ? true : false;
                 int bookOrder = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_BOOK_ORDER));
                 CollBookBean book = new CollBookBean(id, link, title, author, shortIntro, cover, category, true, 0,
-                        0, updateTime, lastReadTime, chaptersCount, lastChapter, isUpdate, isLocal, bookOrder);
+                        0, updateTime, lastReadTime, chaptersCount, lastChapter, chapterDir, isUpdate, isLocal, bookOrder);
                 return book;
             }
         } catch (Exception e) {
@@ -95,11 +96,12 @@ public class CollectDao extends CollectDBHelper {
                 String lastRead = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LAST_READ_TIME));
                 int chaptersCount = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_CHAPTERS_COUNT));
                 String lastChapter = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_LAST_CHAPTER));
+                String chapterDir = cursor.getString(cursor.getColumnIndex(CollBookBean.COLUMN_CHAPTER_DIR));
                 int isUpdate = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_UPDATE));
                 int isLocal = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_IS_LOCAL));
                 int bookOrder = cursor.getInt(cursor.getColumnIndex(CollBookBean.COLUMN_BOOK_ORDER));
                 CollBookBean book = new CollBookBean(id, link, title, author, shortIntro, cover, category, true, 0,
-                        0, updated, lastRead, chaptersCount, lastChapter, isUpdate == 1 ? true : false, isLocal == 1 ? true : false, bookOrder);
+                        0, updated, lastRead, chaptersCount, lastChapter, chapterDir, isUpdate == 1 ? true : false, isLocal == 1 ? true : false, bookOrder);
                 list.add(book);
             }
         } finally {
@@ -126,6 +128,7 @@ public class CollectDao extends CollectDBHelper {
         contentValues.put(CollBookBean.COLUMN_LAST_READ_TIME, bean.getLastRead());
         contentValues.put(CollBookBean.COLUMN_CHAPTERS_COUNT, bean.getChaptersCount());
         contentValues.put(CollBookBean.COLUMN_LAST_CHAPTER, bean.getLastChapter());
+        contentValues.put(CollBookBean.COLUMN_CHAPTER_DIR, bean.getChapterDir());
         contentValues.put(CollBookBean.COLUMN_IS_UPDATE, bean.getIsUpdate());
         contentValues.put(CollBookBean.COLUMN_IS_LOCAL, bean.getIsLocal());
         contentValues.put(CollBookBean.COLUMN_BOOK_ORDER, bean.getBookOrder());

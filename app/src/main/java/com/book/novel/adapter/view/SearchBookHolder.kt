@@ -3,6 +3,7 @@ package com.book.novel.adapter.view
 import android.widget.ImageView
 import android.widget.TextView
 import com.book.ireader.App
+import com.book.ireader.model.bean.BookDetailBean
 
 import com.book.ireader.model.bean.packages.SearchBookPackage
 import com.book.ireader.ui.base.adapter.ViewHolderImpl
@@ -14,7 +15,7 @@ import com.lereader.novel.R
  * Created by newbiechen on 17-6-2.
  */
 
-class SearchBookHolder : ViewHolderImpl<SearchBookPackage.BooksBean>() {
+class SearchBookHolder : ViewHolderImpl<BookDetailBean>() {
 
     private lateinit var mIvCover: ImageView
     private lateinit var mTvName: TextView
@@ -30,7 +31,7 @@ class SearchBookHolder : ViewHolderImpl<SearchBookPackage.BooksBean>() {
         mLastChapter = findById(R.id.search_book_tv_lastchapter)
     }
 
-    override fun onBind(data: SearchBookPackage.BooksBean, pos: Int) {
+    override fun onBind(data: BookDetailBean, pos: Int) {
         //显示图片
         GlideApp.with(App.getContext())
                 .load(data.cover)

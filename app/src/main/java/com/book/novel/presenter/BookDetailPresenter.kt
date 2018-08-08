@@ -45,9 +45,15 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                 .getSearchBooks(title).compose(RxUtils::toSimpleSingle)
                 .subscribe({ beans ->
                     run breakTag@{
+                        if (beans.size == 1 && beans[0].bookChapterBeans.size > 0) {
+                            if (mView != null) {
+                                mView.finishRefresh(beans[0])
+                                mView.complete()
+                            }
+                        }
                         beans.forEach continueTag@{
                             if (title.equals(it.title) && author.equals(it.author)) {
-                                this@BookDetailPresenter.bookLink = it.site
+                                this@BookDetailPresenter.bookLink = it.link
                                 refreshBook()
                                 return@breakTag
                             }
@@ -55,6 +61,9 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                     }
                 }) { e ->
                     e.printStackTrace()
+                    if (mView != null) {
+                        mView.showError()
+                    }
                 }
         addDisposable(disposable)
     }
