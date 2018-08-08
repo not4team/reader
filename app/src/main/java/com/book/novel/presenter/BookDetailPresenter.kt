@@ -45,7 +45,10 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
                 .getSearchBooks(title).compose(RxUtils::toSimpleSingle)
                 .subscribe({ beans ->
                     run breakTag@{
-                        if (beans.size == 1 && beans[0].bookChapterBeans.size > 0) {
+                        if(beans.size == 0) {
+                            mView.finishRefresh(null)
+                        }
+                        if (beans.size == 1 && beans[0].bookChapterBeans != null) {
                             if (mView != null) {
                                 mView.finishRefresh(beans[0])
                                 mView.complete()

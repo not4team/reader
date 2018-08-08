@@ -19,8 +19,11 @@ class NovelApplication : App() {
     override fun onCreate() {
         super.onCreate()
         MobileAds.initialize(this, "ca-app-pub-7332030505319718~5396323800")
-        val source = ParserManager.getDefaultSource()
-        SharedPreUtils.getInstance().putString(Constant.SHARED_BOOK_SOURCE, source.sourceBaseUrl)
+        var source = ParserManager.getSource(SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE))
+        if (source == null) {
+            source = ParserManager.getDefaultSource()
+            SharedPreUtils.getInstance().putString(Constant.SHARED_BOOK_SOURCE, source.sourceBaseUrl)
+        }
     }
 
     override fun attachBaseContext(base: Context?) {

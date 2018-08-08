@@ -9,6 +9,8 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSession
 
 /**
  * Created by newbiechen on 17-4-20.
@@ -18,9 +20,13 @@ class RemoteHelper private constructor() {
     val retrofit: Retrofit
     val okHttpClient: OkHttpClient
     val cookieStore = mutableMapOf<HttpUrl, List<Cookie>>()
+    val trustAllCerts = TrustAllCerts()
 
     init {
+        val sslSocketFactory = SSLSocketFactoryCompat(trustAllCerts);
         okHttpClient = OkHttpClient.Builder()
+                .sslSocketFactory(sslSocketFactory, trustAllCerts)
+                .hostnameVerifier(TrustAllHostnameVerifier())
                 .cookieJar(object : CookieJar {
                     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
                         cookieStore.put(url, cookies)
@@ -76,6 +82,12 @@ class RemoteHelper private constructor() {
             }
         }
         return null
+    }
+
+    private class TrustAllHostnameVerifier : HostnameVerifier {
+        override fun verify(hostname: String, session: SSLSession): Boolean {
+            return true
+        }
     }
 
     companion object {

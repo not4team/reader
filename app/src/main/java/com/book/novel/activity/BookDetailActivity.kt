@@ -189,43 +189,47 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
 
     }
 
-    override fun finishRefresh(bean: BookDetailBean) {
-        mSwipeRefreshLayout.isRefreshing = false
-        mEmptyView.visibility = View.GONE
-        mContent.visibility = View.VISIBLE
-        GlideApp
-                .with(this)
-                .load(AndroidUtils.generateGlideUrl(bean.cover))
-                .placeholder(R.drawable.ic_book_loading)
-                .error(R.drawable.ic_book_loading)
-                .into(mIvCover)
-        mTvTitle.text = bean.title
-        mTvAuthor.text = resources.getString(R.string.bookdetail_author, bean.author)
-        mTvCategory.text = bean.cat
-        mTvWordCount.text = resources.getString(R.string.bookdetail_wordcount, bean.wordCount)
-        mTvUpdated.text = resources.getString(R.string.bookdetail_updated, bean.updated)
-        mTvLastCapture.text = resources.getString(R.string.bookdetail_last_chapter, bean.lastChapter)
-        mTvLongInstro.text = bean.longIntro
+    override fun finishRefresh(bean: BookDetailBean?) {
+        if (bean != null) {
+            mSwipeRefreshLayout.isRefreshing = false
+            mEmptyView.visibility = View.GONE
+            mContent.visibility = View.VISIBLE
+            GlideApp
+                    .with(this)
+                    .load(AndroidUtils.generateGlideUrl(bean.cover))
+                    .placeholder(R.drawable.ic_book_loading)
+                    .error(R.drawable.ic_book_loading)
+                    .into(mIvCover)
+            mTvTitle.text = bean.title
+            mTvAuthor.text = resources.getString(R.string.bookdetail_author, bean.author)
+            mTvCategory.text = bean.cat
+            mTvWordCount.text = resources.getString(R.string.bookdetail_wordcount, bean.wordCount)
+            mTvUpdated.text = resources.getString(R.string.bookdetail_updated, bean.updated)
+            mTvLastCapture.text = resources.getString(R.string.bookdetail_last_chapter, bean.lastChapter)
+            mTvLongInstro.text = bean.longIntro
 
-        //判断是否收藏
-        mCollBookBean = CollectDao.getInstance(App.getContext()).getCollBook(bean._id)
-        if (mCollBookBean != null) {
-            isCollected = true
-            mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
-            mBtnStartRead.text = resources.getString(R.string.continue_read)
-            if (bean.bookChapterBeans.size > mCollBookBean!!.bookChapterList.size) {
-                mCollBookBean!!.setIsUpdate(true)
-                mCollBookBean!!.lastChapter = bean.lastChapter
+            //判断是否收藏
+            mCollBookBean = CollectDao.getInstance(App.getContext()).getCollBook(bean._id)
+            if (mCollBookBean != null) {
+                isCollected = true
+                mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
+                mBtnStartRead.text = resources.getString(R.string.continue_read)
+                if (bean.bookChapterBeans.size > mCollBookBean!!.bookChapterList.size) {
+                    mCollBookBean!!.setIsUpdate(true)
+                    mCollBookBean!!.lastChapter = bean.lastChapter
+                    mCollBookBean!!.bookChapterList = bean.bookChapterBeans
+                    CollectDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBookBean)
+                    BookDao.getInstance(App.getContext()).saveBookChaptersWithAsync(mCollBookBean!!.bookChapterList)
+                    RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
+                }
+            } else {
+                mCollBookBean = bean.collBookBean
                 mCollBookBean!!.bookChapterList = bean.bookChapterBeans
-                CollectDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBookBean)
-                BookDao.getInstance(App.getContext()).saveBookChaptersWithAsync(mCollBookBean!!.bookChapterList)
-                RxBus.getInstance().post(BookShelfRefreshEvent().setId(mCollBookBean!!._id).setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
             }
+            mAdapter.refreshItems(bean.bookChapterBeans)
         } else {
-            mCollBookBean = bean.collBookBean
-            mCollBookBean!!.bookChapterList = bean.bookChapterBeans
+            showError()
         }
-        mAdapter.refreshItems(bean.bookChapterBeans)
     }
 
     override fun bindPresenter(): BookDetailContract.Presenter {

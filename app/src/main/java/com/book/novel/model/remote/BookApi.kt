@@ -73,8 +73,9 @@ interface BookApi {
      * @return
      */
     @GET
-    fun getSearchBookPackage(@Url url: String, @QueryMap params: Map<String, String>): Single<ResponseBody>
+    fun getSearchBookPackage(@Url url: String): Single<ResponseBody>
 
+    @FormUrlEncoded
     @POST
     fun getSearchBookPackagePost(@Url url: String, @FieldMap params: Map<String, String>): Single<ResponseBody>
 }

@@ -11,7 +11,7 @@ import com.book.ireader.ui.base.BaseContract
 
 interface BookDetailContract {
     interface View : BaseContract.BaseView {
-        fun finishRefresh(bean: BookDetailBean)
+        fun finishRefresh(bean: BookDetailBean?)
 
         fun finishRecommendBooks(beans: List<InterestedBookListPackage.BookRecommendBean>)
 
