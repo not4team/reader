@@ -192,9 +192,10 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     private String mBookId;
 
     public static void startActivity(Context context, CollBookBean collBook, boolean isCollected) {
-        context.startActivity(new Intent(context, ReadActivity.class)
-                .putExtra(EXTRA_IS_COLLECTED, isCollected)
-                .putExtra(EXTRA_COLL_BOOK, collBook));
+        Intent intent = new Intent(context, ReadActivity.class);
+        intent.putExtra(EXTRA_IS_COLLECTED, isCollected);
+        intent.putExtra(EXTRA_COLL_BOOK, collBook);
+        context.startActivity(intent);
     }
 
     @Override
@@ -210,11 +211,12 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     @Override
     protected void initData(Bundle savedInstanceState) {
         super.initData(savedInstanceState);
-        mCollBook = getIntent().getParcelableExtra(EXTRA_COLL_BOOK);
-        isCollected = getIntent().getBooleanExtra(EXTRA_IS_COLLECTED, false);
+        Intent intent = getIntent();
+        mCollBook = intent.getParcelableExtra(EXTRA_COLL_BOOK);
+        isCollected = intent.getBooleanExtra(EXTRA_IS_COLLECTED, false);
         isNightMode = ReadSettingManager.getInstance().isNightMode();
         isFullScreen = ReadSettingManager.getInstance().isFullScreen();
-        mCurrPosition = getIntent().getIntExtra(EXTRA_SKIP_POSITION, -1);
+        mCurrPosition = intent.getIntExtra(EXTRA_SKIP_POSITION, -1);
         mBookId = mCollBook.get_id();
     }
 

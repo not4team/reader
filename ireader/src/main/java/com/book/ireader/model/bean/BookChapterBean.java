@@ -1,5 +1,8 @@
 package com.book.ireader.model.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.book.ireader.model.annotation.Column;
 import com.book.ireader.model.annotation.Id;
 import com.book.ireader.model.annotation.Table;
@@ -12,7 +15,7 @@ import java.io.Serializable;
  * 同时作为网络章节和本地章节 (没有找到更好分离两者的办法)
  */
 @Table(name = BookChapterBean.TABLE_NAME)
-public class BookChapterBean implements Serializable {
+public class BookChapterBean implements Parcelable {
     private static final long serialVersionUID = 56423411313L;
     /**
      * title : 第一章 他叫白小纯
@@ -69,6 +72,29 @@ public class BookChapterBean implements Serializable {
 
     public BookChapterBean() {
     }
+
+    protected BookChapterBean(Parcel in) {
+        id = in.readString();
+        link = in.readString();
+        title = in.readString();
+        taskName = in.readString();
+        unreadble = in.readByte() != 0;
+        bookId = in.readString();
+        start = in.readLong();
+        end = in.readLong();
+    }
+
+    public static final Creator<BookChapterBean> CREATOR = new Creator<BookChapterBean>() {
+        @Override
+        public BookChapterBean createFromParcel(Parcel in) {
+            return new BookChapterBean(in);
+        }
+
+        @Override
+        public BookChapterBean[] newArray(int size) {
+            return new BookChapterBean[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -150,5 +176,22 @@ public class BookChapterBean implements Serializable {
                 ", start=" + start +
                 ", end=" + end +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(link);
+        dest.writeString(title);
+        dest.writeString(taskName);
+        dest.writeByte(this.unreadble ? (byte) 1 : (byte) 0);
+        dest.writeString(bookId);
+        dest.writeLong(start);
+        dest.writeLong(end);
     }
 }
