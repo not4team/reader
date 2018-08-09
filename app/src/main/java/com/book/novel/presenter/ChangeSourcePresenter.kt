@@ -6,10 +6,13 @@ import com.book.ireader.RxBus
 import com.book.ireader.event.BookShelfRefreshEvent
 import com.book.ireader.model.bean.CollBookBean
 import com.book.ireader.model.bean.Source
+import com.book.ireader.model.local.BookDao
 import com.book.ireader.model.local.CollectDao
 import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
+import com.book.ireader.utils.Constant
 import com.book.ireader.utils.RxUtils
+import com.book.ireader.utils.SharedPreUtils
 import com.book.novel.presenter.contract.ChangeSourceContract
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
@@ -21,7 +24,7 @@ import io.reactivex.ObservableEmitter
  * Time: 上午10:39
  */
 class ChangeSourcePresenter : RxPresenter<ChangeSourceContract.View>(), ChangeSourceContract.Presenter {
-    override fun startChange(source: Source) {
+    override fun startChange(oldSource: Source, newSource: Source) {
         val disposable = Observable.create<CollBookBean> {
             updateCollectBook(it)
         }.compose(RxUtils::toSimpleSingle)
@@ -29,9 +32,11 @@ class ChangeSourcePresenter : RxPresenter<ChangeSourceContract.View>(), ChangeSo
                     Log.e("ChangeSourcePresenter", "collBook title:" + collBook.title)
                 }, { error ->
                     error.printStackTrace()
+                    SharedPreUtils.getInstance().putString(Constant.SHARED_BOOK_SOURCE, oldSource.sourceBaseUrl)
                     mView.showError()
                 }) {
                     Log.e("ChangeSourcePresenter", "onComplete")
+                    BookDao.releaseDB()
                     mView.complete()
                     RxBus.getInstance().post(BookShelfRefreshEvent().setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))
                 }
@@ -51,6 +56,7 @@ class ChangeSourcePresenter : RxPresenter<ChangeSourceContract.View>(), ChangeSo
                                     oldBean.link = it.link
                                     oldBean.lastChapter = it.lastChapter
                                     oldBean.category = it.cat
+                                    oldBean.chapterDir = it.chapterDir
                                     CollectDao.getInstance(App.getContext()).insertOrReplaceCollBook(oldBean)
                                     parent.onNext(oldBean)
                                     return@breakTag

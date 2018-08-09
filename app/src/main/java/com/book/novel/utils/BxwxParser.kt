@@ -31,6 +31,7 @@ class BxwxParser : Parser {
             book._id = AndroidUtils.base64Encode(book.title + "," + book.author)
             book.cat = category.substring(1, category.length - 1)
             book.link = link
+            book.chapterDir = book.link
             book.lastChapter = lastChapter
             list.add(book)
         }

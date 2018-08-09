@@ -62,6 +62,7 @@ class SczprcParser : Parser {
         bookDetailBean.title = title
         bookDetailBean.cat = category
         bookDetailBean.author = author
+        bookDetailBean._id = AndroidUtils.base64Encode(bookDetailBean.title + "," + bookDetailBean.author)
         bookDetailBean.cover = cover
         bookDetailBean.longIntro = longIntro
         bookDetailBean.chapterDir = chapterDir

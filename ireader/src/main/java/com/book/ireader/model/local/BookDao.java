@@ -8,7 +8,6 @@ import android.util.Base64;
 
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.BookRecordBean;
-import com.book.ireader.model.bean.CollBookBean;
 import com.book.ireader.utils.BookManager;
 import com.book.ireader.utils.Constant;
 import com.book.ireader.utils.FileUtils;
@@ -60,6 +59,10 @@ public class BookDao extends DBHelper implements IBookDao {
             }
         }
         return mBookDao;
+    }
+
+    public static void releaseDB() {
+        mBookDao = null;
     }
 
     public static String getDBName() throws MalformedURLException, UnsupportedEncodingException {

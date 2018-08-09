@@ -27,9 +27,11 @@ class BiqugexswParser : Parser {
             val book = BookDetailBean()
             book.title = title
             book.author = author.replace("作者：", "")
+            book._id = AndroidUtils.base64Encode(book.title + "," + book.author)
             book.cat = category.replace("分类：", "")
-            book._id = _id.replace("/", "")
-            book.cover = cover
+            book.link = source.sourceBaseUrl + _id
+            book.chapterDir = book.link
+            book.cover = source.sourceBaseUrl + cover
             book.lastChapter = lastChapter
             list.add(book)
         }
@@ -51,9 +53,7 @@ class BiqugexswParser : Parser {
         val lastChapter = bookInfo.select("div.small span")[5].text()
         val intro = bookInfo.select("div.intro").first().text()
         val mBookDetailBean = BookDetailBean()
-        mBookDetailBean.link = _id.substring(1, _id.lastIndexOf("/"))
-        mBookDetailBean.chapterDir = mBookDetailBean.link
-        mBookDetailBean.cover = cover
+        mBookDetailBean.cover = source.sourceBaseUrl + cover
         mBookDetailBean.title = title
         mBookDetailBean.author = author.replace("作者：", "")
         mBookDetailBean._id = AndroidUtils.base64Encode(mBookDetailBean.title + "," + mBookDetailBean.author)
@@ -63,6 +63,8 @@ class BiqugexswParser : Parser {
         mBookDetailBean.updated = updated.replace("更新时间：", "")
         mBookDetailBean.lastChapter = lastChapter.replace("最新章节：", "")
         mBookDetailBean.longIntro = intro.substring(0, intro.indexOf("无弹窗推荐地址"))
+        mBookDetailBean.link = intro.substring(intro.indexOf("无弹窗推荐地址") + 7)
+        mBookDetailBean.chapterDir = mBookDetailBean.link
         val chapterList = mutableListOf<BookChapterBean>()
         val chapterElement = body.select("div.listmain dl").first().children()
         var dtCount = 0
@@ -81,7 +83,7 @@ class BiqugexswParser : Parser {
             val _link = chapterElement[index].select("a").attr("href")
             val bookChapterBean = BookChapterBean()
             bookChapterBean.title = _title
-            bookChapterBean.link = _link.replaceFirst("/", "")
+            bookChapterBean.link = source.sourceBaseUrl + _link
             bookChapterBean.id = MD5Utils.strToMd5By16(bookChapterBean.link)
             bookChapterBean.bookId = mBookDetailBean._id
             chapterList.add(bookChapterBean)

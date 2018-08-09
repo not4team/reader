@@ -119,6 +119,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     private Animation mBottomOutAnim;
     private CategoryAdapter mCategoryAdapter;
     private CollBookBean mCollBook;
+    private List<BookChapterBean> mChapterBeans;
     private int mCurrPosition;
     //控制屏幕常亮
     private PowerManager.WakeLock mWakeLock;
@@ -640,13 +641,19 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                     .getBookChaptersInRx(mBookId)
                     .compose(RxUtils::toSimpleSingle)
                     .subscribe(
-                            (bookChapterBeen, throwable) -> {
-                                // 设置 CollBook
-                                mPageLoader.getCollBook().setBookChapterList(bookChapterBeen);
-                                // 刷新章节列表
-                                mPageLoader.refreshChapterList();
-                                // 如果是网络小说并被标记更新的，则从网络下载目录
-                                if (mCollBook.isUpdate() && !mCollBook.isLocal()) {
+                            (bookChapterBeens, throwable) -> {
+                                if (bookChapterBeens.size() != 0) {
+                                    mChapterBeans = bookChapterBeens;
+                                    // 设置 CollBook
+                                    mPageLoader.getCollBook().setBookChapterList(bookChapterBeens);
+                                    // 刷新章节列表
+                                    mPageLoader.refreshChapterList();
+                                    // 如果是网络小说并被标记更新的，则从网络下载目录
+                                    if (mCollBook.isUpdate() && !mCollBook.isLocal()) {
+                                        mPresenter.loadCategory(mBookId, mCollBook.getChapterDir());
+                                    }
+                                } else {
+                                    //如果目录为空，从网络中获取目录
                                     mPresenter.loadCategory(mBookId, mCollBook.getChapterDir());
                                 }
                                 LogUtils.e(throwable);
@@ -680,7 +687,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         mPageLoader.refreshChapterList();
 
         // 如果是目录更新的情况，那么就需要存储更新数据
-        if (mCollBook.isUpdate() && isCollected) {
+        if ((mCollBook.isUpdate() || mChapterBeans == null) && isCollected) {
             BookDao.getInstance(App.getContext())
                     .saveBookChaptersWithAsync(bookChapters);
         }

@@ -15,6 +15,6 @@ interface ChangeSourceContract : BaseContract {
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {
-        fun startChange(source: Source)
+        fun startChange(oldsource: Source, newSource: Source)
     }
 }

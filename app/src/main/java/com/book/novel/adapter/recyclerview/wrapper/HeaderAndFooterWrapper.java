@@ -34,7 +34,6 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e("Header", "onCreateViewHolder viewType:" + viewType);
         if (mHeaderViews.get(viewType) != null) {
             ViewHolder holder = ViewHolder.createViewHolder(parent.getContext(), mHeaderViews.get(viewType));
             return holder;
@@ -49,7 +48,6 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
     @Override
     public int getItemViewType(int position) {
         if (isHeaderViewPos(position)) {
-            Log.e("Header", "getItemViewType position:" + position + ",viewType:" + mHeaderViews.keyAt(position));
             return mHeaderViews.keyAt(position);
         } else if (isFooterViewPos(position)) {
             return mFootViews.keyAt(position - getHeadersCount() - getRealItemCount());
@@ -64,9 +62,7 @@ public class HeaderAndFooterWrapper extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        Log.e("Header", "onBindViewHolder position:" + position);
         if (isHeaderViewPos(position)) {
-            Log.e("Header", "isHeaderViewPos");
             mOnHeaderRefresh.onRefresh(holder, position);
             return;
         }

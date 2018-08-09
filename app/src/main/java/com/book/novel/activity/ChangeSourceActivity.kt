@@ -38,6 +38,7 @@ class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.Presenter>(), 
 
     override fun showError() {
         mLoading.visibility = View.GONE
+        setDefaultSelection()
         ToastUtils.show("切换失败!")
     }
 
@@ -71,6 +72,10 @@ class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.Presenter>(), 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Apply the adapter to the spinner
         mSpinner.adapter = adapter
+        setDefaultSelection()
+    }
+
+    fun setDefaultSelection() {
         val currentSource = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
         var index = 0
         for (i in mSources.indices) {
@@ -92,12 +97,13 @@ class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.Presenter>(), 
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 if (mCurrentPosition != position) {
-                    mCurrentPosition = position
-                    val entry = mSources[position]
-                    SharedPreUtils.getInstance().putString(Constant.SHARED_BOOK_SOURCE, entry.url)
+                    val oldEntry = mSources[mCurrentPosition]
+                    val newEntry = mSources[position]
                     mLoading.visibility = View.VISIBLE
+                    SharedPreUtils.getInstance().putString(Constant.SHARED_BOOK_SOURCE, newEntry.url)
                     //替换书架书籍链接
-                    mPresenter.startChange(entry.source)
+                    mPresenter.startChange(oldEntry.source, newEntry.source)
+                    mCurrentPosition = position
                 }
             }
 
