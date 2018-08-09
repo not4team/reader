@@ -77,5 +77,5 @@ interface BookApi {
 
     @FormUrlEncoded
     @POST
-    fun getSearchBookPackagePost(@Url url: String, @FieldMap params: Map<String, String>): Single<ResponseBody>
+    fun getSearchBookPackagePost(@Url url: String, @FieldMap(encoded = true) params: Map<String, String>): Single<ResponseBody>
 }

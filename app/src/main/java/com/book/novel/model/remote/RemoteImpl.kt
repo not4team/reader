@@ -16,6 +16,7 @@ import io.reactivex.Single
 import retrofit2.Retrofit
 import java.net.URLEncoder
 
+
 /**
  * Created by newbiechen on 17-4-20.
  */
@@ -62,8 +63,9 @@ class RemoteImpl : IRemote {
                 .map { bean ->
                     val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
                     val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
+                    val html = String(bean.bytes(), charset(source.sourceEncode))
                     val parser = ParserManager.getParser(source.getSourceBaseUrl())
-                    parser?.parseBookChapter(source, bean.string())
+                    parser?.parseBookChapter(source, html)
                 }
     }
 
@@ -81,8 +83,9 @@ class RemoteImpl : IRemote {
                 .map { bean ->
                     val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
                     val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
+                    val html = String(bean.bytes(), charset(source.sourceEncode))
                     val parser = ParserManager.getParser(source.getSourceBaseUrl())
-                    parser?.parseChapterInfo(source, bean.string())
+                    parser?.parseChapterInfo(source, html)
                 }
     }
 
@@ -94,8 +97,9 @@ class RemoteImpl : IRemote {
         return mBookApi.getBookDetail(link).map { bean ->
             val url = SharedPreUtils.getInstance().getString(Constant.SHARED_BOOK_SOURCE)
             val source = ParserManager.getSource(url) ?: ParserManager.getDefaultSource()
+            val html = String(bean.bytes(), charset(source.sourceEncode))
             val parser = ParserManager.getParser(source.getSourceBaseUrl())
-            parser?.parseBookDetail(source, bean.string())
+            parser?.parseBookDetail(source, html)
         }
     }
 
@@ -134,8 +138,9 @@ class RemoteImpl : IRemote {
             return mBookApi.getSearchBookPackagePost(source.getSourceSearchUrl(), param)
                     .map { bean ->
                         Log.e("RemoteHelper", "search success post")
+                        val html = String(bean.bytes(), charset(encode))
                         val parser = ParserManager.getParser(source.getSourceBaseUrl())
-                        parser?.parseSearchResult(source, bean.string())
+                        parser?.parseSearchResult(source, html)
                     }
         }
     }

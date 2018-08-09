@@ -57,6 +57,7 @@ class SczprcParser : Parser {
         val cover = bookcover.select("div.bookcover-l div.bigpic img").attr("src")
         val longIntro = bookcover.select("div.bookcover-r div.book-intro").text()
         val chapterDir = bookcover.select("div.bookcover-r div.bookbtn-box a.catalogbtn").attr("href")
+        val link = doc.select("div.footer-bar div.infos p")[0].select("a").attr("href")
         val bookDetailBean = BookDetailBean()
         bookDetailBean.title = title
         bookDetailBean.cat = category
@@ -64,10 +65,12 @@ class SczprcParser : Parser {
         bookDetailBean.cover = cover
         bookDetailBean.longIntro = longIntro
         bookDetailBean.chapterDir = chapterDir
+        bookDetailBean.link = link
         //获取章节目录
         RemoteRepository
                 .getInstance(App.getContext()).getBookChapters(bookDetailBean.chapterDir).subscribe({ chapters ->
                     bookDetailBean.bookChapterBeans = chapters
+                    bookDetailBean.lastChapter = chapters.last().title
                 }) { e ->
                     e.printStackTrace()
                 }
@@ -89,7 +92,7 @@ class SczprcParser : Parser {
             val link = lis[i].select("a").attr("href")
             val bookChapterBean = BookChapterBean()
             bookChapterBean.title = title
-            bookChapterBean.link = link
+            bookChapterBean.link = source.sourceBaseUrl + link
             bookChapterBean.id = MD5Utils.strToMd5By16(bookChapterBean.link)
             bookChapterBean.bookId = bookId
             list.add(bookChapterBean)

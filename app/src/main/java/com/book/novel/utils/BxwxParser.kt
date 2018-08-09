@@ -51,6 +51,7 @@ class BxwxParser : Parser {
         val cover = elements[1].select("div#sidebar div img").attr("src")
         val mBookDetailBean = BookDetailBean()
         mBookDetailBean.link = link.substring(0, link.lastIndexOf("/"))
+        mBookDetailBean.chapterDir = mBookDetailBean.link
         mBookDetailBean.title = title
         mBookDetailBean.author = author.replace("作 者：", "")
         mBookDetailBean._id = AndroidUtils.base64Encode(mBookDetailBean.title + "," + mBookDetailBean.author)
