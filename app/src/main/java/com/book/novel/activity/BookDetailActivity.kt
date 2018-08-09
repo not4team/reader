@@ -215,7 +215,7 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
                 mBtnAddBookshelf.text = resources.getString(R.string.nb_book_detail_give_up)
                 mBtnStartRead.text = resources.getString(R.string.continue_read)
                 if (bean.bookChapterBeans.size > mCollBookBean!!.bookChapterList.size) {
-                    mCollBookBean!!.setIsUpdate(true)
+                    mCollBookBean!!.isUpdate = true
                     mCollBookBean!!.lastChapter = bean.lastChapter
                     mCollBookBean!!.bookChapterList = bean.bookChapterBeans
                     CollectDao.getInstance(App.getContext()).insertOrReplaceCollBook(mCollBookBean)

@@ -129,7 +129,7 @@ public class CollectDao extends CollectDBHelper {
         contentValues.put(CollBookBean.COLUMN_CHAPTERS_COUNT, bean.getChaptersCount());
         contentValues.put(CollBookBean.COLUMN_LAST_CHAPTER, bean.getLastChapter());
         contentValues.put(CollBookBean.COLUMN_CHAPTER_DIR, bean.getChapterDir());
-        contentValues.put(CollBookBean.COLUMN_IS_UPDATE, bean.getIsUpdate());
+        contentValues.put(CollBookBean.COLUMN_IS_UPDATE, bean.isUpdate());
         contentValues.put(CollBookBean.COLUMN_IS_LOCAL, bean.getIsLocal());
         contentValues.put(CollBookBean.COLUMN_BOOK_ORDER, bean.getBookOrder());
         db.replace(CollBookBean.TABLE_NAME, null, contentValues);

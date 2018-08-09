@@ -649,7 +649,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                                     // 设置 CollBook
                                     mPageLoader.getCollBook().setBookChapterList(bookChapterBeens);
                                     // 刷新章节列表
-                                    mPageLoader.refreshChapterList();
+                                    mPageLoader.refreshChapterList(true);
                                     // 如果是网络小说并被标记更新的，则从网络下载目录
                                     if (mCollBook.isUpdate() && !mCollBook.isLocal()) {
                                         mPresenter.loadCategory(mBookId, mCollBook.getChapterDir());
@@ -686,7 +686,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     @Override
     public void showCategory(List<BookChapterBean> bookChapters) {
         mPageLoader.getCollBook().setBookChapterList(bookChapters);
-        mPageLoader.refreshChapterList();
+        mPageLoader.refreshChapterList(false);
 
         // 如果是目录更新的情况，那么就需要存储更新数据
         if ((mCollBook.isUpdate() || mChapterBeans == null) && isCollected) {

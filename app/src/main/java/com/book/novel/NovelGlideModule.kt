@@ -1,6 +1,7 @@
 package com.book.novel
 
 import android.content.Context
+import com.book.novel.model.remote.RemoteHelper
 import com.bumptech.glide.Glide
 import com.bumptech.glide.GlideBuilder
 import com.bumptech.glide.Registry
@@ -21,7 +22,7 @@ import java.io.InputStream
 class NovelAppGlideModule : AppGlideModule() {
     override fun registerComponents(context: Context, glide: Glide, registry: Registry) {
         super.registerComponents(context, glide, registry)
-        registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory())
+        registry.replace(GlideUrl::class.java, InputStream::class.java, OkHttpUrlLoader.Factory(RemoteHelper.instance.okHttpClient))
     }
 
     override fun applyOptions(context: Context, builder: GlideBuilder) {

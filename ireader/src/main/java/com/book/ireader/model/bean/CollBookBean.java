@@ -219,14 +219,6 @@ public class CollBookBean implements Parcelable {
         return this.hasCp;
     }
 
-    public boolean getIsUpdate() {
-        return this.isUpdate;
-    }
-
-    public void setIsUpdate(boolean isUpdate) {
-        this.isUpdate = isUpdate;
-    }
-
     public boolean isLocal() {
         return isLocal;
     }

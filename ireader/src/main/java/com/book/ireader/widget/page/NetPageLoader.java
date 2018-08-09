@@ -6,7 +6,6 @@ import com.book.ireader.RxBus;
 import com.book.ireader.event.BookShelfRefreshEvent;
 import com.book.ireader.model.bean.BookChapterBean;
 import com.book.ireader.model.bean.CollBookBean;
-import com.book.ireader.model.local.BookDao;
 import com.book.ireader.model.local.CollectDao;
 import com.book.ireader.utils.BookManager;
 import com.book.ireader.utils.Constant;
@@ -45,12 +44,13 @@ public class NetPageLoader extends PageLoader {
     }
 
     @Override
-    public void refreshChapterList() {
+    public void refreshChapterList(boolean isLocal) {
         if (mCollBook.getBookChapterList() == null) return;
 
         // 将 BookChapter 转换成当前可用的 Chapter
         mChapterList = convertTxtChapter(mCollBook.getBookChapterList());
         isChapterListPrepare = true;
+        isChapterListFromLocal = isLocal;
 
         // 目录加载完成，执行回调操作。
         if (mPageChangeListener != null) {
@@ -216,7 +216,9 @@ public class NetPageLoader extends PageLoader {
         super.saveRecord();
         if (mCollBook != null && isChapterListPrepare) {
             //表示当前CollBook已经阅读
-            mCollBook.setIsUpdate(false);
+            if(!isChapterListFromLocal) {
+                mCollBook.setUpdate(false);
+            }
             mCollBook.setLastRead(StringUtils.
                     dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE));
             //直接更新

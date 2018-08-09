@@ -34,6 +34,7 @@
     <string name="load_more_text">正在加載中</string>
     <string name="load_failed_text">加載失敗，點擊重試</string>
     <string name="bookdetail_title">書籍詳情</string>
+    <string name="bookdetail_empty_data">暫無數據</string>
     <string-array name="male_or_female">
         <item>男頻</item>
         <item>女頻</item>

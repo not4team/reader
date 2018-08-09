@@ -66,6 +66,7 @@ class SczprcParser : Parser {
         bookDetailBean.cover = cover
         bookDetailBean.longIntro = longIntro
         bookDetailBean.chapterDir = chapterDir
+        bookDetailBean.updated = "暂无数据"
         bookDetailBean.link = link
         //获取章节目录
         RemoteRepository

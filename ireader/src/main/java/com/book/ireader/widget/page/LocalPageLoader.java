@@ -323,7 +323,9 @@ public class LocalPageLoader extends PageLoader {
         //修改当前COllBook记录
         if (mCollBook != null && isChapterListPrepare) {
             //表示当前CollBook已经阅读
-            mCollBook.setIsUpdate(false);
+            if (!isChapterListFromLocal) {
+                mCollBook.setUpdate(false);
+            }
             mCollBook.setLastChapter(mChapterList.get(mCurChapterPos).getTitle());
             mCollBook.setLastRead(StringUtils.
                     dateConvert(System.currentTimeMillis(), Constant.FORMAT_BOOK_DATE));
@@ -343,7 +345,7 @@ public class LocalPageLoader extends PageLoader {
     }
 
     @Override
-    public void refreshChapterList() {
+    public void refreshChapterList(boolean isLocal) {
         // 对于文件是否存在，或者为空的判断，不作处理。 ==> 在文件打开前处理过了。
         mBookFile = new File(mCollBook.getCover());
         //获取文件编码
@@ -358,6 +360,7 @@ public class LocalPageLoader extends PageLoader {
 
             mChapterList = convertTxtChapter(mCollBook.getBookChapterList());
             isChapterListPrepare = true;
+            isChapterListFromLocal = isLocal;
 
             //提示目录加载完成
             if (mPageChangeListener != null) {

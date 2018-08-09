@@ -98,6 +98,7 @@ public abstract class PageLoader {
     protected int mStatus = STATUS_LOADING;
     // 判断章节列表是否加载完成
     protected boolean isChapterListPrepare;
+    protected boolean isChapterListFromLocal;
 
     // 是否打开过章节
     private boolean isChapterOpen;
@@ -700,7 +701,7 @@ public abstract class PageLoader {
     /**
      * 刷新章节列表
      */
-    public abstract void refreshChapterList();
+    public abstract void refreshChapterList(boolean isLocal);
 
     /**
      * 获取章节的文本流

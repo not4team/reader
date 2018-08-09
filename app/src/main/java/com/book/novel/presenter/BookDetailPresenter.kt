@@ -44,23 +44,29 @@ class BookDetailPresenter : RxPresenter<BookDetailContract.View>(), BookDetailCo
         val disposable = RemoteRepository.getInstance(App.getContext())
                 .getSearchBooks(title).compose(RxUtils::toSimpleSingle)
                 .subscribe({ beans ->
+                    var match = false
                     run breakTag@{
                         if(beans.size == 0) {
-                            mView.finishRefresh(null)
+                            match = false
                         }
                         if (beans.size == 1 && beans[0].bookChapterBeans != null) {
+                            match = true
                             if (mView != null) {
                                 mView.finishRefresh(beans[0])
                                 mView.complete()
                             }
                         }
                         beans.forEach continueTag@{
-                            if (title.equals(it.title) && author.equals(it.author)) {
+                            if (title == it.title && author == it.author) {
+                                match = true
                                 this@BookDetailPresenter.bookLink = it.link
                                 refreshBook()
                                 return@breakTag
                             }
                         }
+                    }
+                    if(!match && mView != null) {
+                        mView.showError()
                     }
                 }) { e ->
                     e.printStackTrace()

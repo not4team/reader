@@ -31,7 +31,8 @@ class RemoteHelper private constructor() {
                         CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA,
                         CipherSuite.TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA,
                         //qidian
-                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384)
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+                        CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA)
                 .build()
         okHttpClient = OkHttpClient.Builder()
                 .connectionSpecs(Arrays.asList(spec, ConnectionSpec.CLEARTEXT))

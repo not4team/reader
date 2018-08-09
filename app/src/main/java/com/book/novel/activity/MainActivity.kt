@@ -243,6 +243,18 @@ class MainActivity : BaseActivity() {
             mFragmentTransaction.commit()
             mCurrFragmentTag = BOOKSHELF_TAG
         }
+
+        Single.create<String> {
+            val socket: SSLSocket = SSLSocketFactory.getDefault().createSocket("m.qidian.com", 443) as SSLSocket
+            socket.startHandshake()
+            val session = socket.session
+            Log.e(TAG, session.protocol + "," + session.cipherSuite)
+        }.compose(RxUtils::toSimpleSingle)
+                .subscribe({ result ->
+
+                }) { err ->
+                    err.printStackTrace()
+                }
     }
 
     override fun initWidget() {
