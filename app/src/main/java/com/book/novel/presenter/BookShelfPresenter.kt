@@ -8,6 +8,7 @@ import com.book.ireader.model.remote.RemoteRepository
 import com.book.ireader.ui.base.RxPresenter
 import com.book.ireader.utils.RxUtils
 import com.book.novel.presenter.contract.BookShelfContract
+import com.lereader.novel.BuildConfig
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 import io.reactivex.Single
@@ -24,13 +25,17 @@ class BookShelfPresenter : RxPresenter<BookShelfContract.View>(), BookShelfContr
             updateCollectBook(collBookBeans, it)
         }.compose(RxUtils::toSimpleSingle)
                 .subscribe({ collBook ->
-                    Log.e("BookShelfPresenter", "collBook title:" + collBook.title)
+                    if(BuildConfig.DEBUG) {
+                        Log.e("BookShelfPresenter", "collBook title:" + collBook.title)
+                    }
                     mView.finishUpdate(collBook)
                 }, { error ->
                     error.printStackTrace()
                     mView?.showError()
                 }) {
-                    Log.e("BookShelfPresenter", "onComplete")
+                    if(BuildConfig.DEBUG) {
+                        Log.e("BookShelfPresenter", "onComplete")
+                    }
                     mView?.complete()
                 }
     }

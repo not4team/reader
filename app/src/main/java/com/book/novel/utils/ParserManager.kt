@@ -13,9 +13,9 @@ object ParserManager {
     private val registry = Registry()
 
     init {
-        val biqugexswSource = SimpleSource("biqugexsw", "https://www.biqugexsw.com", "https://www.biqugexsw.com/s.php", "q", "get", "gbk")
-        val bxwxSource = SimpleSource("bxwx3", "http://www.bxwx3.org", "http://www.bxwx3.org/search.aspx", "bookname", "get", "gbk")
-        val sczprcSource = SimpleSource("sczprc", "https://www.sczprc.com", "https://www.sczprc.com/modules/article/search.php", "searchkey", "post", "gbk")
+        val biqugexswSource = SimpleSource("来源1", "https://www.biqugexsw.com", "https://www.biqugexsw.com/s.php", "q", "get", "gbk")
+        val bxwxSource = SimpleSource("来源2", "http://www.bxwx3.org", "http://www.bxwx3.org/search.aspx", "bookname", "get", "gbk")
+        val sczprcSource = SimpleSource("来源3", "https://www.sczprc.com", "https://www.sczprc.com/modules/article/search.php", "searchkey", "post", "gbk")
         registry.register(biqugexswSource.sourceBaseUrl, biqugexswSource)
         registry.register(biqugexswSource.sourceBaseUrl, BiqugexswParser())
         registry.register(bxwxSource.sourceBaseUrl, bxwxSource)

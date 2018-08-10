@@ -63,7 +63,7 @@ class BiqugexswParser : Parser {
         mBookDetailBean.updated = updated.replace("更新时间：", "")
         mBookDetailBean.lastChapter = lastChapter.replace("最新章节：", "")
         mBookDetailBean.longIntro = intro.substring(0, intro.indexOf("无弹窗推荐地址"))
-        mBookDetailBean.link = intro.substring(intro.indexOf("无弹窗推荐地址") + 7)
+        mBookDetailBean.link = intro.substring(intro.indexOf("无弹窗推荐地址") + 8)
         mBookDetailBean.chapterDir = mBookDetailBean.link
         val chapterList = mutableListOf<BookChapterBean>()
         val chapterElement = body.select("div.listmain dl").first().children()

@@ -14,6 +14,7 @@ import com.book.ireader.utils.Constant
 import com.book.ireader.utils.RxUtils
 import com.book.ireader.utils.SharedPreUtils
 import com.book.novel.presenter.contract.ChangeSourceContract
+import com.lereader.novel.BuildConfig
 import io.reactivex.Observable
 import io.reactivex.ObservableEmitter
 
@@ -29,13 +30,17 @@ class ChangeSourcePresenter : RxPresenter<ChangeSourceContract.View>(), ChangeSo
             updateCollectBook(it)
         }.compose(RxUtils::toSimpleSingle)
                 .subscribe({ collBook ->
-                    Log.e("ChangeSourcePresenter", "collBook title:" + collBook.title)
+                    if(BuildConfig.DEBUG) {
+                        Log.e("ChangeSourcePresenter", "collBook title:" + collBook.title)
+                    }
                 }, { error ->
                     error.printStackTrace()
                     SharedPreUtils.getInstance().putString(Constant.SHARED_BOOK_SOURCE, oldSource.sourceBaseUrl)
                     mView.showError()
                 }) {
-                    Log.e("ChangeSourcePresenter", "onComplete")
+                    if(BuildConfig.DEBUG) {
+                        Log.e("ChangeSourcePresenter", "onComplete")
+                    }
                     BookDao.releaseDB()
                     mView.complete()
                     RxBus.getInstance().post(BookShelfRefreshEvent().setType(BookShelfRefreshEvent.EVENT_TYPE_UPDATE))

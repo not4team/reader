@@ -123,21 +123,24 @@ class RemoteImpl : IRemote {
         if (encode != null) {
             encodeQuery = URLEncoder.encode(query, encode)
         }
-        Log.e("RemoteHelper", "encodeQuery:" + encodeQuery)
         val param = mutableMapOf<String, String>()
         param.put(source.sourceSearchParam, encodeQuery)
         var searchUrl = source.sourceSearchUrl + "?" + source.sourceSearchParam + "=" + encodeQuery
         if (source.sourceSearchMethod == "get") {
             return mBookApi.getSearchBookPackage(searchUrl)
                     .map { bean ->
-                        Log.e("RemoteHelper", "search success get")
+                        if (BuildConfig.LOG_DEBUG) {
+                            Log.e("RemoteHelper", "search success get")
+                        }
                         val parser = ParserManager.getParser(source.getSourceBaseUrl())
                         parser?.parseSearchResult(source, bean.string())
                     }
         } else {
             return mBookApi.getSearchBookPackagePost(source.getSourceSearchUrl(), param)
                     .map { bean ->
-                        Log.e("RemoteHelper", "search success post")
+                        if (BuildConfig.LOG_DEBUG) {
+                            Log.e("RemoteHelper", "search success post")
+                        }
                         val html = String(bean.bytes(), charset(encode))
                         val parser = ParserManager.getParser(source.getSourceBaseUrl())
                         parser?.parseSearchResult(source, html)
