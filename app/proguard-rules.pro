@@ -156,3 +156,7 @@ public static java.lang.String TABLENAME;
 #jsoup
 -dontwarn org.jsoup.**
 -keepclasseswithmembers class org.jsoup.** { *; }
+
+#AVLoadingIndicatorView
+-keep class com.wang.avi.** { *; }
+-keep class com.wang.avi.indicators.** { *; }

@@ -44,7 +44,8 @@ class ChangeSourceActivity : BaseMVPActivity<ChangeSourceContract.Presenter>(), 
 
     override fun complete() {
         mLoading.visibility = View.GONE
-        startActivity(Intent(this, MainActivity::class.java))
+        ToastUtils.show("切换完成")
+        finish()
     }
 
     override fun initToolbar() {
