@@ -185,6 +185,9 @@ class RankCategoryFragment : BaseMVPFragment<RankCategoryPresenter>(), RankCateg
 
     override fun showError() {
         mRefreshLayout.showError()
+        if (mRefreshListener != null) {
+            mRefreshListener!!.onFinish()
+        }
     }
 
     override fun getContentId(): Int {

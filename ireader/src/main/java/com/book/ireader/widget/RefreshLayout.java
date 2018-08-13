@@ -145,7 +145,7 @@ public class RefreshLayout extends FrameLayout {
     }
 
     public void showFinish() {
-        if (mStatus == STATUS_LOADING) {
+        if (mStatus != STATUS_FINISH) {
             toggleStatus(STATUS_FINISH);
         }
     }

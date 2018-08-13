@@ -24,7 +24,7 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
     private lateinit var mRankSwipeRefreshLayout: SwipeRefreshLayout
     private lateinit var mRankViewPager: ViewPager
     private lateinit var mRankTabLayout: TabLayout
-    private lateinit var mPagerAdapter: RankViewPagerAdapter
+    private var mPagerAdapter: RankViewPagerAdapter? = null
     private lateinit var mRankTabBeans: List<RankTabBean>
     private lateinit var mEmptyView: View
     override fun getContentId(): Int {
@@ -56,14 +56,19 @@ class RankFragment : BaseMVPFragment<RankPresenter>(), RankContract.View {
     override fun initClick() {
         super.initClick()
         mRankSwipeRefreshLayout.setOnRefreshListener {
-            val mRankCategoryFragment = mPagerAdapter.mCurrFragment
-            mRankCategoryFragment.mRefreshListener = object : RankCategoryFragment.RefreshListener {
-                override fun onFinish() {
-                    mRankSwipeRefreshLayout.isRefreshing = false
-                }
+            val mRankCategoryFragment = mPagerAdapter?.mCurrFragment
+            if (mRankCategoryFragment != null) {
+                mRankCategoryFragment?.mRefreshListener = object : RankCategoryFragment.RefreshListener {
+                    override fun onFinish() {
+                        mRankSwipeRefreshLayout.isRefreshing = false
+                    }
 
+                }
+                mRankCategoryFragment?.refreshBooksFromNet()
+            } else {
+                mRankSwipeRefreshLayout.isRefreshing = true
+                refresh()
             }
-            mRankCategoryFragment.refreshBooksFromNet()
         }
     }
 
