@@ -13,7 +13,7 @@ def cfg = rootProject.ext.configuration // 项目配置
 def libs = rootProject.ext.libraries // 库
 android {
     compileSdkVersion cfg.compileVersion
-    buildToolsVersion cfg.buildToolsVersion
+    buildToolsVersion '28.0.3'
 
     defaultConfig {
         applicationId "com.lereader.novel"
@@ -75,7 +75,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':ireader')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
