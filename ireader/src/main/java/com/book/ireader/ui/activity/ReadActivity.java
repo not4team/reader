@@ -541,6 +541,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                 (v) -> {
                     Intent intent = new Intent("com.book.novel.activity.BookDetailActivity");
                     intent.putExtra("BOOK_ID_INTENT_KEY", mBookId);
+                    intent.putExtra("BOOK_LINK_INTENT_KEY", mCollBook.getLink());
                     startActivity(intent);
                 }
         );

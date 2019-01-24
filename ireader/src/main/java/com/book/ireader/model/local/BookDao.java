@@ -62,6 +62,7 @@ public class BookDao extends DBHelper implements IBookDao {
     }
 
     public static void releaseDB() {
+        mBookDao.close();
         mBookDao = null;
     }
 
