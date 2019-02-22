@@ -5,11 +5,15 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.WindowManager;
 
 import com.book.ireader.model.bean.CollBookBean;
+import com.book.ireader.utils.SystemBarUtils;
 import com.book.ireader.widget.animation.CoverPageAnim;
 import com.book.ireader.widget.animation.HorizonPageAnim;
 import com.book.ireader.widget.animation.NonePageAnim;
@@ -79,14 +83,27 @@ public class PageView extends View {
     }
 
     @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        Log.e("PageView", "changed:" + changed + ",left:" + left + ",top:" + top + ",right:" + right + ",bottom:" + bottom);
+    }
+
+    @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        mViewWidth = w;
-        mViewHeight = h;
-
-        isPrepare = true;
-
-        if (mPageLoader != null) {
+        DisplayMetrics metric = new DisplayMetrics();
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getRealMetrics(metric);
+        Log.e("PageView", "screenW:" + metric.widthPixels + ",screenH:" + metric.heightPixels);
+        Log.e("PageView", "w:" + w + ",h:" + h + ",oldw:" + oldw + ",oldh:" + oldh);
+//        if (h > oldh) {
+//            h -= SystemBarUtils.getStatusBarHeight(getContext());
+//        }
+        if (mPageLoader != null && !isPrepare) {
+            Log.e("PageView", "===========h:" + h);
+            isPrepare = true;
+            mViewWidth = w;
+            mViewHeight = h;
             mPageLoader.prepareDisplay(w, h);
         }
     }

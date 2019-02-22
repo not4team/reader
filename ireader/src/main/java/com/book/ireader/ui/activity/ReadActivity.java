@@ -577,18 +577,34 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
     private void showSystemBar() {
         //显示
-        SystemBarUtils.showUnStableStatusBar(this);
-        if (isFullScreen) {
-            SystemBarUtils.showUnStableNavBar(this);
-        }
+//        SystemBarUtils.showUnStableStatusBar(this);
+//        if (isFullScreen) {
+//            SystemBarUtils.showUnStableNavBar(this);
+//        }
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
     }
 
     private void hideSystemBar() {
         //隐藏
-        SystemBarUtils.hideStableStatusBar(this);
-        if (isFullScreen) {
-            SystemBarUtils.hideStableNavBar(this);
-        }
+//        SystemBarUtils.hideStableStatusBar(this);
+//        if (isFullScreen) {
+//            SystemBarUtils.hideStableNavBar(this);
+//        }
+        View decorView = getWindow().getDecorView();
+        decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE
+                        // Set the content to appear under the system bars so that the
+                        // content doesn't resize when the system bars hide and show.
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        // Hide the nav bar and status bar
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
     }
 
     /**
