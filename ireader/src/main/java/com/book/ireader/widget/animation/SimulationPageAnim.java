@@ -11,6 +11,7 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Region;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.view.View;
 
 /**
@@ -364,7 +365,11 @@ public class SimulationPageAnim extends HorizonPageAnim {
         float rotateDegrees;
         canvas.save();
         try {
-            canvas.clipPath(mPath0, Region.Op.XOR);
+            if (Build.VERSION.SDK_INT >= 28) {
+                canvas.clipOutPath(mPath0);
+            } else {
+                canvas.clipPath(mPath0, Region.Op.XOR);
+            }
             canvas.clipPath(mPath1, Region.Op.INTERSECT);
         } catch (Exception e) {
             // TODO: handle exception
@@ -400,7 +405,11 @@ public class SimulationPageAnim extends HorizonPageAnim {
         mPath1.close();
         canvas.save();
         try {
-            canvas.clipPath(mPath0, Region.Op.XOR);
+            if (Build.VERSION.SDK_INT >= 28) {
+                canvas.clipOutPath(mPath0);
+            } else {
+                canvas.clipPath(mPath0, Region.Op.XOR);
+            }
             canvas.clipPath(mPath1, Region.Op.INTERSECT);
         } catch (Exception e) {
         }
@@ -490,7 +499,11 @@ public class SimulationPageAnim extends HorizonPageAnim {
         mPath0.close();
 
         canvas.save();
-        canvas.clipPath(path, Region.Op.XOR);
+        if (Build.VERSION.SDK_INT >= 28) {
+            canvas.clipOutPath(path);
+        } else {
+            canvas.clipPath(path, Region.Op.XOR);
+        }
         canvas.drawBitmap(bitmap, 0, 0, null);
         try {
             canvas.restore();

@@ -13,7 +13,7 @@ def cfg = rootProject.ext.configuration // 项目配置
 def libs = rootProject.ext.libraries // 库
 android {
     compileSdkVersion cfg.compileVersion
-    buildToolsVersion '28.0.3'
+    buildToolsVersion cfg.buildToolsVersion
 
     defaultConfig {
         applicationId "com.lereader.novel"

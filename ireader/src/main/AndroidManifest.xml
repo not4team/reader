@@ -2,7 +2,14 @@
     package="com.book.ireader">
 
     <application>
-        <activity android:name=".ui.activity.ReadActivity"  android:screenOrientation="portrait"/>
-        <activity android:name=".ui.activity.MoreSettingActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.activity.ReadActivity"
+            android:launchMode="singleTask"
+            android:maxAspectRatio="2.4"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.lereader.novel" />
+        <activity
+            android:name=".ui.activity.MoreSettingActivity"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

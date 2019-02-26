@@ -153,6 +153,13 @@ class BookDetailActivity : BaseMVPActivity<BookDetailContract.Presenter>(), Book
     override fun onClick(v: View) {
         when (v.id) {
             R.id.bookdetail_bt_start_read -> {
+                /**
+                 * startActivityForResult在低版本（好像5.0之前）有个问题：startActivityForResult所启动的Activity
+                 * 如果是singleTask或者singleInstance的，会立马回调onActivityResult，返回cancel；
+                 * 高版本为了兼容singleTask和singleInstacne模式，把这两种模式都转成standard模式来处理了；
+                 * 所以启动效果就和standard模式一样。
+                 * ReadActivity singleTask并无效果
+                 */
                 startActivityForResult(Intent(this, ReadActivity::class.java)
                         .putExtra(ReadActivity.EXTRA_IS_COLLECTED, isCollected)
                         .putExtra(ReadActivity.EXTRA_COLL_BOOK, mCollBookBean), REQUEST_READ)

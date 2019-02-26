@@ -3,10 +3,10 @@ ext {
     //项目版本
     configuration = [
             package          : "com.book.novel",
-            buildToolsVersion: "27.0.3",
-            compileVersion   : 27,
+            buildToolsVersion: "28.0.3",
+            compileVersion   : 28,
             minSdk           : 19,
-            targetSdk        : 27,
+            targetSdk        : 28,
             version_code     : 5,
             version_name     : "v1.0.4",
     ]

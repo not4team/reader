@@ -1,6 +1,7 @@
 package com.book.ireader.ui.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -26,6 +27,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
@@ -58,11 +60,12 @@ import com.book.ireader.widget.page.PageLoader;
 import com.book.ireader.widget.page.PageView;
 import com.book.ireader.widget.page.TxtChapter;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.disposables.Disposable;
 
-import static android.support.v4.view.ViewCompat.LAYER_TYPE_SOFTWARE;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -123,13 +126,21 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     private int mCurrPosition;
     //控制屏幕常亮
     private PowerManager.WakeLock mWakeLock;
-    private Handler mHandler = new Handler() {
+
+    private static class ReadHandler extends Handler {
+        private final WeakReference<ReadActivity> mActivity;
+
+        public ReadHandler(ReadActivity mActivity) {
+            this.mActivity = new WeakReference<>(mActivity);
+        }
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
+            PageLoader mPageLoader = mActivity.get().mPageLoader;
             switch (msg.what) {
                 case WHAT_CATEGORY:
+                    ListView mLvCategory = mActivity.get().mLvCategory;
                     mLvCategory.setSelection(mPageLoader.getChapterPos());
                     break;
                 case WHAT_CHAPTER:
@@ -137,12 +148,15 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                     break;
             }
         }
-    };
+    }
+
+    private Handler mHandler = new ReadHandler(this);
+
     // 接收电池信息和时间更新的广播
     private BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
+            if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
                 int level = intent.getIntExtra("level", 0);
                 mPageLoader.updateBattery(level);
             }
@@ -248,7 +262,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
         // 如果 API < 18 取消硬件加速
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            mPvPage.setLayerType(LAYER_TYPE_SOFTWARE, null);
+            mPvPage.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
 
         //获取页面加载器
@@ -279,11 +293,11 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
         //初始化屏幕常亮类
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "keep bright");
+        mWakeLock = Objects.requireNonNull(pm).newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, "novel:keep_bright");
 
         //隐藏StatusBar
         mPvPage.post(
-                () -> hideSystemBar()
+                this::hideSystemBar
         );
 
         //初始化TopMenu
@@ -294,7 +308,10 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     }
 
     private void initTopMenu() {
-        if (Build.VERSION.SDK_INT >= 19) {
+        WindowManager.LayoutParams lp = getWindow().getAttributes();
+        lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
+        getWindow().setAttributes(lp);
+        if (Build.VERSION.SDK_INT >= 19 && !ScreenUtils.hasNotchScreen(this)) {
             mAblTopMenu.setPadding(0, ScreenUtils.getStatusBarHeight(), 0, 0);
         }
     }
@@ -382,6 +399,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
                         mCategoryAdapter.setChapter(pos);
                     }
 
+                    @SuppressLint("CheckResult")
                     @Override
                     public void requestChapters(List<TxtChapter> requestChapters) {
                         try {
@@ -527,11 +545,7 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
         mTvNightMode.setOnClickListener(
                 (v) -> {
-                    if (isNightMode) {
-                        isNightMode = false;
-                    } else {
-                        isNightMode = true;
-                    }
+                    isNightMode = !isNightMode;
                     mPageLoader.setNightMode(isNightMode);
                     toggleNightMode();
                 }
@@ -577,34 +591,18 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
 
     private void showSystemBar() {
         //显示
-//        SystemBarUtils.showUnStableStatusBar(this);
-//        if (isFullScreen) {
-//            SystemBarUtils.showUnStableNavBar(this);
-//        }
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        SystemBarUtils.showUnStableStatusBar(this);
+        if (isFullScreen) {
+            SystemBarUtils.showUnStableNavBar(this);
+        }
     }
 
     private void hideSystemBar() {
         //隐藏
-//        SystemBarUtils.hideStableStatusBar(this);
-//        if (isFullScreen) {
-//            SystemBarUtils.hideStableNavBar(this);
-//        }
-        View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_IMMERSIVE
-                        // Set the content to appear under the system bars so that the
-                        // content doesn't resize when the system bars hide and show.
-                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        // Hide the nav bar and status bar
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN);
+        SystemBarUtils.hideStableStatusBar(this);
+        if (isFullScreen) {
+            SystemBarUtils.hideStableNavBar(this);
+        }
     }
 
     /**
@@ -858,4 +856,5 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
             }
         }
     }
+
 }

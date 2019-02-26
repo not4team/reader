@@ -16,18 +16,16 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.book.ireader.App
 import com.book.ireader.ui.base.BaseActivity
 import com.book.ireader.utils.Constant
-import com.book.ireader.utils.RxUtils
+import com.book.ireader.utils.ScreenUtils
 import com.book.ireader.utils.SharedPreUtils
 import com.book.novel.fragment.BookCityFragment
 import com.book.novel.fragment.BookShelfFragment
 import com.book.novel.fragment.RankFragment
 import com.lereader.novel.R
-import io.reactivex.Single
 import kotlinx.android.synthetic.main.activity_main.*
-import javax.net.ssl.SSLSocket
-import javax.net.ssl.SSLSocketFactory
 
 
 class MainActivity : BaseActivity() {

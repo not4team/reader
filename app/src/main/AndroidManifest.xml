@@ -19,11 +19,18 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true"
         tools:ignore="HardcodedDebugMode"
         tools:replace="android:icon">
         <meta-data
             android:name="com.book.novel.model.remote.RemoteImpl"
             android:value="IRemoteModule" />
+        <!-- Render on full screen up to screen aspect ratio of 2.4 -->
+        <!-- Use a letterbox on screens larger than 2.4 -->
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
+
         <provider
             android:name="com.book.novel.provider.MySuggestionProvider"
             android:authorities="com.book.novel.MySuggestionProvider" />
