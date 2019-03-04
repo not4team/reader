@@ -308,9 +308,11 @@ public class ReadActivity extends BaseMVPActivity<ReadContract.Presenter>
     }
 
     private void initTopMenu() {
-        WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
-        getWindow().setAttributes(lp);
+        if(Build.VERSION.SDK_INT >= 28) {
+            WindowManager.LayoutParams lp = getWindow().getAttributes();
+            lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER;
+            getWindow().setAttributes(lp);
+        }
         if (Build.VERSION.SDK_INT >= 19 && !ScreenUtils.hasNotchScreen(this)) {
             mAblTopMenu.setPadding(0, ScreenUtils.getStatusBarHeight(), 0, 0);
         }
